@@ -24,9 +24,9 @@ class Mapper(AbstractContextManager, ABC):
         else:
             """Hier läuft der Code Lokal ab, im Development Mode.Dabei wird eine Verbindung zur lokalen SQL-DB erzeugt."""
 
-            self._connection = connector.connect(user='demo', password='demo',
-                                                 host='IP der DB ',
-                                                 database='Datenbankname')
+            self._connection = connector.connect(user='root', password='',
+                                                 host='127.0.0.1',
+                                                 database='sw-project')
 
         return self
 
