@@ -6,5 +6,7 @@ from .bo.Student import Student
 from .bo.Teilnahme import Teilnahme
 from .bo.Konversation import Konversation
 from .bo.Gruppe import Gruppe
-from .bo.Gruppenempfehlung import Gruppenempfehlung 
+from .bo.Gruppenempfehlung import Gruppenempfehlung
+from .bo.Nachricht import Nachricht
+
 
