@@ -123,7 +123,6 @@ class Profil(NamedBusinessObject):
         profil.set_id(dictionary["id"])
         profil.set_name(dictionary["Name"])
         profil.set_alter(dictionary["Alter"])
-        profil.set_email(dictionary["Email"])
         profil.set_lernvorlieben(dictionary["Lernvorlieben"])
         profil.set_faecher(dictionary["Faecher"])
         profil.set_semester(dictionary["Semester"])
