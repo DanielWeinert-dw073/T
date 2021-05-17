@@ -38,7 +38,7 @@ class Suggestion_Algorithmus(BusinessObject):
         """Auslesen der Profil Id """
         return self.profil_Id
 
-    def setprofil_Id(self,profil):
+    def set_profil_Id(self,profil):
         """ Setzen der Profil_id"""
         self.profil_Id = profil
 
