@@ -135,10 +135,10 @@ class EmpfehlungMapper(Mapper):
         return result
 
     def find_by_empfehlungsListe(self, empfehlungsListe):
-        """Suchen einer empfehlung nach der übergebenen Google User ID. 
+        """Suchen einer empfehlung nach der übergebenen Empfehlung. 
 
-        :param empfehlungGruppe Google User ID einer empfehlung aus der Datenbank
-        :return empfehlung-Objekt, welche mit der Google User ID übereinstimmt,
+        :param empfehlungGruppe einer empfehlung aus der Datenbank
+        :return empfehlung-Objekt, welche mit der Empfehlung übereinstimmt,
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
@@ -165,10 +165,10 @@ class EmpfehlungMapper(Mapper):
         return result
 
     def find_by_empfehlungProfil(self, empfehlungProfil):
-        """Suchen einer empfehlung nach der übergebenen Google User ID. 
+        """Suchen einer empfehlung nach der übergebenen Empfehlung. 
 
-        :param empfehlungGruppe Google User ID einer empfehlung aus der Datenbank
-        :return empfehlung-Objekt, welche mit der Google User ID übereinstimmt,
+        :param empfehlungGruppe einer empfehlung aus der Datenbank
+        :return empfehlung-Objekt, welche mit der Empfehlung übereinstimmt,
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
@@ -209,14 +209,14 @@ class EmpfehlungMapper(Mapper):
         for (maxid) in tuples:
             if maxid[0] is not None:
                 """Wenn wir eine maximale ID festellen konnten, zählen wir diese
-                um 1 hoch und weisen diesen Wert als ID dem User-Objekt zu."""
+                um 1 hoch und weisen diesen Wert als ID dem Empfehlung-Objekt zu."""
                 empfehlung.set_id(maxid[0] + 1)
             else:
                 """Wenn wir KEINE maximale ID feststellen konnten, dann gehen wir
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 empfehlung.set_id(1)
 
-        command = "INSERT INTO empfehlungen (id, empfehlung, empfehlungsListe, empfehlungGruppe) VALUES (%s,%s,%s,%s)"
+        command = "INSERT INTO empfehlungen (id, empfehlung, empfehlungsListe, empfehlungGruppe) VALUES (%s,%s,%s,%s,%s)"
         data = (empfehlung.get_id(), empfehlung.get_empfehlung(), empfehlung.get_empfehlungsListe(), empfehlung.get_empfehlungGruppe(),empfehlung.get_empfehlung_Profil())
         cursor.execute(command, data)
 
@@ -249,7 +249,7 @@ class EmpfehlungMapper(Mapper):
         """
         cursor = self._connection.cursor()
 
-        command = "UPDATE empfehlungen " + "SET empfehlung=%s, empfehlungsListe=%s, empfehlungGruppe=%s, empfehlungProfil WHERE id=%s"
+        command = "UPDATE empfehlungen " + "SET empfehlung=%s, empfehlungsListe=%s, empfehlungGruppe=%s, empfehlungProfil=%s WHERE id=%s"
         data = (empfehlung.get_empfehlung(), empfehlung.get_empfehlungsListe(), empfehlung.get_id(), empfehlung.get_empfehlungGruppe(),
          empfehlung.get_empfehlungProfil())
 
