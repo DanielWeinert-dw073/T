@@ -5,7 +5,7 @@ from os import name
 from server.db.Mapper import Mapper
 from server.bo.Profil import Profil
 
-class StudentMapper(Mapper):
+class ProfilMapper(Mapper):
     """Mapper-Klasse, die Profil Objekte auf der relationealen Datenbank abbildet.
     Die Klasse ermöglicht die Umwandlung von Objekten in Datenbankstrukturen und umgekehrt
     """
