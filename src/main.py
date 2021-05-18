@@ -19,7 +19,10 @@ from server.bo.Gruppe import Gruppe
 from server.bo.Konversation import Konversation
 from server.bo.Profil import Profil
 from server.bo.Student import Student
-from server.bo.Gruppenempfehlung import Gruppenempfehlung
+from server.bo.Suggestion_Algorithmus import Suggestion_Algorithmus
+from server.bo.Nachricht import Nachricht
+from server.bo.Lernvorlieben import Lernvorlieben
+from server.bo.Lerntyp import Lerntyp
 
 
 

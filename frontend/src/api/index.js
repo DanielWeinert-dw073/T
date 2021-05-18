@@ -3,4 +3,6 @@ Reexport von allen API Modulen sowie BO's benoetigt da sonst import nicht funkti
 */
 
 export {default as StudentNBO} from './StudentNBO';
-export {default as NachrichtNBO} from './NachrichtNBO';
+export {default as NachrichtBO} from './NachrichtBO';
+export {default as EmpfehlungBO} from './EmpfehlungBO';
+export {default as GruppeNBO} from './GruppeNBO';
