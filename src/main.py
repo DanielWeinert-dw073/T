@@ -78,3 +78,43 @@ teilnahme = api.inherit("Teilnahme",bo,{
     "nachricht_id": fields.Integer(attribute="_nachricht_id", description="NachrichtId zur Teilnahme")
 })
 
+student = api.inherit("Student",nbo,{
+    "email": fields.String(attribute="_email", description="Email eines Studenten"),
+    "google_user_id": fields.String(attribute="_google_user_id", description="GoogleUserId eines Studenten")
+})
+
+empfehlung = api.inherit("Empfehlung",bo,{
+    "empfehlung": fields.String(attribute="_empfehlung", description="Empfehlung"),
+    "empfehlungsListe": fields.String(attribute="_empfehlungsListe", description="Empfehlungsliste"),
+    "empfehlungGruppe":fields.String(attribute="_empfehlungGruppe", description="Empfehlunggruppe"),
+    "empfehlungProfil": fields.String(attribute="_empfehlungProfil", description="EmpfehlungProfil")
+})
+
+lerntyp = api.inherit("Lerntyp",bo,{
+    "lerntyp": fields.String(attribute="_lerntyp", description="Lerntypbezeichnung")
+})
+
+lernvorlieben = api.inherit("Lernvorlieben",bo,{
+    "frequenz": fields.String(attribute="_frequenz", description="Frequenz des Lernens"),
+    "internet_verbindung": fields.String(attribute="_internet_verbindung", description="InternetVerbindung online/offline"),
+    "pole_der_persönlichkeit": fields.String(attribute="pole_der_persönlichkeit", description="Introvertier/Extrovertiert")
+})
+
+konversation = api.inherit("Konversation",bo,{
+    "nachricht_id": fields.Integer(attribute="_nachricht_id", description="NachrichtId in einer Konversation"),
+    "teilnehmer": fields.String(attribute="_teilnehmer", description="Teilnehmer an einer Konversation"),
+    "herkunfts_id": fields.Integer(attribute="_herkunfts_id", description="Herkunfts Id einer Nachricht in einer Konversation"),
+    "ziel_id": fields.Integer(attribute="_ziel_id", description="Ziel einer Nachricht in Konversation"),
+    "inhalt": fields.String(attribute="_inhalt", description="Inhalt in einer Konversation")
+})
+
+suggestion_algorithmus = api.inherit("SuggestionAlgorithmus",bo,{
+    "lerntyp_Id" :fields.Integer(attribute="_lerntyp_Id", description="LerntypId"),
+    "lernvorlieben_Id" : fields.Integer(attribute="_lernvorlieben_Id", description="Lernvorlieben_Id"),
+    "profil_Id" : fields.Integer(attribute="_profil_Id", description= "Profil_Id"),
+    "gruppen_id": fields.Integer(attribute="gruppen_id", description="Gruppen Id ")
+})
+
+
+
+
