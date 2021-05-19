@@ -60,7 +60,7 @@ class ProfilMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-                (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me) = tuples[0]
+                (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) = tuples[0]
                 profil = Profil()
                 profil.set_id(id)
                 profil.set_name(name)
@@ -93,12 +93,50 @@ class ProfilMapper(Mapper):
         """
         result = None
         cursor = self._connection.cursor()
-        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen  FROM profile WHERE id='{}'".format(id)
+        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me ) = tuples[0]
+            (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen ) = tuples[0]
+            profil = Profil()
+            profil.set_id(id)
+            profil.set_name(name)
+            profil.set_faecher(faecher)
+            profil.set_alter(alter)
+            profil.set_studiengang(studiengang)
+            profil.set_wohnort(wohnort)
+            profil.set_semester(semester)
+            profil.set_vorwissen(vorwissen)
+            profil.set_lernvorlieben(lernvorlieben)
+            profil.set_about_me(about_me)
+            profil.set_sprachen(sprachen)
+            result = profil
+
+        except IndexError:
+            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
+			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
+            result = None
+
+        self._connection.commit()
+        cursor.close()
+        return result
+
+    def find_by_lernvorlieben(self, lernvorlieben):
+        """Suchen eines Profiles nach der übergebenen Lernvorlieben.
+
+        :param Lernvorlieben Attribut eines Profiles aus der Datenbank
+        :return Profil Objekt, welche mit den lernvorlieben übereinstimmen,
+                None wenn kein Eintrag gefunden wurde
+        """
+        result = None
+        cursor = self._connection.cursor()
+        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE lernvorlieben='{}'".format(lernvorlieben)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen ) = tuples[0]
             profil = Profil()
             profil.set_id(id)
             profil.set_name(name)

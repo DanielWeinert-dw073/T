@@ -1,12 +1,19 @@
-import StudentBO from './StudentBO';
+import StudentNBO from './StudentNBO';
 import TeilnahmeBO from './TeilnahmeBO';
+import EmpfehlungBO from './EmpfehlungBO';
+import ProfilNBO from './ProfilNBO';
+import GruppeNBO from './GruppeNBO';
+import KonversationBO from './KonversationBO';
+import LerntypBO from './LerntypBO';
+import LernvorliebenBO from './LernvorliebenBO';
+import NachrichtBO from './NachrichtBO';
 
 /** 
  * Singelton Abstraktion des backends REST Interface. 
  * Dabei handelt es sich um eine access Methode.
 */
 
-export default LerngruppenTool {
+export default class LerngruppenToolAPI {
 
     //singelton instance
     static #api = null;
