@@ -40,7 +40,7 @@ app = Flask(__name__)
 
 CORS(app, support_credentials=True, resources={r"/LernGruppenToolApp/*":{"origins": "*"}})
 
-api = API(app,version = "1.0", title = "LernGruppenTool API", 
+api = API(app,version = "1.0", title = "LernGruppenTool ", 
             description="Web App zur Lerngruppen Findung der Hochschule")
 
 """Namespaces"""
@@ -115,6 +115,127 @@ suggestion_algorithmus = api.inherit("SuggestionAlgorithmus",bo,{
     "gruppen_id": fields.Integer(attribute="gruppen_id", description="Gruppen Id ")
 })
 
+#Student Methoden
+
+@LernGruppenToolApp.route("/studenten")
+@LernGruppenToolApp.resoponse(500, "Falls es zu einem Serverseitigen Fehler kommt.")
+@LernGruppenToolApp.param("name", "Dies ist der name des Studenten")
+class StudentListOperazions(Resource):
+    @LernGruppenToolApp.marshal_with(student)
+
+    @secured
+    def get (self):
+        """Auslesen aller Studenten"""
+
+        adm = LerngruppenAdministration()
+        studenten = adm.get_alle_studenten()
+        return studenten
+
+
+@LernGruppenToolApp.route("/studenten-by-name/<string:name>")
+@LernGruppenToolApp.response(500,'Falls es zu einem Server-seitigen Fehler kommt.')
+@LernGruppenToolApp.param("name", "Der Name des Studenten")
+class StudentByNameOperations(Resource):
+    @LernGruppenToolApp.marshal_list_with(student)
+
+    #@secured
+    def get (self, name):
+        """Auslesen eines bestimmten Studenten Objekt. Nachrichten
+
+        Das auszulesene Objekt wird über den Namen bestimmt."""
+
+        adm = LerngruppenAdministration()
+        stud = adm.get_student_by_name(name)
+        return stud
+
+@LernGruppenToolApp.route("/studenten-by-google-user-id/<string:google_user_id>")
+@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt")
+@LernGruppenToolApp.param("google_user_id", "GoogleUserId des Studenten")
+class StudentByGoogle_User_Id(Resource):
+    @LernGruppenToolApp.marshal_list_with(student)
+
+    @secured
+    def get (self, google_user_id):
+        """Auslesen eines bestimmten Studenten Objekts.
+
+        Das auszulesene Objekt wird über die GoogleUserId bestimmt."""
+
+        adm = LerngruppenAdministration()
+        stud = adm.get_student_by_google_user_id(google_user_id)
+        return stud
+
+@LernGruppenToolApp.route("/studenten-by-id/<int:id>")
+@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt.")
+@LernGruppenToolApp.param("id","Id eines Studenten")
+class StudentById(Resource):
+    @LernGruppenToolApp.marshal_list_with(student)
+
+    @secured
+    def get (self,id):
+        """Auslesen eines bestimmten Studenten Objekts. 
+
+        Das auszulesene Objekt wird über die Id bestimmt"""
+
+        adm = LerngruppenAdministration()
+        stud = adm.get_student_by_id(id)
+        return stud
+
+
+#Nachrichten Methoden
+@LernGruppenToolApp.route("/nachrichten")
+@LernGruppenToolApp.response(500,"Falls es zu einem serverseitigen Fehler kommt")
+class NachrichtListOperation(Resource):
+
+    @secured
+    def get (self):
+        """Auslesen aller Nachrichten Objekte"""
+
+        adm = LerngruppenAdministration()
+        nachrichten = adm.get_alle_nachrichten()
+        return nachrichten
+
+    @secured
+    def put(self):
+        """Update der Nachricht"""
+
+        adm = LerngruppenAdministration()
+        nachricht = adm.get_nachricht_by_id(id)
+        nachricht.set_inhalt(inhalt)
+        adm.update_nachricht(nachricht)
+
+@LernGruppenToolApp.route("/nachricht/<string:inhalt>")
+@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt")
+@LernGruppenToolApp.param("inhalt")
+class NachrichtByInhalt(Resource):
+    @LernGruppenToolApp.marshal_list_with(nachricht)
+
+    @secured
+    def get (self,inhalt):
+        """Auslesen des Inhaltes einer Nachricht
+        Das auszulesene Objekt wird über den Inhalt erfasst.
+        """
+
+        adm = LerngruppenAdministration()
+        nach = adm.get_nachricht_by_inhalt(inhalt)
+        return nach
+
+@LernGruppenToolApp.route("/nachricht/<int:id>")
+@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt")
+@LernGruppenToolApp.param("id")
+class NachrichtById(Resource):
+    @LernGruppenToolApp.marshal_list_with(id)
+
+    @secured
+    def get (self,id):
+        """Auslesen eines bestimmten Nachricht Objekts.
+
+        Das auszulesene Objekt wird über die Id bestimmt"""
+
+        adm = LerngruppenAdministration()
+        nach = adm.get_nachricht_by_id(id)
+        return nach
+
+#Profil Methoden
 
 
 
