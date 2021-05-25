@@ -95,6 +95,11 @@ class LerngruppenAdministration(object):
         with ProfilMapper() as mapper:
             return mapper.find_all()
 
+    def get_profil_by_name(self, name):
+        """Ein Profil über den Namen bekommen"""
+        with ProfilMapper() as mapper:
+            return mapper.find_by_name(name)
+
     def save_profil(self,profil):
         """Einen Studenten speichern"""
         with ProfilMapper() as mapper:
@@ -104,6 +109,11 @@ class LerngruppenAdministration(object):
         """Das gewählte Profil löschen"""
         with ProfilMapper() as mapper:
             mapper.delete(profil)
+
+    def delete_profil(self,id):
+        """Das gewählte Profil löschen über die Id"""
+        with ProfilMapper() as mapper:
+            mapper.delete(id)
 
     def get_profil_by_lernvorlieben(self, lernvorlieben):
         """ Profile nach Lernvorlieben auslesen"""
@@ -208,6 +218,11 @@ class LerngruppenAdministration(object):
         """Nachricht löschen"""
         with NachrichtMapper() as mapper:
             return mapper.delete(nachricht)
+
+    def get_nachricht_by_id(self,id):
+        """Nachricht nach id auslesen"""
+        with NachrichtMapper() as mapper:
+            return mapper.find_by_id(nachricht)
 
     """ 
     Konversation Methoden

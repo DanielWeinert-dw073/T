@@ -112,7 +112,7 @@ suggestion_algorithmus = api.inherit("SuggestionAlgorithmus",bo,{
     "lerntyp_Id" :fields.Integer(attribute="_lerntyp_Id", description="LerntypId"),
     "lernvorlieben_Id" : fields.Integer(attribute="_lernvorlieben_Id", description="Lernvorlieben_Id"),
     "profil_Id" : fields.Integer(attribute="_profil_Id", description= "Profil_Id"),
-    "gruppen_id": fields.Integer(attribute="gruppen_id", description="Gruppen Id ")
+    "gruppen_id": fields.Integer(attribute="_gruppen_id", description="Gruppen Id ")
 })
 
 #Student Methoden
@@ -131,6 +131,11 @@ class StudentListOperazions(Resource):
         studenten = adm.get_alle_studenten()
         return studenten
 
+    @secured
+    def delete (self):
+        """Löschen eines Studenten"""
+
+
 
 @LernGruppenToolApp.route("/studenten-by-name/<string:name>")
 @LernGruppenToolApp.response(500,'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -138,7 +143,7 @@ class StudentListOperazions(Resource):
 class StudentByNameOperations(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    #@secured
+    @secured
     def get (self, name):
         """Auslesen eines bestimmten Studenten Objekt. Nachrichten
 
@@ -236,6 +241,48 @@ class NachrichtById(Resource):
         return nach
 
 #Profil Methoden
+
+@LernGruppenToolApp.route("/profile")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+class ProfilListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(profil)
+
+    @secured
+    def get (self):
+        """Auslesen aller Profile"""
+
+        adm = LerngruppenAdministration()
+        profile = adm.get_all_profils()
+        return profile
+
+    @secured
+
+    def put(self):
+        """ Update des Profils"""
+
+        id = request.args.get("id")
+        name = request.args.get("name")
+        adm = LerngruppenAdministration()
+        profil = adm.get_profil_by_id(id)
+        profil.set_faecher(faecher)
+        profil.set_alter(alter)
+        profil.set_about_me(about_me)
+        profil.set_vorwissen(vorwissen)
+        profil.set_lerntyp(lerntyp)
+        profil.set_lernvorlieben(lernvorlieben)
+        profil.set_semester(semester)
+        profil.set_studiengang(studiengang)
+        adm.update_student(student)
+
+    @secured
+    def delete(self, id):
+        """ Löschen eines Profils"""
+        adm = LerngruppenAdministration()
+        adm.delete_profil(id)
+
+    
+
+        
 
 
 
