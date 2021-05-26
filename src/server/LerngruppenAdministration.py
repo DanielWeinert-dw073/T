@@ -14,9 +14,9 @@ from .bo.Lernvorlieben import Lernvorlieben
 from .db.ProfilMapper import ProfilMapper
 from .db.StudentMapper import StudentMapper
 from .db.TeilnahmeMapper import TeilnahmeMapper
-""""from .db.KonversationMapper import KonversationMapper
+from .db.KonversationMapper import KonversationMapper
 from .db.GruppeMapper import GruppeMapper
-from .db.NachrichtMapper import NachrichtMapper"""
+from .db.NachrichtMapper import NachrichtMapper
 from .db.EmpfehlungMapper import EmpfehlungMapper
 from .db.LerntypMapper import LerntypMapper
 from .db.LernvorliebenMapper import LernvorliebenMapper
@@ -58,6 +58,11 @@ class LerngruppenAdministration(object):
         """Einen Studenten über seinen Namen bekommen"""
         with StudentMapper() as mapper:
             return mapper.find_by_name(name)
+
+    def get_student_by_name(self,id):
+        """Einen Studenten über seine Id bekommen"""
+        with StudentMapper() as mapper:
+            return mapper.find_by_id(id)
 
     def save_student(self,student):
         """Einen Studenten speichern"""
@@ -120,6 +125,11 @@ class LerngruppenAdministration(object):
         with ProfilMapper() as mapper:
             return mapper.find_by_lernvorlieben(lernvorlieben)
 
+    def get_profil_by_lerntyp(self,lerntyp):
+        """ Profile nach dem Lerntyp ausgeben"""
+        with ProfilMapper() as mapper:
+            return mapper.find_by_lerntyp(lerntyp)
+
     """
     Lerntyp Methoden
     """
@@ -132,6 +142,16 @@ class LerngruppenAdministration(object):
         
         with LerntypMapper() as mapper:
             return mapper.insert(lerntyp)
+
+    def get_lerntyp_by_lerntyp(self, lerntyp):
+        """Den gewählten Lerntyp auslesen"""
+        with LerntypMapper() as mapper:
+            return mapper.find_by_lerntyp(lerntyp)
+
+    def get_lerntyp_by_id(self,id):
+        """Den gewählten Lerntyp über die Id auslesen"""
+        with LerntypMapper() as mapper:
+            return mapper.find_by_id(id)
 
     def save_lerntyp(self,lerntyp):
         """Lerntyp speichern"""
@@ -168,6 +188,11 @@ class LerngruppenAdministration(object):
         """Lernvorlieben löschen"""
         with LerntypMapper() as mapper:
             return mapper.delete(lernvorlieben)
+
+    def get_lernvorlieben(self,id):
+        """Ausgeben der Lernvorlieben über die ID"""
+        with LernvorliebenMapper() as mapper:
+            return mapper.find_by_id(id)
 
 
     """
@@ -222,7 +247,7 @@ class LerngruppenAdministration(object):
     def get_nachricht_by_id(self,id):
         """Nachricht nach id auslesen"""
         with NachrichtMapper() as mapper:
-            return mapper.find_by_id(nachricht)
+            return mapper.find_by_id(id)
 
     """ 
     Konversation Methoden
@@ -252,6 +277,31 @@ class LerngruppenAdministration(object):
         with KonversationMapper() as mapper:
             return mapper.delete(konversation)
 
+    def get_konversation_by_id(self, id):
+        """Konversation über die Konversations Id auslesen"""
+        with KonversationMapper() as mapper:
+            return mapper.find_by_id(id)
+
+    def get_konversation_by_nachricht_id(self, nachricht_id):
+        """Nachricht einer Konversation über die Nachricht Id auslesen"""
+        with KonversationMapper() as mapper:
+            return mapper.find_by_nachricht_id(nachricht_id)
+
+    def get_konversation_by_teilnehmer(self, teilnehmer):
+        """Teilnehmer einer Konversation auslesen"""
+        with KonversationMapper() as mapper:
+            return mapper.find_by_teilnehmer(teilnehmer)
+
+    def get_konversation_by_herkunfts_id(self, herkunfts_id):
+        """Konversation über herkunfts Id auslesen"""
+        with KonversationMapper() as mapper:
+            return mapper.find_by_herkunfts_id(herkunfts_id)
+
+    def get_konversation_by_ziel_id(self,ziel_id):
+        """Konversation über Ziel Id auslesen"""
+        with KonversationMapper() as mapper:
+            return mapper.find_by_ziel_id(ziel_id)
+
     """
     Teilnahme Methoden
     """
@@ -277,6 +327,22 @@ class LerngruppenAdministration(object):
         """Teilnahme löschen"""
         with TeilnahmeMapper () as mapper:
             return mapper.delete(teilnahme)
+
+    def get_teilnahme_id(self,id):
+        """Auslesen der Teilnahme Id"""
+        with TeilnahmeMapper () as mapper:
+            return mapper.find_by_id(id)
+    
+    def get_gruppen_id(self,gruppen_id):
+        """Auslesen der Gruppen Id über die Teilnahme"""
+        with TeilnahmeMapper () as mapper:
+            return mapper.find_by_gruppen_id(gruppen_id)
+
+    def get_konversation_by_konversations_id(self,konversations_id):
+        """Teilnahme an einer Konversation über die konversations_id"""
+        with TeilnahmeMapper () as mapper:
+            return mapper.find_by_konversation_id(konversations_id)
+
 
 
     """
@@ -304,4 +370,19 @@ class LerngruppenAdministration(object):
         """Empfehlung löschen"""
         with EmpfehlungMapper() as mapper:
             return mapper.delete(empfehlung)
+    
+    def get_empfehlung_by_id(self,id):
+        """Get empfehlung by id"""
+        with EmpfehlungMapper() as mapper:
+            return mapper.find_by_id(id)
+
+    def get_empfehlung_Liste(self,empfehlungsListe):
+        """Auslesen der Empfehlungs Liste"""
+        with EmpfehlungMapper() as mapper:
+            return mapper.find_by_empfehlungsListe(empfehlungsListe)
+
+    def get_empfehlung_Gruppe(self,empfehlungGruppe):
+        """Auslesen derGruppenempfehlung """
+        with EmpfehlungMapper() as mapper:
+            return mapper.find_by_empfehlungGruppe(empfehlungGruppe)
 

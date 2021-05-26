@@ -38,9 +38,20 @@ class Header extends React.Component {
                 </Typography>
                 {
                     user ? 
-
-
                                     
+                    <>
+                    {currentStudent ?
+                        <>
+                        <Paper variant = "outlined">
+
+                        </Paper>
+                        </> 
+                        :null
+                    
+                    }
+
+                    </>
+                    :null
 
                     
                 }
@@ -52,3 +63,4 @@ class Header extends React.Component {
 
 
 }
+export default Header;

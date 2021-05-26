@@ -57,7 +57,7 @@ class TeilnahmeMapper(Mapper):
                 (id, gruppen_id, konversations_id, nachricht_id, teilnehmer_id) = tuples[0]
                 teilnahme = Teilnahme()
                 Teilnahme.set_id(id)
-                Teilnahme.set_gruppen_id(teilnahme)
+                teilnahme.set_gruppen_id(gruppen_id)
                 teilnahme.set_konversations_id(konversations_id)
                 teilnahme.set_nachricht_id(nachricht_id)
                 teilnahme.set_teilnehmer_id(teilnehmer_id)
