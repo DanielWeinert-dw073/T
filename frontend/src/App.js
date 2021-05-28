@@ -1,4 +1,5 @@
 import React from 'react';
+import Theme from './Theme';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@material-ui/core';
 import firebase from 'firebase/app'; //Firebase module
