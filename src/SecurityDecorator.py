@@ -1,10 +1,11 @@
 from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
+
 from server.LerngruppenAdministration import LerngruppenAdministration
-"""
+
 def secured(function):
-    firebase_request_adapter = requests.Request()
+firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
         '''
@@ -20,8 +21,8 @@ def secured(function):
             try:
                 #hier wird der firebase token verifiziert
                 claims = google.oauth2.id_token.verify_firebase_token(
-                    id_token, firebase_request_adapter
-                )
+                    id_token, firebase_request_adapter)
+
                 if claims is not None:
                     adm = LerngruppenAdministration()
 
@@ -59,5 +60,4 @@ def secured(function):
                 return exc, 401  # UNAUTHORIZED
         return '', 401  # UNAUTHORIZED
 
-return wrapper
-"""
+    return wrapper
