@@ -27,7 +27,7 @@ from server.bo.Lerntyp import Lerntyp
 
 
 # SercurityDecorator
-from SecurityDecorator import secured
+"""from SecurityDecorator import secured"""
 
 class NullableInteger(fields.Integer):
     """Diese Klasse ist für die Umsetzung eines Integers mit dem Wert null zuständig"""
@@ -40,8 +40,7 @@ app = Flask(__name__)
 
 CORS(app, support_credentials=True, resources={r"/LernGruppenToolApp/*":{"origins": "*"}})
 
-api = API(app,version = "1.0", title = "LernGruppenTool ", 
-            description="Web App zur Lerngruppen Findung der Hochschule")
+api = Api(app, version = "1.0", title = "LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
 
 """Namespaces"""
 LernGruppenToolApp = api.namespace("LernGruppenToolApp", description="Funktionen der LerngruppenTool App")
@@ -94,13 +93,13 @@ lerntyp = api.inherit("Lerntyp",bo,{
     "lerntyp": fields.String(attribute="_lerntyp", description="Lerntypbezeichnung")
 })
 
-lernvorlieben = api.inherit("Lernvorlieben",bo,{
+lernvorlieben = api.inherit("Lernvorlieben", bo, {
     "frequenz": fields.String(attribute="_frequenz", description="Frequenz des Lernens"),
     "internet_verbindung": fields.String(attribute="_internet_verbindung", description="InternetVerbindung online/offline"),
     "pole_der_persönlichkeit": fields.String(attribute="pole_der_persönlichkeit", description="Introvertier/Extrovertiert")
 })
 
-konversation = api.inherit("Konversation",bo,{
+konversation = api.inherit("Konversation", bo, {
     "nachricht_id": fields.Integer(attribute="_nachricht_id", description="NachrichtId in einer Konversation"),
     "teilnehmer": fields.String(attribute="_teilnehmer", description="Teilnehmer an einer Konversation"),
     "herkunfts_id": fields.Integer(attribute="_herkunfts_id", description="Herkunfts Id einer Nachricht in einer Konversation"),
@@ -108,7 +107,7 @@ konversation = api.inherit("Konversation",bo,{
     "inhalt": fields.String(attribute="_inhalt", description="Inhalt in einer Konversation")
 })
 
-suggestion_algorithmus = api.inherit("SuggestionAlgorithmus",bo,{
+suggestion_algorithmus = api.inherit("SuggestionAlgorithmus", bo, {
     "lerntyp_Id" :fields.Integer(attribute="_lerntyp_Id", description="LerntypId"),
     "lernvorlieben_Id" : fields.Integer(attribute="_lernvorlieben_Id", description="Lernvorlieben_Id"),
     "profil_Id" : fields.Integer(attribute="_profil_Id", description= "Profil_Id"),
@@ -118,12 +117,12 @@ suggestion_algorithmus = api.inherit("SuggestionAlgorithmus",bo,{
 #Student Methoden
 
 @LernGruppenToolApp.route("/studenten")
-@LernGruppenToolApp.resoponse(500, "Falls es zu einem Serverseitigen Fehler kommt.")
-@LernGruppenToolApp.param("name", "Dies ist der name des Studenten")
-class StudentListOperazions(Resource):
+@LernGruppenToolApp.response(500, 'Falls es zu einem Serverseitigen Fehler kommt.')
+@LernGruppenToolApp.param("name", 'Dies ist der name des Studenten')
+class StudentListOperations(Resource):
     @LernGruppenToolApp.marshal_with(student)
 
-    @secured
+    #@secured
     def get (self):
         """Auslesen aller Studenten"""
 
@@ -131,19 +130,19 @@ class StudentListOperazions(Resource):
         studenten = adm.get_alle_studenten()
         return studenten
 
-    @secured
+    #@secured
     def delete (self):
         """Löschen eines Studenten"""
 
 
 
 @LernGruppenToolApp.route("/studenten-by-name/<string:name>")
-@LernGruppenToolApp.response(500,'Falls es zu einem Server-seitigen Fehler kommt.')
+@LernGruppenToolApp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @LernGruppenToolApp.param("name", "Der Name des Studenten")
 class StudentByNameOperations(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    @secured
+    #@secured
     def get (self, name):
         """Auslesen eines bestimmten Studenten Objekt. Nachrichten
 
@@ -159,7 +158,7 @@ class StudentByNameOperations(Resource):
 class StudentByGoogle_User_Id(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    @secured
+    #@secured
     def get (self, google_user_id):
         """Auslesen eines bestimmten Studenten Objekts.
 
@@ -175,7 +174,7 @@ class StudentByGoogle_User_Id(Resource):
 class StudentById(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    @secured
+    #@secured
     def get (self,id):
         """Auslesen eines bestimmten Studenten Objekts. 
 
@@ -191,7 +190,7 @@ class StudentById(Resource):
 @LernGruppenToolApp.response(500,"Falls es zu einem serverseitigen Fehler kommt")
 class NachrichtListOperation(Resource):
 
-    @secured
+    #@secured
     def get (self):
         """Auslesen aller Nachrichten Objekte"""
 
@@ -199,7 +198,7 @@ class NachrichtListOperation(Resource):
         nachrichten = adm.get_alle_nachrichten()
         return nachrichten
 
-    @secured
+    #@secured
     def put(self):
         """Update der Nachricht"""
 
@@ -214,7 +213,7 @@ class NachrichtListOperation(Resource):
 class NachrichtByInhalt(Resource):
     @LernGruppenToolApp.marshal_list_with(nachricht)
 
-    @secured
+    #@secured
     def get (self,inhalt):
         """Auslesen des Inhaltes einer Nachricht
         Das auszulesene Objekt wird über den Inhalt erfasst.
@@ -230,7 +229,7 @@ class NachrichtByInhalt(Resource):
 class NachrichtById(Resource):
     @LernGruppenToolApp.marshal_list_with(id)
 
-    @secured
+    #@secured
     def get (self,id):
         """Auslesen eines bestimmten Nachricht Objekts.
 
@@ -247,7 +246,7 @@ class NachrichtById(Resource):
 class ProfilListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(profil)
 
-    @secured
+    #@secured
     def get (self):
         """Auslesen aller Profile"""
 
@@ -255,7 +254,7 @@ class ProfilListOperation(Resource):
         profile = adm.get_all_profils()
         return profile
 
-    @secured
+    #@secured
 
     def put(self):
         """ Update des Profils"""
@@ -274,7 +273,7 @@ class ProfilListOperation(Resource):
         profil.set_studiengang(studiengang)
         adm.update_student(student)
 
-    @secured
+    #@secured
     def delete(self, id):
         """ Löschen eines Profils"""
         adm = LerngruppenAdministration()
