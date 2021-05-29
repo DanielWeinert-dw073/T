@@ -5,7 +5,7 @@ from server.db.Mapper import Mapper
 from server.bo.Lernvorlieben import Lernvorlieben
 
 class LernvorliebenMapper(Mapper):
-    """Mapper-Klasse, die lernvorliebenen Objekte auf der relationealen Datenbank abbildet.
+    """Mapper-Klasse, die lernvorlieben Objekte auf der relationealen Datenbank abbildet.
     Die Klasse ermöglicht die Umwandlung von Objekten in Datenbankstrukturen und umgekehrt
     """
 
@@ -13,7 +13,7 @@ class LernvorliebenMapper(Mapper):
         super().__init__()
 
     def find_all(self):
-        """Auslesen aller lernvorliebenen aus der Datenbank
+        """Auslesen aller lernvorlieben aus der Datenbank
 
         :return Alle Studneten Objekte im System
         """
@@ -21,7 +21,7 @@ class LernvorliebenMapper(Mapper):
 
         cursor = self._connection.cursor()
 
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorliebenen"
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben"
 
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -40,14 +40,14 @@ class LernvorliebenMapper(Mapper):
         return result
 
     def find_by_frequenz(self,frequenz):
-        """Suchen eines lernvorliebenen aus der Datenbank nach dem angegebenen Namen
+        """Suchen eines lernvorlieben aus der Datenbank nach dem angegebenen Namen
             :param lernvorlieben_frequenz -> lernvorlieben-Objekt
             return lernvorlieben Objekt, welcher mit dem Namen übereinstimmt
             None wenn kein Eintrag gefunden wurde
         """
         result = None
         cursor = self._connection.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorliebenen WHERE frequenz='{}'".format(frequenz)
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE frequenz='{}'".format(frequenz)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -70,15 +70,15 @@ class LernvorliebenMapper(Mapper):
         return result
 
     def find_by_id(self, id):
-        """Suchen eines lernvorliebenen nach der übergebenen Id. 
+        """Suchen eines lernvorlieben nach der übergebenen Id. 
 
-        :param id Primärschlüsselattribut eines lernvorliebenen aus der Datenbank
-        :return lernvorliebenen Objekt, welche mit der Id übereinstimmt,
+        :param id Primärschlüsselattribut eines lernvorlieben aus der Datenbank
+        :return lernvorlieben Objekt, welche mit der Id übereinstimmt,
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
         cursor = self._connection.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorliebenen WHERE id='{}'".format(id)
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -110,7 +110,7 @@ class LernvorliebenMapper(Mapper):
         result = None
 
         cursor = self._connection.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorliebenen WHERE pole_der_persönlichkeit='{}'".format(
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE pole_der_persönlichkeit='{}'".format(
                 pole_der_persönlichkeit)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -139,7 +139,7 @@ class LernvorliebenMapper(Mapper):
         result = None
 
         cursor = self._connection.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorliebenen WHERE internet_verbindung='{}'".format(
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE internet_verbindung='{}'".format(
                 internet_verbindung)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -163,11 +163,11 @@ class LernvorliebenMapper(Mapper):
 
         Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft 
 
-        :param lernvorlieben das zu speichernde lernvorliebenen Objekt
+        :param lernvorlieben das zu speichernde lernvorlieben Objekt
         :return das bereits übergebene lernvorlieben Objekt mit aktualisierten Daten (id)
         """
         cursor = self._connection.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM lernvorliebenen ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM lernvorlieben ")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
@@ -180,7 +180,7 @@ class LernvorliebenMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 lernvorlieben.set_id(1)
 
-        command = "INSERT INTO lernvorliebenen (id, frequenz, internet_verbindung, pole_der_persönlichkeit) VALUES (%s,%s,%s,%s)"
+        command = "INSERT INTO lernvorlieben (id, frequenz, internet_verbindung, pole_der_persönlichkeit) VALUES (%s,%s,%s,%s)"
         data = (lernvorlieben.get_id(), lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_pole_der_persönlichkeit())
         cursor.execute(command, data)
 
@@ -197,7 +197,7 @@ class LernvorliebenMapper(Mapper):
         """
         cursor = self._connection.cursor()
 
-        command = "UPDATE lernvorliebenen " + "SET frequenz=%s, internet_verbindung=%s WHERE pole_der_persönlichkeit=%s"
+        command = "UPDATE lernvorlieben " + "SET frequenz=%s, internet_verbindung=%s WHERE pole_der_persönlichkeit=%s"
         data = (lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_pole_der_persönlichkeit())
 
         cursor.execute(command, data)
@@ -213,7 +213,7 @@ class LernvorliebenMapper(Mapper):
         """
         cursor = self._connection.cursor()
 
-        command = "UPDATE lernvorliebenen " + "SET frequenz=%s, internet_verbindung=%s,  WHERE id=%s"
+        command = "UPDATE lernvorlieben " + "SET frequenz=%s, internet_verbindung=%s,  WHERE id=%s"
         data = (lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_id())
 
         cursor.execute(command, data)
@@ -222,13 +222,13 @@ class LernvorliebenMapper(Mapper):
         cursor.close()
 
     def delete(self, lernvorlieben):
-        """Löschen der Daten eines lernvorliebenen aus der Datenbank
+        """Löschen der Daten eines lernvorlieben aus der Datenbank
 
         :param lernvorlieben -> lernvorlieben-Objekt
         """
         cursor = self._connection.cursor()
 
-        command = "DELETE FROM lernvorliebenen WHERE id={}".format(lernvorlieben.get_id())
+        command = "DELETE FROM lernvorlieben WHERE id={}".format(lernvorlieben.get_id())
         cursor.execute(command)
 
         self._connection.commit()

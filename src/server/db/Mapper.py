@@ -54,12 +54,12 @@ class Mapper(AbstractContextManager, ABC):
         pass
 
     @abstractmethod
-    def insert(self,object):
+    def insert(self, object):
         """Add the given object to the database"""
         pass
 
     @abstractmethod
-    def update(self,object):
+    def update(self, object):
         """Update an already given object in the DB"""
         pass
 
