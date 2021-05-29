@@ -10,7 +10,7 @@ class Mapper(AbstractContextManager, ABC):
     """Abstrakte Basisklasse für alle Mapper Klassen"""
 
     def __init__(self):
-        self._connection = None
+        self._cnx = None
 
     def __enter__(self):
 
@@ -18,13 +18,13 @@ class Mapper(AbstractContextManager, ABC):
             """Hier wird versucht ob der Code in der Cloud im sogennatem Production Mode läuft. Verbindungsaufbau zwischen Cloud SQL und Google
             App Engone hat hier stattgefunden"""
 
-            self._connection = connector.connect(user='root', password='root',
+            self._cnx = connector.connect(user='root', password='root',
                                                  unix_socket='/cloudsql/schlüssel_adresse_hier_einfügen',
                                                  database='Datenbankname')
         else:
             """Hier läuft der Code Lokal ab, im Development Mode.Dabei wird eine Verbindung zur lokalen SQL-DB erzeugt."""
 
-            self._connection = connector.connect(user='web173_2', password='by4pr6IhE5VuJRkF!',
+            self._cnx = connector.connect(user='web173_2', password='by4pr6IhE5VuJRkF!',
                                                  host='s293.goserver.host',
                                                  database='web173_db2')
 
@@ -54,16 +54,16 @@ class Mapper(AbstractContextManager, ABC):
         pass
 
     @abstractmethod
-    def insert(self):
+    def insert(self,object):
         """Add the given object to the database"""
         pass
 
     @abstractmethod
-    def update(self):
+    def update(self,object):
         """Update an already given object in the DB"""
         pass
 
     @abstractmethod
-    def delete(self):
+    def delete(self, object):
         """Delete an object from the DB"""
         pass
