@@ -24,9 +24,9 @@ class Mapper(AbstractContextManager, ABC):
         else:
             """Hier läuft der Code Lokal ab, im Development Mode.Dabei wird eine Verbindung zur lokalen SQL-DB erzeugt."""
 
-            self._connection = connector.connect(user='root', password='root',
-                                                 host='127.0.0.1',
-                                                 database='LernGruppenApp')
+            self._connection = connector.connect(user='web173_2', password='by4pr6IhE5VuJRkF!',
+                                                 host='s293.goserver.host',
+                                                 database='web173_db2')
 
         return self
 
