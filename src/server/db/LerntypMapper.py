@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from os import name
+
 from server.db.Mapper import Mapper
 from server.bo.Lerntyp import Lerntyp
 

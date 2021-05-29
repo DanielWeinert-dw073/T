@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from os import frequenz
 from server.db.Mapper import Mapper
 from server.bo.Lernvorlieben import Lernvorlieben
 

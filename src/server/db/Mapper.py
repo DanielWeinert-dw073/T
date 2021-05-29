@@ -24,9 +24,9 @@ class Mapper(AbstractContextManager, ABC):
         else:
             """Hier läuft der Code Lokal ab, im Development Mode.Dabei wird eine Verbindung zur lokalen SQL-DB erzeugt."""
 
-            self._connection = connector.connect(user='root', password='',
+            self._connection = connector.connect(user='root', password='root',
                                                  host='127.0.0.1',
-                                                 database='sw-project')
+                                                 database='LernGruppenApp')
 
         return self
 
@@ -46,6 +46,11 @@ class Mapper(AbstractContextManager, ABC):
     @abstractmethod
     def find_by_id(self):
         """Reads a tuple with a given ID"""
+        pass
+
+    @abstractmethod
+    def find_by_key(self, key):
+        """Lies den einen Tupel mit der gegebenen ID (vgl. Primärschlüssel) aus."""
         pass
 
     @abstractmethod

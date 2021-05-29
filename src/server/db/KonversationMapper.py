@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from os import konversation
+
 from server.db.Mapper import Mapper
 from server.bo.Konversation import Konversation
 

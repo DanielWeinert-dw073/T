@@ -8,9 +8,9 @@ class Lerntyp(BusinessObject):
     welche genutzt werden um passende Gruppen zu bilden. Ein Lerntyp
     besitzt einen Namen der auslesbar sein soll und neu gesetzt werden kann."""
 
-    def __init__(self):
+    def __init__(self, lerntyp=None):
         super().__init__()
-        self.lerntyp = None
+        self.lerntyp = lerntyp
 
     def get_lerntyp(self):
         """ Auslesen des Namens der Lerntypen"""

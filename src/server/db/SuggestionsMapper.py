@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from os import path
+
 from server.db.Mapper import Mapper
 from server.bo.Suggestion_Algorithmus import Suggestion_Algorithmus
 
