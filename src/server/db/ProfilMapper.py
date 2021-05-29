@@ -78,6 +78,7 @@ class ProfilMapper(Mapper):
         except IndexError:
                 """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
+
         result = None
 
         self._connection.commit()
@@ -93,12 +94,12 @@ class ProfilMapper(Mapper):
         """
         result = None
         cursor = self._connection.cursor()
-        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE id='{}'".format(id)
+        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE id={}".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen ) = tuples[0]
+            (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) = tuples[0]
             profil = Profil()
             profil.set_id(id)
             profil.set_name(name)

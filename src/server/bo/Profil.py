@@ -110,7 +110,7 @@ class Profil(NamedBusinessObject):
 
     def __str__(self):
         """ Erzeugen und Ausgabe einer textuellen Replikation des BOs"""
-        return "Profil: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}".format(
+        return "Profil: {}, {}, {}, {}".format(
                                                             self.get_id(),
                                                             self.get_name(),
                                                             self.get_erstellungszeitpunkt(),
