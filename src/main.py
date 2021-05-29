@@ -62,7 +62,7 @@ profil = api.inherit("Profil", nbo, {
     "sprachen": fields.String(attribute="_sprachen", description="Sprachen des Profils")
 })
 
-nachricht = api.inherit("Nachricht", bo, {
+nachricht = api.inherit("Nachricht", bo, nbo, {
     "inhalt": fields.String(attribute="_inhalt", description="Inhalt der Nachricht")
 })
 
@@ -181,26 +181,26 @@ class StudentById(Resource):
         return stud
 
 
-#Nachrichten Methoden
+# Nachrichten Methoden
 @LernGruppenToolApp.route("/nachrichten")
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class NachrichtListOperation(Resource):
 
-    #@secured
-    def get (self):
+    # @secured
+    def get(self):
         """Auslesen aller Nachrichten Objekte"""
 
         adm = LerngruppenAdministration()
         nachrichten = adm.get_alle_nachrichten()
         return nachrichten
 
-    #@secured
+    # @secured
     def put(self):
         """Update der Nachricht"""
 
         adm = LerngruppenAdministration()
         nachricht = adm.get_nachricht_by_id(id)
-        nachricht.set_inhalt(inhalt)
+
         adm.update_nachricht(nachricht)
 
 @LernGruppenToolApp.route("/nachricht/<string:inhalt>")
@@ -208,9 +208,8 @@ class NachrichtListOperation(Resource):
 @LernGruppenToolApp.param("inhalt")
 class NachrichtByInhalt(Resource):
     @LernGruppenToolApp.marshal_list_with(nachricht)
-
-    #@secured
-    def get (self, inhalt):
+    # @secured
+    def get(self, inhalt):
         """Auslesen des Inhaltes einer Nachricht
         Das auszulesene Objekt wird über den Inhalt erfasst.
         """
@@ -219,13 +218,13 @@ class NachrichtByInhalt(Resource):
         nach = adm.get_nachricht_by_inhalt(inhalt)
         return nach
 
+
 @LernGruppenToolApp.route("/nachricht/<int:id>")
 @LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
 @LernGruppenToolApp.param("id")
 class NachrichtById(Resource):
-    @LernGruppenToolApp.marshal_list_with(id)
-
-    #@secured
+    @LernGruppenToolApp.marshal_list_with(nachricht)
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Nachricht Objekts.
 
@@ -235,22 +234,22 @@ class NachrichtById(Resource):
         nach = adm.get_nachricht_by_id(id)
         return nach
 
-#Profil Methoden
+
+# Profil Methoden
 
 @LernGruppenToolApp.route("/profile")
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class ProfilListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(profil)
-
-    #@secured
-    def get (self):
+    # @secured
+    def get(self):
         """Auslesen aller Profile"""
 
         adm = LerngruppenAdministration()
         profile = adm.get_all_profils()
         return profile
 
-    #@secured
+    # @secured
 
     def put(self):
         """ Update des Profils"""
@@ -269,13 +268,13 @@ class ProfilListOperation(Resource):
         profil.set_studiengang(studiengang)
         adm.update_student(student)
 
-    #@secured
+    # @secured
     def delete(self, id):
         """ Löschen eines Profils"""
         adm = LerngruppenAdministration()
         adm.delete_profil(id)
 
-    
+
 
 if __name__ == '__main__':
     app.run(debug=True)

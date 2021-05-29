@@ -10,13 +10,13 @@ class Nachricht(BusinessObject):
     def __init__(self):
         super().__init__()
         self._inhalt = None
-
+        self._set_erstellungszeitpunkt = None
 
     def get_inhalt(self):
         """Auslesen des Inhaltes der Nachricht"""
         return self._inhalt
 
-    def set_inhalt(self,value):
+    def set_inhalt(self, value):
         """Setzen des Inhaltes der Nachrichten einer Konversation """
         self._inhalt = value
 
@@ -28,6 +28,6 @@ class Nachricht(BusinessObject):
         """Convert eines Python dict () in ein Python Objekt"""
         nachricht = Nachricht()
         nachricht.set_id(dictionary["id"])
-        nachricht.set_inhalt(dictionary["Inhalt"])
-        nachricht.set_erstellungszeitpunkt(dictionary["Erstellungszeitpunkt"])
+        nachricht.set_inhalt(dictionary["inhalt"])
+        nachricht.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
         return nachricht
