@@ -29,32 +29,28 @@ from server.bo.Lerntyp import Lerntyp
 # SercurityDecorator
 """from SecurityDecorator import secured"""
 
-class NullableInteger(fields.Integer):
-    """Diese Klasse ist für die Umsetzung eines Integers mit dem Wert null zuständig"""
-
-    __schema_type__ = ["integer", "null"]
-    __schema_example__ = "nullable integer"
 
 """Flask wird hiermit instanziiert"""
 app = Flask(__name__)
 
 CORS(app, support_credentials=True, resources={r"/LernGruppenToolApp/*":{"origins": "*"}})
 
-api = Api(app, version = "1.0", title = "LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
+api = Api(app, version="1.0", title="LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
 
 """Namespaces"""
 LernGruppenToolApp = api.namespace("LernGruppenToolApp", description="Funktionen der LerngruppenTool App")
 
 """Hier wird festgelegt, wie die BusinessObjects beim Marshelling definiert werden sollen"""
 bo = api.model("BusinessObject", {
-    "id": fields.Integer(attribute="_id",description="ID des Bos"),
+    "id": fields.Integer(attribute="_id", description="ID des BOs"),
+    "erstellungszeitpunkt": fields.DateTime(attribute="_erstellungszeitpunk", description="Erstellungszeitpunkt des BOs"),
 })
 
-nbo = api.inherit("NamedBusinessObject",bo,{
+nbo = api.model("NamedBusinessObject", {
     "name": fields.String(attribute="_name", description="Name des BOs"),
 })
 
-profil = api.inherit("Profil",nbo,{
+profil = api.inherit("Profil", nbo, {
     "faecher": fields.String(attribute="_faecher", description="Faecher des Profils"),
     "alter": fields.Integer(attribute="_alter", description="Alter des Profils"),
     "studiengang": fields.String(attribute="_studiengang", description="Studiengang des Profils"),
@@ -66,30 +62,30 @@ profil = api.inherit("Profil",nbo,{
     "sprachen": fields.String(attribute="_sprachen", description="Sprachen des Profils")
 })
 
-nachricht = api.inherit("Nachricht",bo,{
+nachricht = api.inherit("Nachricht", bo, {
     "inhalt": fields.String(attribute="_inhalt", description="Inhalt der Nachricht")
 })
 
-teilnahme = api.inherit("Teilnahme",bo,{
+teilnahme = api.inherit("Teilnahme", bo, {
     "teilnehmer": fields.String(attribute="_teilnehmer", description="Teilnehmer einer Teilnahme"),
     "gruppen_id": fields.Integer(attribute="_gruppen_id", description="GruppenId einer Teilnahme"),
     "konversations_id": fields.Integer(attribute="_konversations_id", description="KonversationsId der Teilnahme"),
     "nachricht_id": fields.Integer(attribute="_nachricht_id", description="NachrichtId zur Teilnahme")
 })
 
-student = api.inherit("Student",nbo,{
+student = api.inherit("Student", nbo, {
     "email": fields.String(attribute="_email", description="Email eines Studenten"),
     "google_user_id": fields.String(attribute="_google_user_id", description="GoogleUserId eines Studenten")
 })
 
-empfehlung = api.inherit("Empfehlung",bo,{
+empfehlung = api.inherit("Empfehlung", bo, {
     "empfehlung": fields.String(attribute="_empfehlung", description="Empfehlung"),
     "empfehlungsListe": fields.String(attribute="_empfehlungsListe", description="Empfehlungsliste"),
     "empfehlungGruppe":fields.String(attribute="_empfehlungGruppe", description="Empfehlunggruppe"),
     "empfehlungProfil": fields.String(attribute="_empfehlungProfil", description="EmpfehlungProfil")
 })
 
-lerntyp = api.inherit("Lerntyp",bo,{
+lerntyp = api.inherit("Lerntyp", bo, {
     "lerntyp": fields.String(attribute="_lerntyp", description="Lerntypbezeichnung")
 })
 
@@ -153,7 +149,7 @@ class StudentByNameOperations(Resource):
         return stud
 
 @LernGruppenToolApp.route("/studenten-by-google-user-id/<string:google_user_id>")
-@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt")
+@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
 @LernGruppenToolApp.param("google_user_id", "GoogleUserId des Studenten")
 class StudentByGoogle_User_Id(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
@@ -169,14 +165,14 @@ class StudentByGoogle_User_Id(Resource):
         return stud
 
 @LernGruppenToolApp.route("/studenten-by-id/<int:id>")
-@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt.")
-@LernGruppenToolApp.param("id","Id eines Studenten")
+@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt.")
+@LernGruppenToolApp.param("id", "Id eines Studenten")
 class StudentById(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
     #@secured
-    def get (self,id):
-        """Auslesen eines bestimmten Studenten Objekts. 
+    def get (self, id):
+        """Auslesen eines bestimmten Studenten Objekts.
 
         Das auszulesene Objekt wird über die Id bestimmt"""
 
@@ -187,7 +183,7 @@ class StudentById(Resource):
 
 #Nachrichten Methoden
 @LernGruppenToolApp.route("/nachrichten")
-@LernGruppenToolApp.response(500,"Falls es zu einem serverseitigen Fehler kommt")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class NachrichtListOperation(Resource):
 
     #@secured
@@ -208,13 +204,13 @@ class NachrichtListOperation(Resource):
         adm.update_nachricht(nachricht)
 
 @LernGruppenToolApp.route("/nachricht/<string:inhalt>")
-@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt")
+@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
 @LernGruppenToolApp.param("inhalt")
 class NachrichtByInhalt(Resource):
     @LernGruppenToolApp.marshal_list_with(nachricht)
 
     #@secured
-    def get (self,inhalt):
+    def get (self, inhalt):
         """Auslesen des Inhaltes einer Nachricht
         Das auszulesene Objekt wird über den Inhalt erfasst.
         """
@@ -224,13 +220,13 @@ class NachrichtByInhalt(Resource):
         return nach
 
 @LernGruppenToolApp.route("/nachricht/<int:id>")
-@LernGruppenToolApp.response(500,"Falls es zu einen serverseitigen Fehler kommt")
+@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
 @LernGruppenToolApp.param("id")
 class NachrichtById(Resource):
     @LernGruppenToolApp.marshal_list_with(id)
 
     #@secured
-    def get (self,id):
+    def get(self, id):
         """Auslesen eines bestimmten Nachricht Objekts.
 
         Das auszulesene Objekt wird über die Id bestimmt"""
