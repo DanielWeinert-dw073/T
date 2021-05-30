@@ -22,9 +22,9 @@ class ProfilMapper(Mapper):
 
         cursor = self._cnx.cursor()
 
-        command = "SELECT id, name faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen FROM profile"
+        command = "SELECT id, name, faecher, lebensalter, studiengang, wohnort, semester, vorwissen, lernvorlieben_id, about_me, sprachen FROM profile"
 
-        cursor.execute("SELECT id, name from profile")
+        cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) in tuples:
