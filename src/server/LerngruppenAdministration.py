@@ -199,7 +199,7 @@ class LerngruppenAdministration(object):
     Gruppen Methoden
     """
 
-    def create_gruppe(self,id, name, anzahlTeilnehmer,teilnehmerListe, max_teilnehmer):
+    def create_gruppe(self,id, name, anzahlTeilnehmer, DiateilnehmerListe, max_teilnehmer):
         """Gruppe erstellen"""
         gruppe = Gruppe()
         gruppe.set_id(id)
@@ -234,45 +234,51 @@ class LerngruppenAdministration(object):
         with NachrichtMapper() as mapper:
             return mapper.insert(nachricht)
 
-    def save_nachricht(self,nachricht):
+    def save_nachricht(self, nachricht):
         """Nachricht speichern"""
         with NachrichtMapper() as mapper:
             return mapper.update(nachricht)
 
-    def delete(self,nachricht):
+    def delete(self, nachricht):
         """Nachricht löschen"""
         with NachrichtMapper() as mapper:
             return mapper.delete(nachricht)
 
-    def get_nachricht_by_id(self,id):
+    def get_nachricht_by_id(self, id):
         """Nachricht nach id auslesen"""
         with NachrichtMapper() as mapper:
             return mapper.find_by_id(id)
+
+    def get_alle_nachrichten(self):
+        """Nachricht nach id auslesen"""
+        with NachrichtMapper() as mapper:
+            return mapper.find_all()
+
 
     """ 
     Konversation Methoden
     """
 
-    def create_konversation(self,id,nachricht_id,teilnehmer,herkunfts_id,ziel_id, inhalt):
+    def create_konversation(self, id, nachricht_id, teilnehmer, sender_id, ziel_id, inhalt):
         """ Erstellen einer Konversation"""
         konversation = Konversation()
         konversation.set_id(id)
         konversation.set_nachricht_id(nachricht_id)
         konversation.set_teilnehmer(teilnehmer)
-        konversation.set_herkunfts_id(herkunfts_id)
+        konversation.set_herkunfts_id(sender_id)
         konversation.set_ziel_id(ziel_id)
         konversation.set_inhalt(inhalt)
 
         with KonversationMapper() as mapper:
             return mapper.insert(konversation)
 
-    def save_(self,konversation):
+    def save_(self, konversation):
         """Konversation speichern"""
 
         with KonversationMapper() as mapper:
             return mapper.update(konversation)
 
-    def delete(self,konversation):
+    def delete(self, konversation):
         """Konversation löschen"""
         with KonversationMapper() as mapper:
             return mapper.delete(konversation)
@@ -297,7 +303,7 @@ class LerngruppenAdministration(object):
         with KonversationMapper() as mapper:
             return mapper.find_by_herkunfts_id(herkunfts_id)
 
-    def get_konversation_by_ziel_id(self,ziel_id):
+    def get_konversation_by_ziel_id(self, ziel_id):
         """Konversation über Ziel Id auslesen"""
         with KonversationMapper() as mapper:
             return mapper.find_by_ziel_id(ziel_id)
@@ -306,7 +312,7 @@ class LerngruppenAdministration(object):
     Teilnahme Methoden
     """
 
-    def create_teilnahme(self,id, teilnehmer, gruppen_id, konversations_id, nachricht_id):
+    def create_teilnahme(self, id, teilnehmer, gruppen_id, konversations_id, nachricht_id):
         """Teilnahme erstellen"""
         teilnahme = Teilnahme()
         teilnahme.set_id(id)
@@ -318,17 +324,17 @@ class LerngruppenAdministration(object):
         with TeilnahmeMapper() as mapper:
             return mapper.insert(teilnahme)
 
-    def save_teilnahme(self,teilnahme):
+    def save_teilnahme(self, teilnahme):
         """Teilnahme speichern"""
-        with TeilnahmeMapper () as mapper:
+        with TeilnahmeMapper() as mapper:
             return mapper.update(teilnahme)
 
-    def delete(self,teilnahme):
+    def delete(self, teilnahme):
         """Teilnahme löschen"""
         with TeilnahmeMapper () as mapper:
             return mapper.delete(teilnahme)
 
-    def get_teilnahme_id(self,id):
+    def get_teilnahme_id(self, id):
         """Auslesen der Teilnahme Id"""
         with TeilnahmeMapper () as mapper:
             return mapper.find_by_id(id)
@@ -340,7 +346,7 @@ class LerngruppenAdministration(object):
 
     def get_konversation_by_konversations_id(self,konversations_id):
         """Teilnahme an einer Konversation über die konversations_id"""
-        with TeilnahmeMapper () as mapper:
+        with TeilnahmeMapper() as mapper:
             return mapper.find_by_konversation_id(konversations_id)
 
 
@@ -361,7 +367,7 @@ class LerngruppenAdministration(object):
         with EmpfehlungMapper() as mapper:
             return mapper.insert(empfehlung)
 
-    def save_empfehlung(self,empfehlung):
+    def save_empfehlung(self, empfehlung):
         """ Save empfehlung"""
         with EmpfehlungMapper() as mapper:
             return mapper.update(empfehlung)
@@ -371,17 +377,17 @@ class LerngruppenAdministration(object):
         with EmpfehlungMapper() as mapper:
             return mapper.delete(empfehlung)
     
-    def get_empfehlung_by_id(self,id):
+    def get_empfehlung_by_id(self, id):
         """Get empfehlung by id"""
         with EmpfehlungMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def get_empfehlung_Liste(self,empfehlungsListe):
+    def get_empfehlung_Liste(self, empfehlungsListe):
         """Auslesen der Empfehlungs Liste"""
         with EmpfehlungMapper() as mapper:
             return mapper.find_by_empfehlungsListe(empfehlungsListe)
 
-    def get_empfehlung_Gruppe(self,empfehlungGruppe):
+    def get_empfehlung_Gruppe(self, empfehlungGruppe):
         """Auslesen derGruppenempfehlung """
         with EmpfehlungMapper() as mapper:
             return mapper.find_by_empfehlungGruppe(empfehlungGruppe)
