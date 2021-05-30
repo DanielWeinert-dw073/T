@@ -12,11 +12,11 @@ class StudentMapper(Mapper):
 
     def __init__(self):
         super().__init__()
-
+        _connection = None
     def find_all(self):
         """Auslesen aller Studenten aus der Datenbank
 
-        :return Alle Studneten Objekte im System
+        :return Alle Studenten Objekte im System
         """
         result = []
 
@@ -40,7 +40,7 @@ class StudentMapper(Mapper):
 
         return result
 
-    def find_by_name(self,name):
+    def find_by_name(self, name):
         """Suchen eines Studenten aus der Datenbank nach dem angegebenen Namen
             :param student_name -> student-Objekt
             return Student Objekt, welcher mit dem Namen übereinstimmt
@@ -100,6 +100,19 @@ class StudentMapper(Mapper):
         self._connection.commit()
         cursor.close()
         return result
+
+    def find_by_key(self, key):
+        """Löschen der Daten eines Studenten aus der Datenbank
+
+        :param student -> student-Objekt
+        """
+        cursor = self._connection.cursor()
+
+        command = "DELETE FROM studenten WHERE id={}".format(key)
+        cursor.execute(command)
+
+        self._connection.commit()
+        cursor.close()
 
     def find_by_google_user_id(self, google_user_id):
         """Suchen einer student nach der übergebenen Google User ID. 
