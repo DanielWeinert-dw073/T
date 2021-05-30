@@ -19,7 +19,7 @@ class LernvorliebenMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben"
 
@@ -34,7 +34,7 @@ class LernvorliebenMapper(Mapper):
             lernvorlieben.set_pole_der_persönlichkeit(pole_der_persönlichkeit)
             result.append(lernvorlieben)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -46,7 +46,7 @@ class LernvorliebenMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE frequenz='{}'".format(frequenz)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -65,7 +65,7 @@ class LernvorliebenMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -77,7 +77,7 @@ class LernvorliebenMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -96,7 +96,7 @@ class LernvorliebenMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -109,7 +109,7 @@ class LernvorliebenMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE pole_der_persönlichkeit='{}'".format(
                 pole_der_persönlichkeit)
         cursor.execute(command)
@@ -138,7 +138,7 @@ class LernvorliebenMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE internet_verbindung='{}'".format(
                 internet_verbindung)
         cursor.execute(command)
@@ -166,7 +166,7 @@ class LernvorliebenMapper(Mapper):
         :param lernvorlieben das zu speichernde lernvorlieben Objekt
         :return das bereits übergebene lernvorlieben Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM lernvorlieben ")
         tuples = cursor.fetchall()
 
@@ -184,7 +184,7 @@ class LernvorliebenMapper(Mapper):
         data = (lernvorlieben.get_id(), lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_pole_der_persönlichkeit())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return lernvorlieben
@@ -195,14 +195,14 @@ class LernvorliebenMapper(Mapper):
         :param lernvorlieben -> lernvorlieben-Objekt
         :return aktualisiertes lernvorlieben-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE lernvorlieben " + "SET frequenz=%s, internet_verbindung=%s WHERE pole_der_persönlichkeit=%s"
         data = (lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_pole_der_persönlichkeit())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, lernvorlieben):
@@ -211,14 +211,14 @@ class LernvorliebenMapper(Mapper):
         :param lernvorlieben -> lernvorlieben-Objekt
         :return aktualisiertes lernvorlieben-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE lernvorlieben " + "SET frequenz=%s, internet_verbindung=%s,  WHERE id=%s"
         data = (lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, lernvorlieben):
@@ -226,12 +226,12 @@ class LernvorliebenMapper(Mapper):
 
         :param lernvorlieben -> lernvorlieben-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM lernvorlieben WHERE id={}".format(lernvorlieben.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

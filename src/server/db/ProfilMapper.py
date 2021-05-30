@@ -42,7 +42,7 @@ class ProfilMapper(Mapper):
             profil.set_sprachen(sprachen)
             result.append(profil)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -54,7 +54,7 @@ class ProfilMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me FROM profil WHERE name='{}'".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -81,7 +81,7 @@ class ProfilMapper(Mapper):
 
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -93,7 +93,7 @@ class ProfilMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE id={}".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -119,7 +119,7 @@ class ProfilMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -131,7 +131,7 @@ class ProfilMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE lernvorlieben='{}'".format(lernvorlieben)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -157,7 +157,7 @@ class ProfilMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -169,7 +169,7 @@ class ProfilMapper(Mapper):
         :param Profil das zu speichernde Profile Objekt
         :return das bereits übergebene profil Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM profile ")
         tuples = cursor.fetchall()
 
@@ -187,7 +187,7 @@ class ProfilMapper(Mapper):
         data = (profil.get_id(), profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return profil
@@ -198,14 +198,14 @@ class ProfilMapper(Mapper):
         :param profil -> profil-Objekt
         :return aktualisiertes profil-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE profile " + "SET name=%s WHERE id=%s"
         data = (profil.get_id(), profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, profil):
@@ -214,14 +214,14 @@ class ProfilMapper(Mapper):
         :param profil -> profil-Objekt
         :return aktualisiertes profil-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE profile " + "SET name=%s, WHERE id=%s"
         data = (profil.get_name(), profil.get_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, profil):
@@ -229,12 +229,12 @@ class ProfilMapper(Mapper):
 
         :param profil -> profil-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM profile WHERE id={}".format(profil.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

@@ -20,7 +20,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, lerntyp_Id, lernvorlieben_Id,profil_Id, gruppen_Id FROM Suggestion_Algorithmusen"
 
@@ -36,7 +36,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
             suggestion_Algorithmus.set_gruppen_Id(gruppen)
             result.append(Suggestion_Algorithmus)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -48,7 +48,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp_Id, lernvorlieben_Id, profil_Id, gruppen_Id FROM Suggestion_Algorithmusen WHERE lerntyp_Id='{}'".format(lerntyp_Id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -68,7 +68,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -79,7 +79,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp_Id, lernvorlieben_Id, profil_Id, abc FROM Suggestion_Algorithmusen WHERE lernvorlieben_Id='{}'".format(lernvorlieben_Id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -99,7 +99,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -111,7 +111,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp_Id, lernvorlieben_Id, profil_Id, gruppen_Id FROM Suggestion_Algorithmusen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -131,7 +131,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -144,7 +144,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp_Id, lernvorlieben_Id, profil_Id FROM Suggestion_Algorithmusen WHERE profil_Id='{}'".format(
                 profil_Id)
         cursor.execute(command)
@@ -174,7 +174,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp_Id, lernvorlieben_Id, profil_Id FROM Suggestion_Algorithmusen WHERE profil_Id='{}'".format(
                 gruppen_Id)
         cursor.execute(command)
@@ -203,7 +203,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
         :param Suggestion_Algorithmus das zu speichernde Suggestion_Algorithmusen Objekt
         :return das bereits übergebene Suggestion_Algorithmus Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM Suggestion_Algorithmusen ")
         tuples = cursor.fetchall()
 
@@ -221,7 +221,7 @@ class Suggestion_AlgorithmusMapper(Mapper):
         data = (Suggestion_Algorithmus.get_id(), Suggestion_Algorithmus.get_lerntyp_Id(), Suggestion_Algorithmus.get_lernvorlieben_Id(), Suggestion_Algorithmus.get_profil_Id())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return Suggestion_Algorithmus
@@ -232,14 +232,14 @@ class Suggestion_AlgorithmusMapper(Mapper):
         :param Suggestion_Algorithmus -> Suggestion_Algorithmus-Objekt
         :return aktualisiertes Suggestion_Algorithmus-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE Suggestion_Algorithmusen " + "SET lerntyp_Id=%s, lernvorlieben_Id=%s WHERE profil_Id=%s"
         data = (Suggestion_Algorithmus.get_lerntyp_Id(), Suggestion_Algorithmus.get_lernvorlieben_Id(), Suggestion_Algorithmus.get_profil_Id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, Suggestion_Algorithmus):
@@ -248,14 +248,14 @@ class Suggestion_AlgorithmusMapper(Mapper):
         :param Suggestion_Algorithmus -> Suggestion_Algorithmus-Objekt
         :return aktualisiertes Suggestion_Algorithmus-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE Suggestion_Algorithmusen " + "SET lerntyp_Id=%s, lernvorlieben_Id=%s,  WHERE id=%s"
         data = (Suggestion_Algorithmus.get_lerntyp_Id(), Suggestion_Algorithmus.get_lernvorlieben_Id(), Suggestion_Algorithmus.get_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, Suggestion_Algorithmus):
@@ -263,12 +263,12 @@ class Suggestion_AlgorithmusMapper(Mapper):
 
         :param Suggestion_Algorithmus -> Suggestion_Algorithmus-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM Suggestion_Algorithmusen WHERE id={}".format(Suggestion_Algorithmus.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

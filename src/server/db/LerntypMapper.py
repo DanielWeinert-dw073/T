@@ -20,7 +20,7 @@ class LerntypMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, lerntyp FROM lerntypen"
 
@@ -33,7 +33,7 @@ class LerntypMapper(Mapper):
             lerntyp.set_lerntyp(lerntyp)
             result.append(lerntyp)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -45,7 +45,7 @@ class LerntypMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp FROM lerntypen WHERE lerntyp='{}'".format(lerntyp)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -62,7 +62,7 @@ class LerntypMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -74,7 +74,7 @@ class LerntypMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, lerntyp FROM lerntypen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -91,7 +91,7 @@ class LerntypMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -103,7 +103,7 @@ class LerntypMapper(Mapper):
         :param Lerntyp des zu speichernde Lerntyp Objekts
         :return das bereits übergebene lerntyp Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM lerntypen ")
         tuples = cursor.fetchall()
 
@@ -121,7 +121,7 @@ class LerntypMapper(Mapper):
         data = (lerntyp.get_id(), lerntyp.get_lerntyp())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return lerntyp
@@ -132,14 +132,14 @@ class LerntypMapper(Mapper):
         :param lerntyp -> lerntyp-Objekt
         :return aktualisiertes lerntyp-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE lerntypen " + "SET lerntyp=%s,  WHERE lerntyp=%s"
         data = (lerntyp.get_id(),  lerntyp.get_lerntyp())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, lerntyp):
@@ -148,14 +148,14 @@ class LerntypMapper(Mapper):
         :param lerntyp -> lerntyp-Objekt
         :return aktualisiertes lerntyp-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE lerntypen " + "SET lerntyp=%s, WHERE id=%s"
         data = (lerntyp.get_lerntyp, lerntyp.get_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, lerntyp):
@@ -163,12 +163,12 @@ class LerntypMapper(Mapper):
 
         :param lerntyp -> lerntyp-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM lerntypen WHERE id={}".format(lerntyp.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

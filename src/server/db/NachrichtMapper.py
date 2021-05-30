@@ -127,7 +127,7 @@ class NachrichtMapper(Mapper):
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, nachricht):
@@ -136,7 +136,7 @@ class NachrichtMapper(Mapper):
         :param nachricht -> nachricht-Objekt
         :return aktualisiertes nachricht-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE nachrichten " + "SET inhalt=%s, WHERE id=%s"
         data = (nachricht.get_inhalt(), nachricht.get_id())

@@ -20,7 +20,7 @@ class TeilnahmeMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, teilnehmer, gruppen_id, konversations_id, nachricht_id FROM teilnahmen"
 
@@ -36,7 +36,7 @@ class TeilnahmeMapper(Mapper):
             teilnahme.set_nachricht_id(nachricht_id)
             result.append(teilnahme)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -48,7 +48,7 @@ class TeilnahmeMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, teilnahme FROM teilnahmen WHERE Teilnahme='{}'".format(teilnahme)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -68,7 +68,7 @@ class TeilnahmeMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -80,7 +80,7 @@ class TeilnahmeMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, gruppen_id, konversations_id, nachricht_id, teilnehmer_id FROM teilnahmen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -100,7 +100,7 @@ class TeilnahmeMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -112,7 +112,7 @@ class TeilnahmeMapper(Mapper):
         :param Teilnahme des zu speichernden Teilnahme Objekts
         :return das bereits übergebene Teilnahme Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM teilnahmen ")
         tuples = cursor.fetchall()
 
@@ -130,7 +130,7 @@ class TeilnahmeMapper(Mapper):
         data = (teilnahme.get_id(),teilnahme.get_gruppen_id(), teilnahme.get_konversations_id(),teilnahme.get_nachricht_id(), teilnahme.get_teilnehmer_id())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return teilnahme
@@ -141,14 +141,14 @@ class TeilnahmeMapper(Mapper):
         :param teilnahme -> teilnahme-Objekt
         :return aktualisiertes teilnahme-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE teilnahmen " + "SET teilnahme=%s,  WHERE teilnahme=%s"
         data = (teilnahme.get_id(),teilnahme.get_gruppen_id(), teilnahme.get_konversations_id(),teilnahme.get_nachricht_id(), teilnahme.get_teilnehmer_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, teilnahme):
@@ -157,14 +157,14 @@ class TeilnahmeMapper(Mapper):
         :param teilnahme -> teilnahme-Objekt
         :return aktualisiertes teilnahme-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE teilnahmen " + "SET teilnahme=%s, WHERE id=%s"
         data = (teilnahme.get_id(),teilnahme.get_gruppen_id(), teilnahme.get_konversations_id(),teilnahme.get_nachricht_id(), teilnahme.get_teilnehmer_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, teilnahme):
@@ -172,12 +172,12 @@ class TeilnahmeMapper(Mapper):
 
         :param teilnahme -> teilnahme-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM teilnahmen WHERE id={}".format(teilnahme.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

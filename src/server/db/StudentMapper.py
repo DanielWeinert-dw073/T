@@ -12,7 +12,7 @@ class StudentMapper(Mapper):
 
     def __init__(self):
         super().__init__()
-        _connection = None
+        _cnx = None
     def find_all(self):
         """Auslesen aller Studenten aus der Datenbank
 
@@ -20,7 +20,7 @@ class StudentMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, name, email, google_user_id FROM studenten"
 
@@ -35,7 +35,7 @@ class StudentMapper(Mapper):
             student.set_google_user_id(google_user_id)
             result.append(student)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -47,7 +47,7 @@ class StudentMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, name, email, google_user_id FROM studenten WHERE name='{}'".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -66,7 +66,7 @@ class StudentMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -78,7 +78,7 @@ class StudentMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, name, email, google_user_id FROM studenten WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -97,7 +97,7 @@ class StudentMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -106,12 +106,12 @@ class StudentMapper(Mapper):
 
         :param student -> student-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM studenten WHERE id={}".format(key)
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def find_by_google_user_id(self, google_user_id):
@@ -123,7 +123,7 @@ class StudentMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, name, email, google_user_id FROM studenten WHERE google_user_id='{}'".format(
                 google_user_id)
         cursor.execute(command)
@@ -151,7 +151,7 @@ class StudentMapper(Mapper):
         :param Student das zu speichernde Studenten Objekt
         :return das bereits übergebene student Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM studenten ")
         tuples = cursor.fetchall()
 
@@ -169,7 +169,7 @@ class StudentMapper(Mapper):
         data = (student.get_id(), student.get_name(), student.get_email(), student.get_google_user_id())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return student
@@ -180,14 +180,14 @@ class StudentMapper(Mapper):
         :param student -> student-Objekt
         :return aktualisiertes student-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE studenten " + "SET name=%s, email=%s WHERE google_user_id=%s"
         data = (student.get_name(), student.get_email(), student.get_google_user_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, student):
@@ -196,14 +196,14 @@ class StudentMapper(Mapper):
         :param student -> student-Objekt
         :return aktualisiertes student-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE studenten " + "SET name=%s, email=%s,  WHERE id=%s"
         data = (student.get_name(), student.get_email(), student.get_id())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, student):
@@ -211,12 +211,12 @@ class StudentMapper(Mapper):
 
         :param student -> student-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM studenten WHERE id={}".format(student.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 
