@@ -20,7 +20,7 @@ class KonversationMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, konversation, nachricht_id, teilnehmer, herkunfts_id, ziel_id, inhalt FROM konversationen"
 
@@ -38,7 +38,7 @@ class KonversationMapper(Mapper):
             konversation.set_inhalt(inhalt)
             result.append(konversation)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -50,7 +50,7 @@ class KonversationMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, konversation, nachricht_id, teilnehmer, herkunfts_id, ziel_id, inhalt FROM konversationen WHERE konversation='{}'".format(konversation)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -72,7 +72,7 @@ class KonversationMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -84,7 +84,7 @@ class KonversationMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, konversation, nachricht_id, teilnehmer, herkunfts_id, ziel_id, inhalt FROM konversationen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -106,7 +106,7 @@ class KonversationMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -119,7 +119,7 @@ class KonversationMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, konversation, nachricht_id, teilnehmer, herkunfts_id, ziel_id, inhalt  FROM konversationen WHERE teilnehmer='{}'".format(
                 teilnehmer)
         cursor.execute(command)
@@ -152,7 +152,7 @@ class KonversationMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, konversation, nachricht_id, teilnehmer, herkunfts_id, ziel_id, inhalt  FROM konversationen WHERE inhalt='{}'".format(
                 inhalt)
         cursor.execute(command)
@@ -185,7 +185,7 @@ class KonversationMapper(Mapper):
         :param konversation das zu speichernde konversation Objekt
         :return das bereits übergebene konversation Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM konversationen ")
         tuples = cursor.fetchall()
 
@@ -203,7 +203,7 @@ class KonversationMapper(Mapper):
         data = (konversation.get_id(), konversation.get_konversation(), konversation.get_nachricht_id (), konversation.get_teilnehmer(), konversation.get_herkunfts_id(), konversation.get_ziel_id(), konversation.get_inhalt())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return konversation
@@ -214,14 +214,14 @@ class KonversationMapper(Mapper):
         :param konversation -> konversation-Objekt
         :return aktualisiertes konversation-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE konversationen " + "SET konversation=%s, nachricht_id=%s,teilnehmer=%s,herkunfts_id=%s,ziel_id=%s,inhalt=%s ()=%s WHERE konversation=%s"
         data = (konversation.get_konversation(), konversation.get_nachricht_id (), konversation.get_teilnehmer(), konversation.get_herkunfts_id(), konversation.get_ziel_id(), konversation.get_inhalt())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, konversation):
@@ -230,14 +230,14 @@ class KonversationMapper(Mapper):
         :param konversation -> konversation-Objekt
         :return aktualisiertes konversation-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE konversationen " + "SET konversation=%s, nachricht_id=%s,teilnehmer=%s,herkunfts_id=%s,ziel_id=%s,inhalt=%s WHERE id=%s"
         data = (konversation.get_konversation(), konversation.get_nachricht_id (), konversation.get_teilnehmer(), konversation.get_herkunfts_id(), konversation.get_ziel_id(), konversation.get_inhalt())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, konversation):
@@ -245,12 +245,12 @@ class KonversationMapper(Mapper):
 
         :param konversation -> konversation-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM konversationen WHERE id={}".format(konversation.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

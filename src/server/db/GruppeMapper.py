@@ -20,7 +20,7 @@ class GruppeMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, gruppe FROM gruppen"
 
@@ -36,7 +36,7 @@ class GruppeMapper(Mapper):
             gruppe.set_max_teilnehmer(max_teilnehmer)
             result.append(gruppe)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -48,7 +48,7 @@ class GruppeMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, gruppe FROM gruppen WHERE gruppe='{}'".format(gruppe)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -68,7 +68,7 @@ class GruppeMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -80,7 +80,7 @@ class GruppeMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, gruppe FROM gruppen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -100,7 +100,7 @@ class GruppeMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -112,7 +112,7 @@ class GruppeMapper(Mapper):
         :param Gruppe des zu speichernde Gruppen Objekts
         :return das bereits übergebene Gruppen Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM gruppen ")
         tuples = cursor.fetchall()
 
@@ -130,7 +130,7 @@ class GruppeMapper(Mapper):
         data = (gruppe.get_id(), gruppe.get_gruppe(), gruppe.get_anzahlTeilnehmer(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return gruppe
@@ -141,14 +141,14 @@ class GruppeMapper(Mapper):
         :param gruppe -> gruppe-Objekt
         :return aktualisiertes gruppe-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE gruppen " + "SET gruppe=%s,  WHERE gruppe=%s"
         data = (gruppe.get_id(), gruppe.get_gruppe(), gruppe.get_anzahlTeilnehmer(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, gruppe):
@@ -157,14 +157,14 @@ class GruppeMapper(Mapper):
         :param gruppe -> gruppe-Objekt
         :return aktualisiertes gruppe-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE gruppen " + "SET gruppe=%s, WHERE id=%s"
         data = (gruppe.get_id(), gruppe.get_gruppe(), gruppe.get_anzahlTeilnehmer(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, gruppe):
@@ -172,12 +172,12 @@ class GruppeMapper(Mapper):
 
         :param gruppe -> gruppe-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM gruppen WHERE id={}".format(gruppe.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 

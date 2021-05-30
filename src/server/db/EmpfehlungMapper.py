@@ -20,7 +20,7 @@ class EmpfehlungMapper(Mapper):
         """
         result = []
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "SELECT id, empfehlung, empfehlungsListe, empfehlungGruppe FROM empfehlungen"
 
@@ -36,7 +36,7 @@ class EmpfehlungMapper(Mapper):
             empfehlung.set_empfehlungProfil(empfehlungProfil)
             result.append(empfehlung)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return result
@@ -48,7 +48,7 @@ class EmpfehlungMapper(Mapper):
             None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, empfehlung, empfehlungsListe, empfehlungGruppe,empfehlungProfil FROM empfehlungen WHERE empfehlung='{}'".format(empfehlung)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -68,7 +68,7 @@ class EmpfehlungMapper(Mapper):
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -80,7 +80,7 @@ class EmpfehlungMapper(Mapper):
                 None wenn kein Eintrag gefunden wurde
         """
         result = None
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, empfehlung, empfehlungsListe, empfehlungGruppe, empfehlungProfil FROM empfehlungen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -100,7 +100,7 @@ class EmpfehlungMapper(Mapper):
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -113,7 +113,7 @@ class EmpfehlungMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, empfehlung, empfehlungsListe, empfehlungGruppe, empfehlungProfil FROM empfehlungen WHERE empfehlungGruppe='{}'".format(
                 empfehlungGruppe)
         cursor.execute(command)
@@ -143,7 +143,7 @@ class EmpfehlungMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, empfehlung, empfehlungsListe, empfehlungGruppe FROM empfehlungen WHERE empfehlungGruppe='{}'".format(
                 empfehlungsListe)
         cursor.execute(command)
@@ -173,7 +173,7 @@ class EmpfehlungMapper(Mapper):
         """
         result = None
 
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         command = "SELECT id, empfehlung, empfehlungsListe, empfehlungGruppe FROM empfehlungen WHERE empfehlungGruppe='{}'".format(
                 empfehlungProfil)
         cursor.execute(command)
@@ -202,7 +202,7 @@ class EmpfehlungMapper(Mapper):
         :param empfehlung das zu speichernde empfehlungen Objekt
         :return das bereits übergebene empfehlung Objekt mit aktualisierten Daten (id)
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM empfehlungen ")
         tuples = cursor.fetchall()
 
@@ -220,7 +220,7 @@ class EmpfehlungMapper(Mapper):
         data = (empfehlung.get_id(), empfehlung.get_empfehlung(), empfehlung.get_empfehlungsListe(), empfehlung.get_empfehlungGruppe(),empfehlung.get_empfehlung_Profil())
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
         return empfehlung
@@ -231,14 +231,14 @@ class EmpfehlungMapper(Mapper):
         :param empfehlung -> empfehlung-Objekt
         :return aktualisiertes empfehlung-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE empfehlungen " + "SET empfehlung=%s, empfehlungsListe=%s,empfehlungGruppe=%s,empfehlungProfil()=%s WHERE empfehlungGruppe=%s"
         data = (empfehlung.get_empfehlung(), empfehlung.get_empfehlungsListe(), empfehlung.get_empfehlungGruppe(), empfehlung.get_empfehlungProfil())
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def update_by_id(self, empfehlung):
@@ -247,7 +247,7 @@ class EmpfehlungMapper(Mapper):
         :param empfehlung -> empfehlung-Objekt
         :return aktualisiertes empfehlung-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "UPDATE empfehlungen " + "SET empfehlung=%s, empfehlungsListe=%s, empfehlungGruppe=%s, empfehlungProfil=%s WHERE id=%s"
         data = (empfehlung.get_empfehlung(), empfehlung.get_empfehlungsListe(), empfehlung.get_id(), empfehlung.get_empfehlungGruppe(),
@@ -255,7 +255,7 @@ class EmpfehlungMapper(Mapper):
 
         cursor.execute(command, data)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, empfehlung):
@@ -263,12 +263,12 @@ class EmpfehlungMapper(Mapper):
 
         :param empfehlung -> empfehlung-Objekt
         """
-        cursor = self._connection.cursor()
+        cursor = self._cnx.cursor()
 
         command = "DELETE FROM empfehlungen WHERE id={}".format(empfehlung.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._cnx.commit()
         cursor.close()
 
 
