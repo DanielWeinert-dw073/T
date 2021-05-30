@@ -34,7 +34,7 @@ class Mapper(AbstractContextManager, ABC):
     def __exit__(self, exc_type, exc_val, exc_tb):
 
         """In order to close the connection we use the following statement. For example we quit working with the mapper class for now"""
-        self._connection.close()
+        self._cnx.close()
 
     """The following functions should be inherited by all Mapper-Subclasses"""
 
@@ -46,11 +46,6 @@ class Mapper(AbstractContextManager, ABC):
     @abstractmethod
     def find_by_id(self, key):
         """Reads a tuple with a given ID"""
-        pass
-
-    @abstractmethod
-    def find_by_key(self, key):
-        """Lies den einen Tupel mit der gegebenen ID (vgl. Primärschlüssel) aus."""
         pass
 
     @abstractmethod
