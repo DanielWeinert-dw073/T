@@ -59,12 +59,12 @@ class LerngruppenAdministration(object):
         with StudentMapper() as mapper:
             return mapper.find_by_name(name)
 
-    def get_student_by_name(self,id):
+    def get_student_by_id(self, id):
         """Einen Studenten über seine Id bekommen"""
         with StudentMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def save_student(self,student):
+    def save_student(self, student):
         """Einen Studenten speichern"""
         with StudentMapper() as mapper:
             return mapper.update(student)
