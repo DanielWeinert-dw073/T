@@ -44,7 +44,7 @@ class Mapper(AbstractContextManager, ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self):
+    def find_by_id(self, key):
         """Reads a tuple with a given ID"""
         pass
 
