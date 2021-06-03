@@ -148,17 +148,17 @@ class LerngruppenAdministration(object):
         with LerntypMapper() as mapper:
             return mapper.find_by_lerntyp(lerntyp)
 
-    def get_lerntyp_by_id(self,id):
+    def get_lerntyp_by_id(self, id):
         """Den gewählten Lerntyp über die Id auslesen"""
         with LerntypMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def save_lerntyp(self,lerntyp):
+    def save_lerntyp(self, lerntyp):
         """Lerntyp speichern"""
         with LerntypMapper() as mapper:
             return mapper.update(lerntyp)
 
-    def delete(self,lerntyp):
+    def delete(self, lerntyp):
         """Lerntyp löschen"""
         with LerntypMapper() as mapper:
             return mapper.delete(lerntyp)

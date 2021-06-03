@@ -94,7 +94,7 @@ class ProfilMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE id={}".format(id)
+        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen  FROM profile WHERE id={}".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -183,7 +183,7 @@ class ProfilMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 profil.set_id(1)
 
-        command = "INSERT INTO profile (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        command = "INSERT INTO profile (id, name, faecher, lebensalter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         data = (profil.get_id(), profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
         cursor.execute(command, data)
 
@@ -201,7 +201,7 @@ class ProfilMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE profile " + "SET name=%s WHERE id=%s"
-        data = (profil.get_id(), profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
+        data = (profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen(), profil.get_id())
 
         cursor.execute(command, data)
 
