@@ -92,8 +92,8 @@ class NachrichtMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE nachrichten " + "SET inhalt=%s,  WHERE inhalt=%s"
-        data = (nachricht.get_id(),  nachricht.get_inhalt())
+        command = "UPDATE nachrichten " + "SET inhalt=%s,  WHERE id=%s"
+        data = (nachricht.get_inhalt(), nachricht.get_id())
 
         cursor.execute(command, data)
 

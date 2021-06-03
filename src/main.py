@@ -33,7 +33,7 @@ from server.bo.Lerntyp import Lerntyp
 """Flask wird hiermit instanziiert"""
 app = Flask(__name__)
 
-CORS(app, support_credentials=True, resources={r"/LernGruppenToolApp/*":{"origins": "*"}})
+CORS(app, support_credentials=True, resources=r"/LernGruppenToolApp/*")
 
 api = Api(app, version="1.0", title="LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
 
