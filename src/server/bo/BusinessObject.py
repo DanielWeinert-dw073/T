@@ -10,7 +10,8 @@ class BusinessObject(ABC):
     alle BOs enthalten eine Id und ein Erstellungszeitpunkt"""
 
     def __init__(self):
-        self._id = 0 # Die eindeutige Id für die Instanzen dieser Klasse 
+        self._id = 0
+        # Die eindeutige Id für die Instanzen dieser Klasse
         self._erstellungszeitpunkt = datetime.datetime.now() 
         # das Datum zu der das BO erstellt wurde 
 
@@ -18,10 +19,14 @@ class BusinessObject(ABC):
         """Auslesen der Id"""
         return self._id 
 
-    def set_id(self,value):
+    def set_id(self, value):
         """Setzen der Id"""
         self._id = value
 
     def get_erstellungszeitpunkt(self):
         """Auslesen der Erstellungszeitpunkt"""
         return self._erstellungszeitpunkt
+
+    def set_erstellungszeitpunkt(self, value): 
+        """Setzen des Erstellungszeitpunkt"""
+        self._erstellungszeitpunkt = value

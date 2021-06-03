@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from server.bo.NamedBusinessObject import NamedBusinessObject
-from server.bo.Lernvorlieben import Lernvorlieben
+from server.bo.Lerntyp import Lerntyp
 
 class Student(NamedBusinessObject):
     """Realisierung der Studenten Klasse des Systems ein Student besitzt ein oder mehrere Profile 
@@ -12,16 +12,11 @@ class Student(NamedBusinessObject):
     Lerntyp, welche einem Student zugewiesen wird. Diese Lerntypen werden an das Profil weitergegeben um dort für die Gruppenzuordnung 
     genutzt wird."""
 
-    LERNVORLIEBEN_AUDITIV = Lernvorlieben ("Auditiv") # Klassenvariable für den Lerntyp Auditiv, instanziiert das Python Objekt Lernvorliebe
-    LERNVORLIEBEN_VISUELL = Lernvorlieben ("Visuell") # Klassenvariable für den Lerntyp Visuell, instanziiert das Python Objekt Lernvorliebe
-    LERNVORLIEBEN_KOMMUNIKATIV = Lernvorlieben ("Kommunikativ") # Klassenvariable für den Lerntyp Kommunikativ, instanziiert das Python Objekt Lernvorliebe
-    LERNVORLIEBEN_MOTORISCH = Lernvorlieben ("Motorisch") # Klassenvariable für den Lerntyp Motorisch, instanziiert das Python Objekt Lernvorliebe
-
     def __init__(self):
         super().__init__()
         self._email = None #Die Email-Adresse des Studenten
         self._google_user_id = None #Die eindeutige Google User Id des Studenten
-        self._lernvorlieben = None #Die Lernvorlieben welche ein Student besitzt 
+     
 
     def get_email(self):
         """ Auslesen der Email-Adresse"""
@@ -39,18 +34,9 @@ class Student(NamedBusinessObject):
         """ Setzen der Google User Id"""
         self._google_user_id = value
 
-    def get_lernvorlieben (self):
-        """ Auslesen der Lernvorlieben"""
-        return self._lernvorlieben
-
-    def set_lernvorlieben (self,value):
-        """ Setzen der Lernvorlieben"""
-        self._lernvorlieben = value
-
     def __str__(self):
         """ Umwandlung der Attributwerte eines Objekts in einen String"""
-        return "Student: {}, {}, {}, {}, {}".format(self.get_id(),self._name,self._email,self._google_user_id,
-        self._lernvorlieben)
+        return "Student: {}, {}, {}, {}, {}".format(self.get_id(),self._name,self._email,self._google_user_id)
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -60,5 +46,4 @@ class Student(NamedBusinessObject):
         obj.set_name(dictionary["name"])
         obj.set_email(dictionary["email"])
         obj.set_google_user_id(dictionary["_google_user_id"])
-        obj.set_lernvorlieben(dictionary["lernvorlieben"])
         return obj
