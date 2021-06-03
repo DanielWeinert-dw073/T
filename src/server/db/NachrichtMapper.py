@@ -63,7 +63,7 @@ class NachrichtMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-        return nachricht
+        return result
 
     def insert(self, nachricht):
         """Einfügen einer Nachricht Objekts in die DB
@@ -74,12 +74,9 @@ class NachrichtMapper(Mapper):
         :return das bereits übergebene Nachricht Objekt mit aktualisierten Daten (id)
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM nachrichten ")
-        tuples = cursor.fetchall()
-
-
         command = "INSERT INTO nachrichten (id, inhalt) VALUES (%s,%s)"
         data = (nachricht.get_id(), nachricht.get_inhalt())
+
         cursor.execute(command, data)
 
         self._cnx.commit()
