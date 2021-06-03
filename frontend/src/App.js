@@ -6,6 +6,14 @@ import firebase from 'firebase/app'; //Firebase module
 import 'firebase/auth'; //Firebase module
 import Header from './components/layout/Header';
 import LerngruppenToolAPI from './api/LernGruppenToolAPI';
+import TeilnahmeBO from './api/TeilnahmeBO'; 
+import ProfilÜbersicht from './components/ProfilÜbersicht';
+//import ProfilÜbersichtEintrag from './components/ProfilÜbersichtEintrag';
+import SignIn from './components/pages/SignIn';
+import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
+import LoadingProgress from './components/dialogs/LoadingProgress';
+import firebaseConfig from './firebaseconfig'
+import About from './components/pages/About';
 
 /** 
  * Mainpage der LerngruppenApp. Verifizierung der nutzer über die firebase. Anschließend
@@ -24,8 +32,7 @@ class App extends React.Component {
             appError: null,
             authError: null,
             authLoading: false,
-            currentStudent: null,
-            currentProfil: null
+ 
         };
     }
 
@@ -54,7 +61,7 @@ class App extends React.Component {
                     authError: null,
                     authLoading: false
                 })}).then(() => {
-                this.getUserByGoogleID()
+                this.getUserByGoogleId()
             }).catch(e => {
                 this.setState({
                     authError: e,
@@ -81,32 +88,11 @@ class App extends React.Component {
         firebase.auth().signInWithRedirect(provider);
     }
 
-    //aktuell eingeloggter Student im backend abfragen
-    getUserByGoogleID = () => {
-        LerngruppenToolAPI.getAPI().getStudentByGoogleID(this.state.currentUser.uid)
-            .then(studentNbo => 
-                this.setState({
-                    currentStudent: studentNbo,
-                    error: null,
-                    loadingInProgress: false
-                })
-                ).catch(e =>
-                    this.setState({
-                        currentStudent:null,
-                        error: e,
-                        loadingInProgress: false
-                    }));
-            this.setState({
-                error: null,
-                loadingInProgress: true
-            });
-
-
-    }
-
+  
     //Lifecyclemethode
     componentDidMount() {
         firebase.initializeApp(firebaseConfig);
+        firebase.auth().languageCode = 'en';
         firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
     }
 
@@ -118,16 +104,20 @@ class App extends React.Component {
                 <CssBaseline />
                 <Router basename = {process.env.PUBLIC_URL}>
                     <Container maxWidth="md">
-                        <Header user={currentUser} currentStudent={currentStudent} currentProfil={currentProfil}/>
+                        <Header user={currentUser} />
 
                         {
                             //user signed in? 
-                            currentUser && (currentStudent || currentProfil ) ?
+                            currentUser ?
                                 <>
                                     <Redirect from="/" to="profil"/>
-                                    <Route path="/projekte" component = {ProfilListe}>
-                                        <ProfilListe current Student = {currentStudent} currentProfil = {currentProfil}/>
+                                    <Route exact path="/profil" >
+                                        <ProfilÜbersicht />
                                     </Route>
+
+                                    <Route path="/about" component = {About}/>
+
+                                  
 
                                 </>
                                 :
@@ -139,7 +129,7 @@ class App extends React.Component {
                                 </>
                             
                         }
-                        <LoadingInProgress show={authLoading} />
+                        <LoadingProgress show={authLoading} />
                         <ContextErrorMessage error={authError} contextErrorMessage={`Something went wrong during signIn process.`} onReload={this.handleSignIn} />
                         <ContextErrorMessage error={appError} contextErrorMessage={"Something went wrong inside the App. Please reload."}/>
 
@@ -148,7 +138,7 @@ class App extends React.Component {
                 </Router>
 
             </ThemeProvider>
-        )
+        );
     }
     
 }

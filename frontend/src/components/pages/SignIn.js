@@ -1,29 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { Button, Grid, Typography, withStyles, Paper, Card } from '@material-ui/core';
+
+
+
 
 class SignIn extends Component {
 
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            profil: null,
-            profilEdited: false,
-
-
-        };
-    }
+    
         // Handles the event of pressing  the SignIn button
         handleSignInButtonClicked = () => {
+            this.props.onSignIn();
 
         }
         // Rendern der Komponente Sign In
         render() {
-            const { 
-                profil, 
-                profilEdited,
-
-            } = this.state;
+    
             const { classes } = this.props;
 
             return <div>
@@ -32,13 +25,9 @@ class SignIn extends Component {
                         <Typography className={classes.root} align="center" variant="h5">Willkommen zur Lerngruppen App</Typography>
                         <Grid container justify="center">
                             <Grid item>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel>Student Login</InputLabel>
-                                    <Select required onChange={this.handleChange}>
-                                        <Menuitem value= "Login">Login mit Profil</Menuitem>
-                                        <Menuitem value= "Register">Register new Profil</Menuitem>
-                                    </Select>
-                                </FormControl>
+                                <Button variant='contained' color='primary' onClick={this.handleSignInButtonClicked}>
+							        Sign in with Google
+      			                </Button>
  
                     
 
@@ -49,6 +38,22 @@ class SignIn extends Component {
             </div>
         }
     
+}
+/** Component specific styles */
+const styles = theme => ({
+	root: {
+		margin: theme.spacing(2)
+	}
+});
+
+/** PropTypes */
+SignIn.propTypes = {
+	/** @ignore */
+	classes: PropTypes.object.isRequired,
+	/** 
+	 * Handler function, which is called if the user wants to sign in.
+	 */
+	onSignIn: PropTypes.func.isRequired,
 }
 
 
