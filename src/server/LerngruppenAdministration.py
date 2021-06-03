@@ -199,7 +199,7 @@ class LerngruppenAdministration(object):
     Gruppen Methoden
     """
 
-    def create_gruppe(self,id, name, anzahlTeilnehmer, DiateilnehmerListe, max_teilnehmer):
+    def create_gruppe(self,id, name, anzahlTeilnehmer, teilnehmerListe, max_teilnehmer):
         """Gruppe erstellen"""
         gruppe = Gruppe()
         gruppe.set_id(id)

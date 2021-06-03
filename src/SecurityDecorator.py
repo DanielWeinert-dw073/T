@@ -5,21 +5,23 @@ import google.oauth2.id_token
 from server.LerngruppenAdministration import LerngruppenAdministration
 
 def secured(function):
-firebase_request_adapter = requests.Request()
+
+    firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
-        '''
-        Hier werden alle in Cookies, welche in der Anmeldung vergeben werden, abgefragt
-        '''
+        # Verify Firebase auth.
         id_token = request.cookies.get("token")
-        name = request.cookies.get("name")
         error_message = None
         claims = None
         objects = None
 
         if id_token:
             try:
-                #hier wird der firebase token verifiziert
+                # Verify the token against the Firebase Auth API. This example
+                # verifies the token on each page load. For improved performance,
+                # some applications may wish to cache results in an encrypted
+                # session store (see for instance
+                # http://flask.pocoo.org/docs/1.0/quickstart/#sessions).
                 claims = google.oauth2.id_token.verify_firebase_token(
                     id_token, firebase_request_adapter)
 
@@ -29,35 +31,30 @@ firebase_request_adapter = requests.Request()
                     google_user_id = claims.get("user_id")
                     email = claims.get("email")
                     name = claims.get("name")
-                    user = adm.get_user_by_google_user_id(google_user_id)
 
-                    if user is not None:
-                                ''' 
-                                Der Student befindet sich bereits in der Datenbank.
-                                Demnach wird das Student BO aktualisiert
-                                '''
-                            user.set_name(name)
-                            user.set_email(email)
-                            adm.save_user(user)
+                    student = adm.get_student_by_google_user_id(google_user_id)
+                    if student is not None:
+ 
+                        student.set_name(name)
+                        student.set_email(email)
+                        adm.save_student(student)
                     else:
-                            '''
-                            Das System kennt die Person nicht.
-                            Es wird eine neue Person angelegt
-                            '''
-                        user = adm.create_user(name, email, google_user_id)
 
-                    print(request.method, request.path, 'asked by:', name, email)
+                        student = adm.create_student(name, email, google_user_id)
+
+                    print(request.method, request.path, "angefragt durch:", name, email)
 
                     objects = function(*args, **kwargs)
                     return objects
-            else:
-                    return '', 401  # UNAUTHORIZED
-        except ValueError as exc:
-                '''
-                If checks failed (token expired etc this exception will be raised)
-                '''
+                else:
+                    return '', 401  # UNAUTHORIZED !!!
+            except ValueError as exc:
+                # This will be raised if the token is expired or any other
+                # verification checks fail.
                 error_message = str(exc)
-                return exc, 401  # UNAUTHORIZED
-        return '', 401  # UNAUTHORIZED
+                return exc, 401  # UNAUTHORIZED !!!
+
+        return '', 401  # UNAUTHORIZED !!!
 
     return wrapper
+
