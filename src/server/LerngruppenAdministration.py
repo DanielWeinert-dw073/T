@@ -249,11 +249,15 @@ class LerngruppenAdministration(object):
         with NachrichtMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def get_alle_nachrichten(self):
+    def get_all_nachricht(self):
         """Nachricht nach id auslesen"""
         with NachrichtMapper() as mapper:
             return mapper.find_all()
 
+    def update(self, nachricht):
+        """Überschreiben oder Aktualisieren einer Nachricht"""
+        with NachrichtMapper() as mapper:
+            return mapper.update(nachricht)
 
     """ 
     Konversation Methoden
