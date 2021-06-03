@@ -203,21 +203,6 @@ class NachrichtListOperation(Resource):
 
         adm.update_nachricht(nachricht)
 
-@LernGruppenToolApp.route("/nachricht/<string:inhalt>")
-@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
-@LernGruppenToolApp.param("inhalt")
-class NachrichtByInhalt(Resource):
-    @LernGruppenToolApp.marshal_list_with(nachricht)
-    # @secured
-    def get(self, inhalt):
-        """Auslesen des Inhaltes einer Nachricht
-        Das auszulesene Objekt wird über den Inhalt erfasst.
-        """
-
-        adm = LerngruppenAdministration()
-        nach = adm.get_nachricht_by_inhalt(inhalt)
-        return nach
-
 
 @LernGruppenToolApp.route("/nachricht/<int:id>")
 @LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
