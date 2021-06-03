@@ -35,33 +35,6 @@ class NachrichtMapper(Mapper):
 
         return result
 
-    def find_by_inhalt(self, inhalt):
-        """Suchen einer Nachricht aus der Datenbank nach dem angegebenen Nachricht
-            :param nachricht_name -> nachricht-Objekt
-            return nachricht Objekt, welches mit dem nachricht übereinstimmt
-            None wenn kein Eintrag gefunden wurde
-        """
-        result = None
-        cursor = self._cnx.cursor()
-        command = "SELECT id, inhalt FROM nachrichten WHERE inhalt='{}'".format(inhalt)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-                (id, nachricht) = tuples[0]
-                nachricht = Nachricht()
-                nachricht.set_id(id)
-                nachricht.set_inhalt(inhalt)
-                result = nachricht
-
-        except IndexError:
-                """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
-			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-                result = None
-
-        self._cnx.commit()
-        cursor.close()
-        return result
 
     def find_by_id(self, id):
         """Suchen einer Nachricht nach der übergebenen Id.
@@ -77,7 +50,7 @@ class NachrichtMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id,inhalt )= tuples[0]
+            (id, inhalt) = tuples[0]
             nachricht = Nachricht()
             nachricht.set_id(id)
             nachricht.set_inhalt(inhalt)
