@@ -66,7 +66,7 @@ export default class LernvorliebenBO extends BusinessObject {
         let results = null;
         if (Array.isArray(lernvorlieben)) {
             results = [];
-            lerntypen.forEach((c) => {
+            lernvorlieben.forEach((c) => {
                 Object.setPrototypeOf(c,LernvorliebenBO.prototype);
                 results.push(c);
             })
