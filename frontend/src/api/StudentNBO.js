@@ -1,6 +1,6 @@
 import NamedBusinessObject from "./NamedBusinessObject";
 
-export default class ProfilNBO extends NamedBusinessObject {
+export default class StudentNBO extends NamedBusinessObject {
     constructor(anemail, agoogle_user_id) {
         this.email = anemail;
         this.google_user_id = agoogle_user_id;

@@ -5,7 +5,7 @@ import { Container, ThemeProvider, CssBaseline } from '@material-ui/core';
 import firebase from 'firebase/app'; //Firebase module
 import 'firebase/auth'; //Firebase module
 import Header from './components/layout/Header';
-import LerngruppenToolAPI from './api/LernGruppenToolAPI';
+import LernGruppenToolAPI from './api/LernGruppenToolAPI';
 import TeilnahmeBO from './api/TeilnahmeBO'; 
 import ProfilÜbersicht from './components/ProfilÜbersicht';
 //import ProfilÜbersichtEintrag from './components/ProfilÜbersichtEintrag';
@@ -32,6 +32,8 @@ class App extends React.Component {
             appError: null,
             authError: null,
             authLoading: false,
+            currentStudent: null,
+            currentProfile: null
  
         };
     }
@@ -88,12 +90,59 @@ class App extends React.Component {
         firebase.auth().signInWithRedirect(provider);
     }
 
+    getUserByGoogleId = () => {
+       
+
+            LernGruppenToolAPI.getAPI().getStudentByGoogleUserId(this.state.currentStudent.uid) //.acurrentUser.agoogle_user_id
+                .then(studentNBO =>
+                    this.setState({
+                        currentStudent: studentNBO,
+                        error: null,
+                        loadingInProgress: false,
+                    })
+                    ).catch(e =>
+                        this.setState({
+                            currentStudent: null,
+                            error: e,
+                            loadingInProgress:false,
+                        }));
+                this.setState({
+                    error: null,
+                    loadingInProgress: true
+                });
+            
+        setTimeout(()=>{
+          console.log(this.state);
+        },1000);
+
+
+                    
+    }
+
+    //openbook getcookie von Galileo
+    getCookie = (name) => {
+        var i=0;  //Suchposition im Cookie
+        var suche = name + "=";
+        while (i<document.cookie.length) {
+           if (document.cookie.substring(i, i + suche.length) === suche) {
+              var ende = document.cookie.indexOf(";", i + suche.length);
+              ende = (ende > -1) ? ende : document.cookie.length;
+              var cook = document.cookie.substring(i + suche.length, ende);
+              return unescape(cook);
+           }
+           i++;
+        }
+        return "";
+     }
+  
+
   
     //Lifecyclemethode
     componentDidMount() {
         firebase.initializeApp(firebaseConfig);
         firebase.auth().languageCode = 'en';
         firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
+      
     }
 
     render() {
@@ -104,11 +153,12 @@ class App extends React.Component {
                 <CssBaseline />
                 <Router basename = {process.env.PUBLIC_URL}>
                     <Container maxWidth="md">
-                        <Header user={currentUser} />
+                        <Header user={currentUser} currentStudent = {currentStudent}/>
+                
 
                         {
                             //user signed in? 
-                            currentUser ?
+                            currentUser && (currentStudent) ?
                                 <>
                                     <Redirect from="/" to="profil"/>
                                     <Route exact path="/profil" >
@@ -124,7 +174,7 @@ class App extends React.Component {
                                 
                                 //if not signed in show sign in page
                                 <>
-                                    <Redirect to="index.html"/>
+                                    <Redirect to="SignIn"/>
                                     <SignIn onSignIn={this.handleSignIn}/>
                                 </>
                             
