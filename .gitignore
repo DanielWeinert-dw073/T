@@ -130,3 +130,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+.env
+
+# misc
+frontend/package-lock.json
+.vscode/settings.json
