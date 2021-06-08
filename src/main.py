@@ -203,6 +203,24 @@ class NachrichtListOperation(Resource):
 
         adm.update(nachricht)
 
+    @LernGruppenToolApp.marshal_with(nachricht, code=200)
+    @LernGruppenToolApp.expect(nachricht)
+    @secured
+    def post(self):
+        """ Anlegen einer neuen Nachricht"""
+
+        adm = LerngruppenAdministration()
+        nachricht = Nachricht.from_dict(api.playload)
+
+
+    if nachricht is not None:
+    result = adm.create_nachricht(nachricht.get_id(),nachricht.get_inhalt())
+
+        return result, 200
+    else:
+        return '', 500
+
+
 
 @LernGruppenToolApp.route("/nachricht/<int:id>")
 @LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
@@ -259,6 +277,23 @@ class ProfilListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.delete_profil(id)
 
+    @LernGruppenToolApp.marshal_with(profil, code = 200)
+    @LernGruppenToolApp.expect(profil)
+    @secured
+    def post(self):
+        """ Anlegen eines Profils"""
+        adm = LerngruppenAdministration()
+        profil = Profil.from_dict(api.playload)
+
+    if profil is not None:
+        result = adm.create_profil(profil.set_name(),profil.set_alter(),
+                                 profil.set_studiengang(),profil.set_wohnort(),profil.set_semester(),profil.set_about_me(),
+                                 profil.set_vorwissen(),profil.set_lernvorlieben(),profil.set_sprachen())
+        return result, 200
+    else:
+        return '', 500
+
+
 # Teilnahme Methoden
 
 @LernGruppenToolApp.route("/teilnahmen")
@@ -287,6 +322,12 @@ class TeilnahmeListOperation(Resource):
         """ Löschen einer Teilnahme"""
         adm = LerngruppenAdministration()
         adm.delete_teilnahme(id)
+
+    # @secured
+    def post(self):
+        """ Anlegen einer Teilnahme"""
+        adm = LerngruppenAdministration()
+        adm.post_teilnahme()
 
 # Empfehlungs Methoden
 
@@ -318,6 +359,12 @@ class EmpfehlungListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.delete_empfehlung(id)
 
+    # @secured
+    def post(self):
+        """Anlegen einer Empfehlung"""
+        adm= LerngruppenAdministration()
+        adm.post_empfehlung()
+
 # Lerntyp Methoden
 
 @LernGruppenToolApp.route("/lerntypen")
@@ -347,6 +394,12 @@ class EmpfehlungListOperation(Resource):
 
         adm = LerngruppenAdministration()
         adm.delete_lerntyp(id)
+
+    # @secured
+    def post(self):
+        """Anlegen eines Lerntypen"""
+        adm = LerngruppenAdministration()
+        adm.post_lerntyp()
 
 # Lernvorlieben Methoden
 
@@ -378,6 +431,12 @@ class EmpfehlungListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.delete_lernvorlieben(id)
 
+    # @secured
+    def post(self):
+        """Anlegen einer Lernvorliebe"""
+        adm = LerngruppenAdministration()
+        adm.post_lernvorlieben()
+
 @LernGruppenToolApp.route("/konversationen")
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class KonversationListOperation(Resource):
@@ -405,6 +464,12 @@ class KonversationListOperation(Resource):
 
         adm = LerngruppenAdministration()
         adm.delete_konversation(id)
+
+    # @secured
+    def post(self):
+        """Anlegen einer Konversation"""
+        adm= LerngruppenAdministration()
+        adm.post_konversation()
 
 
 if __name__ == '__main__':
