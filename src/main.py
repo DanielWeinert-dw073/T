@@ -33,7 +33,7 @@ from server.bo.Lerntyp import Lerntyp
 """Flask wird hiermit instanziiert"""
 app = Flask(__name__)
 
-CORS(app, support_credentials=True, resources={r"/LernGruppenToolApp/*":{"origins": "*"}})
+CORS(app, support_credentials=True, resources=r"/LernGruppenToolApp/*")
 
 api = Api(app, version="1.0", title="LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
 
@@ -191,8 +191,8 @@ class NachrichtListOperation(Resource):
         """Auslesen aller Nachrichten Objekte"""
 
         adm = LerngruppenAdministration()
-        nachrichten = adm.get_alle_nachrichten()
-        return nachrichten
+        nachricht = adm.get_all_nachricht()
+        return nachricht
 
     # @secured
     def put(self):
@@ -201,22 +201,7 @@ class NachrichtListOperation(Resource):
         adm = LerngruppenAdministration()
         nachricht = adm.get_nachricht_by_id(id)
 
-        adm.update_nachricht(nachricht)
-
-@LernGruppenToolApp.route("/nachricht/<string:inhalt>")
-@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
-@LernGruppenToolApp.param("inhalt")
-class NachrichtByInhalt(Resource):
-    @LernGruppenToolApp.marshal_list_with(nachricht)
-    # @secured
-    def get(self, inhalt):
-        """Auslesen des Inhaltes einer Nachricht
-        Das auszulesene Objekt wird über den Inhalt erfasst.
-        """
-
-        adm = LerngruppenAdministration()
-        nach = adm.get_nachricht_by_inhalt(inhalt)
-        return nach
+        adm.update(nachricht)
 
 
 @LernGruppenToolApp.route("/nachricht/<int:id>")
@@ -274,6 +259,152 @@ class ProfilListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.delete_profil(id)
 
+# Teilnahme Methoden
+
+@LernGruppenToolApp.route("/teilnahmen")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+class TeilnahmeListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(teilnahme)
+    # @secured
+    def get(self):
+        """Auslesen aller Teilnahmen"""
+
+        adm=LerngruppenAdministration()
+        teilnahmen = adm.get_all_teilnahmen()
+        return teilnahmen
+
+    # @secured
+    def put(self):
+            """Update der Teilnahmen"""
+
+            adm = LerngruppenAdministration()
+            teilnahme = adm.get_teilnahme_id(id)
+
+            adm.update(teilnahme)
+
+    # @secured
+    def delete(self, id):
+        """ Löschen einer Teilnahme"""
+        adm = LerngruppenAdministration()
+        adm.delete_teilnahme(id)
+
+# Empfehlungs Methoden
+
+@LernGruppenToolApp.route("/empfehlungen")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+class EmpfehlungListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(empfehlung)
+
+    # @secured
+    def get(self):
+        """Auslesen aller Empfehlungen"""
+
+        adm = LerngruppenAdministration()
+        empfehlungen = adm.get_all_empfehlungen()
+        return empfehlungen
+
+    # @secured
+    def put(self):
+        """Update der Teilnahmen"""
+
+        adm = LerngruppenAdministration()
+        empfehlungen = adm.get_empfehlung_by_id(id)
+        adm.update(teilnahme)
+
+    # @secured
+    def delete(self, id):
+        """ Löschen einer Empfehlung"""
+
+        adm = LerngruppenAdministration()
+        adm.delete_empfehlung(id)
+
+# Lerntyp Methoden
+
+@LernGruppenToolApp.route("/lerntypen")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+class EmpfehlungListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(lerntyp)
+
+    # @secured
+    def get(self):
+        """Auslesen aller Lerntypen"""
+
+        adm = LerngruppenAdministration()
+        lerntypen = adm.get_all_lerntypen()
+        return lerntypen
+
+    # @secured
+    def put(self):
+        """Update der Lerntypen"""
+
+        adm = LerngruppenAdministration()
+        lerntypen = adm.get_lerntyp_by_id(id)
+        adm.update(lerntypen)
+
+    # @secured
+    def delete(self, id):
+        """ Löschen eines Lerntypen"""
+
+        adm = LerngruppenAdministration()
+        adm.delete_lerntyp(id)
+
+# Lernvorlieben Methoden
+
+@LernGruppenToolApp.route("/lernvorlieben")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+class EmpfehlungListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(lernvorlieben)
+
+    # @secured
+    def get(self):
+        """Auslesen aller Lernvorlieben"""
+
+        adm = LerngruppenAdministration()
+        lernvorlieben = adm.get_all_lernvorlieben()
+        return lernvorlieben
+
+    # @secured
+    def put(self):
+        """Update der Lernvorlieben"""
+
+        adm = LerngruppenAdministration()
+        lernvorlieben = adm.get_lernvorliebe_by_id(id)
+        adm.update(lernvorlieben)
+
+    # @secured
+    def delete(self, id):
+        """ Löschen einer Lernvorliebe"""
+
+        adm = LerngruppenAdministration()
+        adm.delete_lernvorlieben(id)
+
+@LernGruppenToolApp.route("/konversationen")
+@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+class KonversationListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(konversation)
+
+    # @secured
+    def get(self):
+        """Auslesen aller Konversationen"""
+
+        adm = LerngruppenAdministration()
+        konversationen = adm.get_all_konversationen()
+        return konversationen
+
+    # @secured
+    def put(self):
+        """Update der Konversationen"""
+
+        adm = LerngruppenAdministration()
+        konversationen = adm.get_konversation_by_id(id)
+        adm.update(konversationen)
+
+    # @secured
+    def delete(self, id):
+        """ Löschen einer Konversation"""
+
+        adm = LerngruppenAdministration()
+        adm.delete_konversation(id)
 
 
 if __name__ == '__main__':

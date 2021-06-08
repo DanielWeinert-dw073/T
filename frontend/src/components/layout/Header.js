@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Paper, Typography, Tabs, Tab } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
-import ProfileDropDown from '../dialogs/ProfileDropDown';
+import ProfilDropDown from '../dialogs/ProfilDropDown';
 import { withRouter } from 'react-router-dom';
 
 /** 
@@ -29,7 +29,7 @@ class Header extends React.Component {
         const {classes, user, currentUser} = this.props;
         return (
             <Paper className= {classes.root} variant = "outlined" >
-                <ProfileDropDown user={user} />
+                <ProfilDropDown user={user} />
                 <Typography className={classes.text1} variant = "h3" component = "h1" align = "center">
                     HdM LerngruppenTool
                 </Typography>
@@ -40,27 +40,57 @@ class Header extends React.Component {
                     user ? 
                                     
                     <>
-                    {currentStudent ?
+                    {currentUser ?
                         <>
                         <Paper variant = "outlined">
-
+                            
+                            <Tabs indicatorColor='secondary' textColor='secondary' variant='fullWidth' centered value={this.state.tabindex} onChange={this.handleTabChange}>
+                                <Tab label='Profil' component={RouterLink} to={`/profilübersicht`} />
+                                <Tab label="Partner/Gruppensuche" component={RouterLink} to={'/gruppensuche'}/>
+                                <Tab label="Chat" component={RouterLink} to={'/chat'}/>
+                                <Tab label='About' component={RouterLink} to={`/about`} />
+                            </Tabs>
                         </Paper>
-                        </> 
+                        </>
                         :null
+                        
                     
                     }
-
                     </>
                     :null
-
-                    
+                
                 }
-
             </Paper>
         )
     }
 
-
-
 }
-export default Header;
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+    },
+    tab: {
+        minWidth: 150, // a number of your choice
+        width: 150, // a number of your choice
+    },
+    text1: {
+        paddingLeft: '64px',
+        marginTop: theme.spacing(2)
+    },
+    text2: {
+        marginBottom: theme.spacing(2),
+    },
+      
+});
+      
+      
+// Prop Type
+Header.propTypes = {
+    // logged in Firebase user/person
+    user: PropTypes.object,
+}
+      
+
+
+export default withRouter(withStyles(styles)(Header));

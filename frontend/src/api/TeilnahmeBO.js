@@ -1,8 +1,9 @@
 import BusinessObject from "./BusinessObject";
 
-export default class TeilnehmerBO extends BusinessObject {
+export default class TeilnahmeBO extends BusinessObject {
 
     constructor(ateilnehmer, agruppen_id,akonversations_id,anachricht_id) {
+        super();
         this.teilnehmer = ateilnehmer;
         this.gruppen_id = agruppen_id;
         this.konversations_id = akonversations_id;
@@ -78,19 +79,19 @@ export default class TeilnehmerBO extends BusinessObject {
      */
 
     static fromJSON(teilnahmen){
-        let results = null;
+        let result = [];
         if (Array.isArray(teilnahmen)) {
-            results = [];
+            
             teilnahmen.forEach((c) => {
-                Object.setPrototypeOf(c,TeilnahmeBO.prototype);
-                results.push(c);
+                Object.setPrototypeOf(c, TeilnahmeBO.prototype);
+                result.push(c);
             })
         } else {
             let c = teilnahmen;
-            Object.setPrototypeOf(c,TeilnahmeBO.prototype);
-            results = c;
+            Object.setPrototypeOf(c, TeilnahmeBO.prototype);
+            result.push(c);
         }
-        return results;
+        return result;
     }
 
 

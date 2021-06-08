@@ -55,7 +55,7 @@ class ProfilMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me FROM profil WHERE name='{}'".format(name)
+        command = "SELECT id, name, faecher, lebensalter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me FROM profil WHERE name='{}'".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -78,7 +78,6 @@ class ProfilMapper(Mapper):
         except IndexError:
                 """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-
         result = None
 
         self._cnx.commit()
@@ -94,7 +93,7 @@ class ProfilMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me,sprachen  FROM profile WHERE id={}".format(id)
+        command = "SELECT id, name, faecher, lebensalter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen  FROM profile WHERE id={}".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -173,18 +172,10 @@ class ProfilMapper(Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM profile ")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            if maxid[0] is not None:
-                """Wenn wir eine maximale ID festellen konnten, zählen wir diese
-                um 1 hoch und weisen diesen Wert als ID dem User-Objekt zu."""
-                profil.set_id(maxid[0] + 1)
-            else:
-                """Wenn wir KEINE maximale ID feststellen konnten, dann gehen wir
-                davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
-                profil.set_id(1)
 
-        command = "INSERT INTO profile (id, name, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        data = (profil.get_id(), profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
+
+        command = "INSERT INTO profile (name, faecher, lebensalter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        data = (profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -201,7 +192,7 @@ class ProfilMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE profile " + "SET name=%s WHERE id=%s"
-        data = (profil.get_id(), profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen())
+        data = (profil.get_name(), profil.get_faecher(), profil.alter(), profil.get_studiengang(), profil.get_wohnort(), profil.get_semester(), profil.get_vorwissen(), profil.get_lernvorlieben(), profil.get_about_me(), profil.get_sprachen(), profil.get_id())
 
         cursor.execute(command, data)
 

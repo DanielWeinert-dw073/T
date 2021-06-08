@@ -148,17 +148,17 @@ class LerngruppenAdministration(object):
         with LerntypMapper() as mapper:
             return mapper.find_by_lerntyp(lerntyp)
 
-    def get_lerntyp_by_id(self,id):
+    def get_lerntyp_by_id(self, id):
         """Den gewählten Lerntyp über die Id auslesen"""
         with LerntypMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def save_lerntyp(self,lerntyp):
+    def save_lerntyp(self, lerntyp):
         """Lerntyp speichern"""
         with LerntypMapper() as mapper:
             return mapper.update(lerntyp)
 
-    def delete(self,lerntyp):
+    def delete(self, lerntyp):
         """Lerntyp löschen"""
         with LerntypMapper() as mapper:
             return mapper.delete(lerntyp)
@@ -199,7 +199,7 @@ class LerngruppenAdministration(object):
     Gruppen Methoden
     """
 
-    def create_gruppe(self,id, name, anzahlTeilnehmer, DiateilnehmerListe, max_teilnehmer):
+    def create_gruppe(self,id, name, anzahlTeilnehmer, teilnehmerListe, max_teilnehmer):
         """Gruppe erstellen"""
         gruppe = Gruppe()
         gruppe.set_id(id)
@@ -249,11 +249,15 @@ class LerngruppenAdministration(object):
         with NachrichtMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def get_alle_nachrichten(self):
+    def get_all_nachricht(self):
         """Nachricht nach id auslesen"""
         with NachrichtMapper() as mapper:
             return mapper.find_all()
 
+    def update(self, nachricht):
+        """Überschreiben oder Aktualisieren einer Nachricht"""
+        with NachrichtMapper() as mapper:
+            return mapper.update(nachricht)
 
     """ 
     Konversation Methoden
