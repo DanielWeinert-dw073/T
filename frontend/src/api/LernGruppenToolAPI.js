@@ -29,12 +29,40 @@ export default class LernGruppenToolAPI {
     #getProfileURL = () => `${this.#LernGruppenToolBaseURL}/profile`;
     #getProfileByStudentIdURL = (id) => `${this.#LernGruppenToolBaseURL}/profile/student/${id}`;
     #getProfileByStudentId = (student_id) => `${this.#LernGruppenToolBaseURL}/profile/student/${student_id}`;
-   
+    #deleteProfileURL = (student_id) => `${this.#LernGruppenToolBaseURL}/profile/${student_id}`;
+    #addProfileURL = () => `${this.#LernGruppenToolBaseURL}/profile`;
+
     //Profil löschen
-
-
-
+    deleteProfile(profileID) {
+    return this.#fetchAdvanced(this.#deleteProfileURL(profileID), {
+      method: 'DELETE'
+    }).then((responseJSON) => {
+      let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
+      // console.info(accountBOs);
+      return new Promise(function (resolve) {
+        resolve(responseProfilNBO);
+      })
+    })
+   }
     //Profil bearbeiten/hinzufügen
+    addProfile(profilNBO) {
+    return this.#fetchAdvanced(this.#addProfileURL(), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(profilNBO)
+    }).then((responseJSON) => {
+      // We always get an array of StudentBOs.fromJSON, but only need one object
+      let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
+      // console.info(studentBOs);
+      return new Promise(function (resolve) {
+        resolve(responseProfilNBO);
+      })
+    })
+  }
+
 
     //Profil nach Id auslesen
 
@@ -106,7 +134,19 @@ export default class LernGruppenToolAPI {
         } )
     }
 
-    getStudentBy
+    //gibt die Person mit der bestimmten GoogleUserID als BO zurück
+	//getStudentByGoogleID(google_user_id){
+		//return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
+			//let studentNBO = StudentNBO.fromJSON(responseJSON);
+			//console.info(studentNBO)
+			//return new Promise(function (resolve){
+				//resolve(studentNBO)
+			//})
+		//})
+	//}
+
+	//Alle Studenten/User bekommen
+    //#getUserURL = () => `${this.#LernGruppenToolBaseURL}/studenten`;
 
 
 
