@@ -28,6 +28,7 @@ class Mapper(AbstractContextManager, ABC):
                                                  host='s293.goserver.host',
                                                  database='web173_db2')
 
+
         return self
 
 
