@@ -50,15 +50,22 @@ export default class LernGruppenToolAPI {
 
     //Gruppen löschen
 
+
     //Gruppen nach Id auslesen
+     #selectGruppenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${id}`;
 
     //Gruppen nach Teilnehmer auslesen
+    #selectGruppenURL = (Teilnehmer) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Teilnehmer}`;
 
-    //Gruppen nach Namen auslesen 
+
+    //Gruppen nach Namen auslesen
+    #selectGruppenURL = (Namen) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Namen}`;
 
     //Gruppen nach Lernvorlieben auslesen
+    #selectGruppenURL = (Lernvorlieben) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Lernvorlieben}`;
 
     //Gruppen nach Lerntyp auslesen
+    #selectGruppenURL = (Lerntyp) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Lerntyp}`;
 
 
 
