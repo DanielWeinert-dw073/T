@@ -141,7 +141,7 @@ class StudentListOperations(Resource):
     def delete (self):
         """Löschen eines Studenten"""
         adm = LerngruppenAdministration()
-        adm.delete_studenten()
+        adm.delete_studenten(id)
 
     #@secured
     def update(self):
