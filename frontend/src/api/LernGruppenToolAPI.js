@@ -1,9 +1,9 @@
-//import StudentNBO from '../StudentNBO';
-//import TeilnahmeBO from '../TeilnahmeBO';
+import StudentNBO from '../StudentNBO';
+import TeilnahmeBO from '../TeilnahmeBO';
 //import EmpfehlungBO from '../EmpfehlungBO';
 import ProfilNBO from './ProfilNBO';
 import GruppeNBO from './GruppeNBO';
-import KonversationBO from './KonversationBO';
+//import KonversationBO from './KonversationBO';
 import LerntypBO from './LerntypBO';
 import LernvorliebenBO from './LernvorliebenBO';
 import NachrichtBO from './NachrichtBO';
@@ -25,38 +25,146 @@ export default class LernGruppenToolAPI {
     //Lokales Python backend
     //#LerngruppenToolBaseURL = "https://lerngruppenapp.oa.r.appspot.com/LernGruppenToolApp";
 
+    //Student-Related
+    #getStudentenURL = () => `${this.#LernGruppenToolServerBaseURL}/studenten`;
+    #addStudentenURL = () => `${this.#LernGruppenToolServerBaseURL}/studenten`;
+    #getStudentenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
+    #getStudentenByGoogleIDURL = (google_user_id) => `${this.#LernGruppenToolServerBaseURL}/studenten-by-google-id/${google_user_id}`;
+    #updateStudentenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
+    #deleteStudentenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
+
+// Student anzeigen
+
+    getStudenten(){
+    return this.#fetchAdvanced(this.#getStudentenURL()).then((responseJSON) => {
+      let studentNBOs = StudentNBO.fromJSON(responseJSON);
+      // console.info(studentNBO);
+      return new Promise(function (resolve) {
+        resolve(studentNBO);
+      })
+    })
+   }
+
+// Student hinzufügen
+
+  addStudenten(studentNBO) {
+    return this.#fetchAdvanced(this.#addStudentenURL(), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(studentNBO)
+    }).then((responseJSON) => {
+      // We always get an array of StudentNBO.fromJSON, but only need one object
+      let responseStudentNBO = StudentNBO.fromJSON(responseJSON)[0];
+      // console.info(studentNBO);
+      return new Promise(function (resolve) {
+        resolve(responseStudentNBO);
+      })
+    })
+  }
+//Studenten nach ID auslesen
+
+  getStudenten(studenten_ID) {
+    return this.#fetchAdvanced(this.#getStudentenURL(studenten_ID)).then((responseJSON) => {
+      // We always get an array of StudentBOs.fromJSON, but only need one object
+      let responseStudentNBO = StudentNBO.fromJSON(responseJSON)[0];
+      // console.info(responseStudentNBO);
+      return new Promise(function (resolve) {
+        resolve(responseStudentNBO);
+      })
+    })
+  }
+//Studenten nach Google ID auslesen
+
+  getStudentByGoogleID(google_user_id) {
+    return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
+      // We always get an array of StudentNBO.fromJSON, but only need one object
+      let studentBO = StudentNBO.fromJSON(responseJSON)[0];
+      // console.info(responseStudentNBO);
+      return new Promise(function (resolve) {
+        resolve(studentNBO);
+      })
+    })
+  }
+
+//  Studenten überarbeiten
+
+    updateStudenten(studentNBO) {
+    return this.#fetchAdvanced(this.#updateStudentenURL(studentNBO.getID()), {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(studentNBO)
+    }).then((responseJSON) => {
+      // We always get an array of studentNBO.fromJSON
+      let responseStudentNBO = StudentNBO.fromJSON(responseJSON)[0];
+      // console.info(studentNBO);
+      return new Promise(function (resolve) {
+        resolve(responseStudentNBO);
+      })
+    })
+  }
+// Studenten löschen
+
+    deleteStudenten(studenten_ID) {
+    return this.#fetchAdvanced(this.#deleteStudentenURL(studenten_ID), {
+      method: 'DELETE'
+    }).then((responseJSON) => {
+      // We always get an array of StudentNBO.fromJSON
+      let responseStudentNBO = StudentNBO.fromJSON(responseJSON)[0];
+      // console.info(studentNBO);
+      return new Promise(function (resolve) {
+        resolve(responseStudentNBO);
+      })
+    })
+  }
+
+// Gibt die Person mit der bestimmten GoogleUserID als BO zurück
+
+	getStudentByGoogleID(google_user_id){
+		return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
+			let studentNBO = StudentNBO.fromJSON(responseJSON);
+			console.info(studentNBO)
+			return new Promise(function (resolve){
+				resolve(studentNBO)
+			})
+		})
+	}
     //Profil anzeigen
     #getProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
     #getProfileByStudentIdURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${id}`;
     #getProfileByStudentId = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${student_id}`;
     
-
-
     //Profil löschen
     #deleteProfileURL = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${student_id}`;
 
     //Profil nach Id auslesen
+    #getProfileURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/${id}`;
 
     //Profil hinzufügen
     #addProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
 
     //Profil nach Lerntyp auslesen
+    #getProfileByLerntyp= (lerntyp_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${lerntyp_id}`;
 
-    //Profil nach Lernvorlieben auslesen 
-
+    //Profil nach Lernvorlieben auslesen
+    #getProfileByLernvorlieben= (lernvorlieben_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${lernvorlieben_id}`;
 
     //Gruppen anzeigen
-    #getGruppenURL = () => `${this.#LernGruppenToolServerBaseURL}/gruppe`;
+    #getGruppenURL = () => `${this.#LernGruppenToolServerBaseURL}/gruppen`;
 
     //Gruppen löschen
-
+    #deleteGruppenURL = () => `${this.#LernGruppenToolServerBaseURL}/gruppen`;
 
     //Gruppen nach Id auslesen
-     #selectGruppenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${id}`;
+     #getGruppenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${id}`;
 
     //Gruppen nach Teilnehmer auslesen
     #selectGruppenURL = (Teilnehmer) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Teilnehmer}`;
-
 
     //Gruppen nach Namen auslesen
     #selectGruppenURL = (Namen) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Namen}`;
@@ -163,16 +271,7 @@ export default class LernGruppenToolAPI {
 */
     
    
-    //gibt die Person mit der bestimmten GoogleUserID als BO zurück
-	//getStudentByGoogleID(google_user_id){
-		//return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
-			//let studentNBO = StudentNBO.fromJSON(responseJSON);
-			//console.info(studentNBO)
-			//return new Promise(function (resolve){
-				//resolve(studentNBO)
-			//})
-		//})
-	//}
+
 
 	//Alle Studenten/User bekommen
     //#getUserURL = () => `${this.#LernGruppenToolServerBaseURL}/studenten`;
