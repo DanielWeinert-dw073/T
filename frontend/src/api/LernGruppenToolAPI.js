@@ -20,51 +20,25 @@ export default class LernGruppenToolAPI {
     static #api = null;
 
     //Lokales Python backend
-    #LernGruppenToolBaseURL = "/LerngruppenAdministration";
+    #LernGruppenToolServerBaseURL = "/LernGruppenToolApp";
 
     //Lokales Python backend
     //#LerngruppenToolBaseURL = "https://lerngruppenapp.oa.r.appspot.com/LernGruppenToolApp";
 
     //Profil anzeigen
-    #getProfileURL = () => `${this.#LernGruppenToolBaseURL}/profile`;
-    #getProfileByStudentIdURL = (id) => `${this.#LernGruppenToolBaseURL}/profile/student/${id}`;
-    #getProfileByStudentId = (student_id) => `${this.#LernGruppenToolBaseURL}/profile/student/${student_id}`;
-    #deleteProfileURL = (student_id) => `${this.#LernGruppenToolBaseURL}/profile/${student_id}`;
-    #addProfileURL = () => `${this.#LernGruppenToolBaseURL}/profile`;
+    #getProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
+    #getProfileByStudentIdURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${id}`;
+    #getProfileByStudentId = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${student_id}`;
+    
+
 
     //Profil löschen
-    deleteProfile(profileID) {
-    return this.#fetchAdvanced(this.#deleteProfileURL(profileID), {
-      method: 'DELETE'
-    }).then((responseJSON) => {
-      let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
-      // console.info(accountBOs);
-      return new Promise(function (resolve) {
-        resolve(responseProfilNBO);
-      })
-    })
-   }
-    //Profil bearbeiten/hinzufügen
-    addProfile(profilNBO) {
-    return this.#fetchAdvanced(this.#addProfileURL(), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(profilNBO)
-    }).then((responseJSON) => {
-      // We always get an array of StudentBOs.fromJSON, but only need one object
-      let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
-      // console.info(studentBOs);
-      return new Promise(function (resolve) {
-        resolve(responseProfilNBO);
-      })
-    })
-  }
-
+    #deleteProfileURL = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${student_id}`;
 
     //Profil nach Id auslesen
+
+    //Profil hinzufügen
+    #addProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
 
     //Profil nach Lerntyp auslesen
 
@@ -72,6 +46,7 @@ export default class LernGruppenToolAPI {
 
 
     //Gruppen anzeigen
+    #getGruppenURL = () => `${this.#LernGruppenToolServerBaseURL}/gruppe`;
 
     //Gruppen löschen
 
@@ -115,7 +90,7 @@ export default class LernGruppenToolAPI {
 	*/
 
     // gibt alle Profile als BO zuruck
-    getProfile() {
+  getProfile() {
         return this.#fetchAdvanced(this.#getProfileURL(),{method:"GET"}).then((responseJSON)=>{
             let profileNBOs = ProfilNBO.fromJSON(responseJSON);
             console.info(profileNBOs)
@@ -125,7 +100,7 @@ export default class LernGruppenToolAPI {
         })
     }
 
-    getProfileByStudentId(student_id) {
+  getProfileByStudentId(student_id) {
         return this.#fetchAdvanced(this.#getProfileByStudentIdURL(student_id),{method: "GET"}).then((responseJSON) =>{
             let profileNBOs = ProfilNBO.fromJSON(responseJSON);
             return new Promise (function (resolve){
@@ -134,6 +109,53 @@ export default class LernGruppenToolAPI {
         } )
     }
 
+    //Profil hinzufügen
+
+  addProfile(profilNBO) {
+      return this.#fetchAdvanced(this.#addProfileURL(), {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(profilNBO)
+      }).then((responseJSON) => {
+        // We always get an array of StudentBOs.fromJSON, but only need one object
+        let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
+        // console.info(studentBOs);
+        return new Promise(function (resolve) {
+          resolve(responseProfilNBO);
+        })
+      })
+    }
+
+    //Delete Profile
+  deleteProfile(profileID) {
+      return this.#fetchAdvanced(this.#deleteProfileURL(profileID), {
+        method: 'DELETE'
+      }).then((responseJSON) => {
+        let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
+        // console.info(accountBOs);
+        return new Promise(function (resolve) {
+          resolve(responseProfilNBO);
+        })
+      })
+     };
+
+     //Gruppen auslesne
+/** 
+  getGruppen() {
+    return this.#fetchAdvanced(this.#getGruppenURL(), {method: "GET"}).then((responseJSON)) => {
+      let gruppeNBOs = GruppeNBO.fromJSON(responseJSON);
+      console.info(gruppeNBOs)
+      return new Promise(function (resolve){
+        resolve(gruppeNBOs);
+      })
+    }
+  }
+*/
+    
+   
     //gibt die Person mit der bestimmten GoogleUserID als BO zurück
 	//getStudentByGoogleID(google_user_id){
 		//return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
@@ -146,7 +168,7 @@ export default class LernGruppenToolAPI {
 	//}
 
 	//Alle Studenten/User bekommen
-    //#getUserURL = () => `${this.#LernGruppenToolBaseURL}/studenten`;
+    //#getUserURL = () => `${this.#LernGruppenToolServerBaseURL}/studenten`;
 
 
 

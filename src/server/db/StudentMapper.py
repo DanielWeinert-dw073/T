@@ -206,6 +206,22 @@ class StudentMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def update_by_user_id(self, student):
+        """Überschreiben / Aktualisieren eines student-Objekts in der DB
+
+        :param student -> student-Objekt
+        :return aktualisiertes student-Objekt
+        """
+        cursor = self._cnx.cursor()
+
+        command = "UPDATE studenten " + "SET name=%s, email=%s,  WHERE id=%s"
+        data = (student.get_name(), student.get_email(), student.get_id())
+
+        cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+
     def delete(self, student):
         """Löschen der Daten eines Studenten aus der Datenbank
 

@@ -11,6 +11,8 @@ def secured(function):
     def wrapper(*args, **kwargs):
         # Verify Firebase auth.
         id_token = request.cookies.get("token")
+        name  = request.cookies.get("name")
+        email = request.cookies.get("email")
         error_message = None
         claims = None
         objects = None

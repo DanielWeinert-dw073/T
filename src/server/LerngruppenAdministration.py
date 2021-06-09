@@ -130,6 +130,10 @@ class LerngruppenAdministration(object):
         with ProfilMapper() as mapper:
             return mapper.find_by_lerntyp(lerntyp)
 
+    def update_profil(self, id):
+        with ProfilMapper() as mapper:
+            mapper.profil
+
     """
     Lerntyp Methoden
     """
