@@ -28,8 +28,8 @@ export default class LernGruppenToolAPI {
     //Student-Related
     #getStudentenURL = () => `${this.#LernGruppenToolServerBaseURL}/studenten`;
     #addStudentenURL = () => `${this.#LernGruppenToolServerBaseURL}/studenten`;
-    #getStudentenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
-    #getStudentenByGoogleIDURL = (google_user_id) => `${this.#LernGruppenToolServerBaseURL}/studenten-by-google-id/${google_user_id}`;
+    #getStudentenByIDURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
+    #getStudentenByGoogleIDURL = (google_user_id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${google_user_id}`;
     #updateStudentenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
     #deleteStudentenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/studenten/${id}`;
 
@@ -67,7 +67,7 @@ export default class LernGruppenToolAPI {
 //Studenten nach ID auslesen
 
   getStudenten(studenten_ID) {
-    return this.#fetchAdvanced(this.#getStudentenURL(studenten_ID)).then((responseJSON) => {
+    return this.#fetchAdvanced(this.#getStudentenByIDURL(studenten_ID)).then((responseJSON) => {
       // We always get an array of StudentBOs.fromJSON, but only need one object
       let responseStudentNBO = StudentNBO.fromJSON(responseJSON)[0];
       // console.info(responseStudentNBO);
@@ -78,8 +78,8 @@ export default class LernGruppenToolAPI {
   }
 //Studenten nach Google ID auslesen
 
-  getStudentByGoogleID(google_user_id) {
-    return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
+  getStudentenByGoogleID(google_user_id) {
+    return this.#fetchAdvanced(this.#getStudentenByGoogleIDURL(google_user_id)).then((responseJSON) => {
       // We always get an array of StudentNBO.fromJSON, but only need one object
       let studentBO = StudentNBO.fromJSON(responseJSON)[0];
       // console.info(responseStudentNBO);
@@ -122,28 +122,16 @@ export default class LernGruppenToolAPI {
       })
     })
   }
-
-// Gibt die Person mit der bestimmten GoogleUserID als BO zurück
-
-	getStudentByGoogleID(google_user_id){
-		return this.#fetchAdvanced(this.#getStudentByGoogleIDURL(google_user_id)).then((responseJSON) => {
-			let studentNBO = StudentNBO.fromJSON(responseJSON);
-			console.info(studentNBO)
-			return new Promise(function (resolve){
-				resolve(studentNBO)
-			})
-		})
-	}
     //Profil anzeigen
     #getProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
-    #getProfileByStudentIdURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${id}`;
-    #getProfileByStudentId = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${student_id}`;
+    #getProfileByStudentIDURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${id}`;
+    #getProfileByStudentID = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/student/${student_id}`;
     
     //Profil löschen
     #deleteProfileURL = (student_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${student_id}`;
 
     //Profil nach Id auslesen
-    #getProfileURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/${id}`;
+    #getProfileByIDURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/${id}`;
 
     //Profil hinzufügen
     #addProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
@@ -161,19 +149,19 @@ export default class LernGruppenToolAPI {
     #deleteGruppenURL = () => `${this.#LernGruppenToolServerBaseURL}/gruppen`;
 
     //Gruppen nach Id auslesen
-     #getGruppenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${id}`;
+     #getGruppenByIDURL = (id) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${id}`;
 
     //Gruppen nach Teilnehmer auslesen
-    #selectGruppenURL = (Teilnehmer) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Teilnehmer}`;
+    //#selectGruppenURL = (Teilnehmer) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Teilnehmer}`;
 
     //Gruppen nach Namen auslesen
-    #selectGruppenURL = (Namen) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Namen}`;
+    //#selectGruppenURL = (Namen) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Namen}`;
 
     //Gruppen nach Lernvorlieben auslesen
-    #selectGruppenURL = (Lernvorlieben) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Lernvorlieben}`;
+    //#selectGruppenURL = (Lernvorlieben) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Lernvorlieben}`;
 
     //Gruppen nach Lerntyp auslesen
-    #selectGruppenURL = (Lerntyp) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Lerntyp}`;
+    //#selectGruppenURL = (Lerntyp) => `${this.#LernGruppenToolServerBaseURL}/gruppe/${Lerntyp}`;
 
 
 
