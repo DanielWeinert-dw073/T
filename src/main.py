@@ -140,6 +140,18 @@ class StudentListOperations(Resource):
     @secured
     def delete (self):
         """Löschen eines Studenten"""
+        adm = LerngruppenAdministration()
+        adm.delete_studenten()
+
+    #@secured
+    def update(self):
+        """Update eines Studenten"""
+
+        adm = LerngruppenAdministration()
+        studenten = adm.get_studenten_by_id()
+
+        adm.update(studenten)
+
 
 
 
@@ -237,8 +249,10 @@ class NachrichtListOperation(Resource):
         else: 
             return '',500
 
-
-
+    def delete(self):
+            """ Löschen einer Nachricht"""
+            adm = LerngruppenAdministration()
+            adm.delete_nachricht()
 
 
 @LernGruppenToolApp.route("/nachricht/<int:id>")
@@ -370,7 +384,7 @@ class EmpfehlungListOperation(Resource):
 
     # @secured
     def put(self):
-        """Update der Teilnahmen"""
+        """Update der Empfehlung"""
 
         adm = LerngruppenAdministration()
         empfehlungen = adm.get_empfehlung_by_id(id)
