@@ -86,7 +86,8 @@ class App extends React.Component {
         this.setState({
             authLoading: true
         });
-        const provider = new firebase.auth.GithubAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope("email")
         firebase.auth().signInWithRedirect(provider);
     }
 
