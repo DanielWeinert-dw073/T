@@ -102,11 +102,11 @@ class ProfilÜbersicht extends React.Component {
 
         return(
             <div className={classes.root}>
-                <Grid container className={classes.header} justify="flex-end" alignItems="center" spacing={2}>
+                <Grid container  justify="flex-end" alignItems="center" spacing={2}>
                     <Grid item xs/>
                     <Grid item>
                     <Button variant="outlined" color="primary" >
-                        Name: {currentStudentName} <br/> currentStudentId: {currentStudentId}
+                        
 
                     </Button>
                     </Grid>

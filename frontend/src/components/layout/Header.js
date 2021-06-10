@@ -28,7 +28,7 @@ class Header extends Component {
     render() {
         const {classes, user, currentUser} = this.props;
         return (
-            <Paper variant = "outlined" >
+            <Paper className={classes.root} variant = "outlined" >
                 <ProfileDropDown user={user} />
                 <Typography  variant = "h3" component = "h1" align = "center">
                     HdM LerngruppenTool
@@ -40,19 +40,22 @@ class Header extends Component {
                     user ? 
                                     
                     <>
-               
+                        { currentUser ? 
                         <>
-                        <Paper variant = "outlined">
+                        
                             
                             <Tabs indicatorColor='secondary' textColor='secondary' variant='fullWidth' centered value={this.state.tabindex} onChange={this.handleTabChange}>
-                                <Tab label='Profil' component={RouterLink} to={`/profile`} />
-                                <Tab label="GruppenListe" component={RouterLink} to={'/gruppen'}/>
+                                <Tab label='Profil' component={RouterLink} to={`/ProfilÜbersicht`} />
+                                <Tab label="GruppenListe" component={RouterLink} to={'/GruppenListe'}/>
                                 <Tab label="Chat" component={RouterLink} to={'/chat'}/>
                                 <Tab label='About' component={RouterLink} to={`/about`} />
                             </Tabs>
-                        </Paper>
+                         
+                  
                         </>
-                     
+                        
+                        : null
+                        }
                         
                     
                     
@@ -93,4 +96,4 @@ Header.propTypes = {
       
 
 
-export default Header;
+export default withRouter(withStyles(styles)(Header));
