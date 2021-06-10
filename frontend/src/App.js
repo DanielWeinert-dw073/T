@@ -6,7 +6,7 @@ import firebase from 'firebase/app'; //Firebase module
 import 'firebase/auth'; //Firebase module
 import Header from './components/layout/Header';
 import LernGruppenToolAPI from './api/LernGruppenToolAPI';
-import TeilnahmeBO from './api/TeilnahmeBO'; 
+import GruppenListe from './components/GruppenListe';
 import ProfilÜbersicht from './components/ProfilÜbersicht';
 //import ProfilÜbersichtEintrag from './components/ProfilÜbersichtEintrag';
 import SignIn from './components/pages/SignIn';
@@ -62,8 +62,8 @@ class App extends React.Component {
                     currentUser: user,
                     authError: null,
                     authLoading: false
-                })}).then(() => {
-                this.getUserByGoogleId()
+                })
+             
             }).catch(e => {
                 this.setState({
                     authError: e,
@@ -165,6 +165,10 @@ class App extends React.Component {
                                     <Route exact path="/profil" >
                                         <ProfilÜbersicht />
                                     </Route>
+                                    <Route path="/gruppen">
+                                        <GruppenListe />
+
+                                    </Route>
 
                                     <Route path="/about" component = {About}/>
 
@@ -175,7 +179,7 @@ class App extends React.Component {
                                 
                                 //if not signed in show sign in page
                                 <>
-                                    <Redirect to="SignIn"/>
+                                    
                                     <SignIn onSignIn={this.handleSignIn}/>
                                 </>
                             

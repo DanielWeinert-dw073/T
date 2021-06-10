@@ -9,7 +9,7 @@ import firebase from 'firebase/app';
  * firebase.auth().signOut() method is used.
  */
 
-class ProfilDropDown extends Component {
+class ProfileDropDown extends Component {
 
   // a refernce to the avatar button
   #avatarButtonRef = createRef();
@@ -103,11 +103,11 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-ProfilDropDown.propTypes = {
+ProfileDropDown.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
   /** The logged in firesbase user */
   user: PropTypes.object,
 }
 
-export default withStyles(styles)(ProfilDropDown)
+export default withStyles(styles)(ProfileDropDown)

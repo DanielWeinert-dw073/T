@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Paper, Typography, Tabs, Tab } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
-import ProfilDropDown from '../dialogs/ProfilDropDown';
+import ProfileDropDown from '../dialogs/ProfileDropDown';
 import { withRouter } from 'react-router-dom';
 
 /** 
  * Zeigt den Header mit den verfügbaren Tabs.
 */
 
-class Header extends React.Component {
+class Header extends Component {
     constructor(props) {
         super(props);
 
@@ -28,34 +28,34 @@ class Header extends React.Component {
     render() {
         const {classes, user, currentUser} = this.props;
         return (
-            <Paper className= {classes.root} variant = "outlined" >
-                <ProfilDropDown user={user} />
-                <Typography className={classes.text1} variant = "h3" component = "h1" align = "center">
+            <Paper variant = "outlined" >
+                <ProfileDropDown user={user} />
+                <Typography  variant = "h3" component = "h1" align = "center">
                     HdM LerngruppenTool
                 </Typography>
-                <Typography className={classes.text2} variant = "h5" component = "h2" align = "center">
+                <Typography  variant = "h5" component = "h2" align = "center">
                     Powered by Gruppenalgorithmus
                 </Typography>
                 {
                     user ? 
                                     
                     <>
-                    {currentUser ?
+               
                         <>
                         <Paper variant = "outlined">
                             
                             <Tabs indicatorColor='secondary' textColor='secondary' variant='fullWidth' centered value={this.state.tabindex} onChange={this.handleTabChange}>
-                                <Tab label='Profil' component={RouterLink} to={`/profilübersicht`} />
-                                <Tab label="Partner/Gruppensuche" component={RouterLink} to={'/gruppensuche'}/>
+                                <Tab label='Profil' component={RouterLink} to={`/profile`} />
+                                <Tab label="GruppenListe" component={RouterLink} to={'/gruppen'}/>
                                 <Tab label="Chat" component={RouterLink} to={'/chat'}/>
                                 <Tab label='About' component={RouterLink} to={`/about`} />
                             </Tabs>
                         </Paper>
                         </>
-                        :null
+                     
                         
                     
-                    }
+                    
                     </>
                     :null
                 
@@ -93,4 +93,4 @@ Header.propTypes = {
       
 
 
-export default withRouter(withStyles(styles)(Header));
+export default Header;
