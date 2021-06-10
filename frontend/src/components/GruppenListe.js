@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { withStyles, Typography, Grid } from '@material-ui/core';
+import LernGruppenToolAPI from '../api/LernGruppenToolAPI';
 
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
@@ -6,7 +8,7 @@ import LoadingProgress from './dialogs/LoadingProgress';
 
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import Style from ''
+
 
 
 
@@ -16,11 +18,32 @@ class GruppenListe extends React.Component {
         super(props);
 
         this.state = {
-            gruppen: [],
+            gruppe: [],
             loadingProgress: false,
             error: null
         };
     }
+
+        getGruppen = () => {
+            LernGruppenToolAPI.getAPI().getGruppen()
+                .then(gruppeNBOs =>
+                    this.setState({
+                        gruppe: gruppeNBOs,
+                        loadingProgress: false,
+                        error: null,
+
+                    })).catch(e =>
+                        this.setState({
+                            gruppe: [],
+                            loadingProgress: false,
+                            error:e
+                        }));
+            this.setState({
+                loadingInProgress: true,
+                error: null
+            });
+
+        } 
 
     componentDidMount(){
         this.getGruppen();
@@ -28,10 +51,11 @@ class GruppenListe extends React.Component {
 
 
     render() {
-        const {classes} = this.props
+        const {classes} = this.props;
+        const { loadingProgress, error, gruppen } = this.state;
         return (
-            <div>
-                <Grid justify= "flex-end" >
+            <div className={classes.root}>
+                <Grid justify= "flex-end" container spacing={1} alignItems='space-between'>
                     <Typography>
                         Test Gruppe 
                     </Typography>
