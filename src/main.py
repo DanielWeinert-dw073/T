@@ -104,9 +104,9 @@ konversation = api.inherit("Konversation", bo, {
 })
 
 suggestion_algorithmus = api.inherit("SuggestionAlgorithmus", bo, {
-    "lerntyp_Id" :fields.Integer(attribute="_lerntyp_Id", description="LerntypId"),
-    "lernvorlieben_Id" : fields.Integer(attribute="_lernvorlieben_Id", description="Lernvorlieben_Id"),
-    "profil_Id" : fields.Integer(attribute="_profil_Id", description= "Profil_Id"),
+    "lerntyp_id": fields.Integer(attribute="_lerntyp_id", description="LerntypId"),
+    "lernvorlieben_id": fields.Integer(attribute="_lernvorlieben_id", description="Lernvorlieben_Id"),
+    "profil_id": fields.Integer(attribute="_profil_id", description="Profil_Id"),
     "gruppen_id": fields.Integer(attribute="_gruppen_id", description="Gruppen Id ")
 })
 
@@ -119,7 +119,7 @@ class StudentListOperations(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
     @secured
-    def get (self):
+    def get(self):
         """Auslesen aller Studenten"""
 
         adm = LerngruppenAdministration()
@@ -138,12 +138,12 @@ class StudentListOperations(Resource):
         adm.update_student_by_id(student_Id)
 
     @secured
-    def delete (self):
+    def delete(self):
         """Löschen eines Studenten"""
         adm = LerngruppenAdministration()
         adm.delete_student(id)
 
-    #@secured
+    @secured
     def update(self):
         """Update eines Studenten"""
 
@@ -161,8 +161,8 @@ class StudentListOperations(Resource):
 class StudentByNameOperations(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    #@secured
-    def get (self, name):
+    @secured
+    def get(self, name):
         """Auslesen eines bestimmten Studenten Objekt. Nachrichten
 
         Das auszulesene Objekt wird über den Namen bestimmt."""
@@ -184,7 +184,7 @@ class StudentByGoogle_User_Id(Resource):
         Das auszulesene Objekt wird über die GoogleUserId bestimmt."""
 
         adm = LerngruppenAdministration()
-        stud = adm.get_student_by_google_user_id(google_user_id)
+        stud = get_student_by_google_user_id(google_user_id)
         return stud
 
 @LernGruppenToolApp.route("/studenten-by-id/<int:id>")
@@ -260,7 +260,7 @@ class NachrichtListOperation(Resource):
 @LernGruppenToolApp.param("id")
 class NachrichtById(Resource):
     @LernGruppenToolApp.marshal_list_with(nachricht)
-    # @secured
+    @secured
     def get(self, id):
         """Auslesen eines bestimmten Nachricht Objekts.
 
@@ -338,7 +338,7 @@ class ProfilListOperation(Resource):
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class TeilnahmeListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(teilnahme)
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Teilnahmen"""
 
@@ -346,7 +346,7 @@ class TeilnahmeListOperation(Resource):
         teilnahmen = adm.get_alle_teilnahmen()
         return teilnahmen
 
-    # @secured
+    @secured
     def put(self):
             """Update der Teilnahmen"""
 
@@ -355,13 +355,13 @@ class TeilnahmeListOperation(Resource):
 
             adm.update(teilnahme)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Teilnahme"""
         adm = LerngruppenAdministration()
         adm.delete_teilnahme(id)
 
-    # @secured
+    @secured
     def post(self):
         """ Anlegen einer Teilnahme"""
         adm = LerngruppenAdministration()
@@ -374,7 +374,7 @@ class TeilnahmeListOperation(Resource):
 class EmpfehlungListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(empfehlung)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Empfehlungen"""
 
@@ -382,7 +382,7 @@ class EmpfehlungListOperation(Resource):
         empfehlungen = adm.get_all_empfehlungen()
         return empfehlungen
 
-    # @secured
+    @secured
     def put(self):
         """Update der Empfehlung"""
 
@@ -390,14 +390,14 @@ class EmpfehlungListOperation(Resource):
         empfehlungen = adm.get_empfehlung_by_id(id)
         adm.update(teilnahme)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Empfehlung"""
 
         adm = LerngruppenAdministration()
         adm.delete_empfehlung(id)
 
-    #@secured
+    @secured
     def post(self):
         """Anlegen einer Empfehlung"""
         adm= LerngruppenAdministration()
@@ -410,7 +410,7 @@ class EmpfehlungListOperation(Resource):
 class EmpfehlungListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(lerntyp)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Lerntypen"""
 
@@ -418,7 +418,7 @@ class EmpfehlungListOperation(Resource):
         lerntypen = adm.get_all_lerntypen()
         return lerntypen
 
-    # @secured
+    @secured
     def put(self):
         """Update der Lerntypen"""
 
@@ -426,14 +426,14 @@ class EmpfehlungListOperation(Resource):
         lerntypen = adm.get_lerntyp_by_id(id)
         adm.update(lerntypen)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen eines Lerntypen"""
 
         adm = LerngruppenAdministration()
         adm.delete_lerntyp(id)
 
-    # @secured
+    @secured
     def post(self):
         """Anlegen eines Lerntypen"""
         adm = LerngruppenAdministration()
@@ -446,7 +446,7 @@ class EmpfehlungListOperation(Resource):
 class EmpfehlungListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(lernvorlieben)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Lernvorlieben"""
 
@@ -454,7 +454,7 @@ class EmpfehlungListOperation(Resource):
         lernvorlieben = adm.get_all_lernvorlieben()
         return lernvorlieben
 
-    # @secured
+    @secured
     def put(self):
         """Update der Lernvorlieben"""
 
@@ -462,14 +462,14 @@ class EmpfehlungListOperation(Resource):
         lernvorlieben = adm.get_lernvorliebe_by_id(id)
         adm.update(lernvorlieben)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Lernvorliebe"""
 
         adm = LerngruppenAdministration()
         adm.delete_lernvorlieben(id)
 
-    # @secured
+    @secured
     def post(self):
         """Anlegen einer Lernvorliebe"""
         adm = LerngruppenAdministration()
@@ -480,7 +480,7 @@ class EmpfehlungListOperation(Resource):
 class KonversationListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(konversation)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Konversationen"""
 
@@ -488,7 +488,7 @@ class KonversationListOperation(Resource):
         konversationen = adm.get_all_konversationen()
         return konversationen
 
-    # @secured
+    @secured
     def put(self):
         """Update der Konversationen"""
 
@@ -496,14 +496,14 @@ class KonversationListOperation(Resource):
         konversationen = adm.get_konversation_by_id(id)
         adm.update(konversationen)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Konversation"""
 
         adm = LerngruppenAdministration()
         adm.delete_konversation(id)
 
-    # @secured
+    @secured
     def post(self):
         """Anlegen einer Konversation"""
         adm= LerngruppenAdministration()
