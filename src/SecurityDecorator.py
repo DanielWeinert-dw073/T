@@ -11,12 +11,12 @@ def secured(function):
     def wrapper(*args, **kwargs):
         # Verify Firebase auth.
         id_token = request.cookies.get("token")
-        name  = request.cookies.get("name")
+        name = request.cookies.get("name")
         email = request.cookies.get("email")
         error_message = None
         claims = None
         objects = None
-
+        print("Security loaded")
         if id_token:
             try:
                 # Verify the token against the Firebase Auth API. This example
@@ -34,14 +34,15 @@ def secured(function):
                     email = claims.get("email")
                     name = claims.get("name")
 
-                    student = adm.get_student_by_google_user_id(google_user_id)
+                    student = get_student_by_google_user_id(google_user_id)
                     if student is not None:
  
                         student.set_name(name)
                         student.set_email(email)
                         adm.save_student(student)
+                        print("saved student")
                     else:
-
+                        print("create student")
                         student = adm.create_student(name, email, google_user_id)
 
                     print(request.method, request.path, "angefragt durch:", name, email)
