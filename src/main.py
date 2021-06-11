@@ -129,26 +129,26 @@ class StudentListOperations(Resource):
     @secured
     def put(self):
 
-        studentId = request.args.get("userId")
+        student_Id = request.args.get("userId")
         name = request.args.get("name")
         email = request.args.get("email")
         adm = LerngruppenAdministration()
         student.set_name(name)
         student.set_email(email)
-        adm.update_student_by_id(student)
+        adm.update_student_by_id(student_Id)
 
     @secured
     def delete (self):
         """Löschen eines Studenten"""
         adm = LerngruppenAdministration()
-        adm.delete_studenten(id)
+        adm.delete_student(id)
 
     #@secured
     def update(self):
         """Update eines Studenten"""
 
         adm = LerngruppenAdministration()
-        studenten = adm.get_studenten_by_id()
+        studenten = adm.get_student_by_id(id)
 
         adm.update(studenten)
 
@@ -343,7 +343,7 @@ class TeilnahmeListOperation(Resource):
         """Auslesen aller Teilnahmen"""
 
         adm=LerngruppenAdministration()
-        teilnahmen = adm.get_all_teilnahmen()
+        teilnahmen = adm.get_alle_teilnahmen()
         return teilnahmen
 
     # @secured

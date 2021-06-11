@@ -47,12 +47,11 @@ export default class LernGruppenToolAPI {
     #getProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
     #getProfileByStudentenIdURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/studenten/${id}`;
     #getProfileByIdURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/${id}`;
-    #getProfileByLerntypen= (lerntypen_Id) => `${this.#LernGruppenToolServerBaseURL}/profile/${lerntypen_Id}`;
-    #getProfileByLernvorlieben= (lernvorlieben_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${lernvorlieben_id}`;
+    #getProfileByLerntypURL= (lerntypen_Id) => `${this.#LernGruppenToolServerBaseURL}/profile/${lerntypen_Id}`;
+    #getProfileByLernvorliebenURL= (lernvorlieben_id) => `${this.#LernGruppenToolServerBaseURL}/profile/${lernvorlieben_id}`;
     #addProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/profile`;
     #updateProfileURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/${id}`;
     #deleteProfileURL = (id) => `${this.#LernGruppenToolServerBaseURL}/profile/${id}`;
-
 
     //Gruppe-Related
     #getGruppenURL = () => `${this.#LernGruppenToolServerBaseURL}/gruppen`;
@@ -84,8 +83,8 @@ export default class LernGruppenToolAPI {
 
     //Nachricht-Related
     #getNachrichtenURL = () => `${this.#LernGruppenToolServerBaseURL}/nachrichten`;
-    #getNachrichtenByProfileURL = () => `${this.#LernGruppenToolServerBaseURL}/nachrichten-by-profile`/$`{profile}`;
-    #getInhaltByNachrichtenURL = () => `${this.#LernGruppenToolServerBaseURL}/inhalt-by-nachrichten/${nachrichten}`;
+    #getNachrichtenByProfileURL = (profil_Id) => `${this.#LernGruppenToolServerBaseURL}/nachrichten-by-profile/${profil_Id}`;
+    #getNachrichtenByInhaltURL = (inhalt) => `${this.#LernGruppenToolServerBaseURL}/inhalt-by-nachrichten/${inhalt}`;
     #addNachrichtenURL = () => `${this.#LernGruppenToolServerBaseURL}/nachrichten`;
     #updateNachrichtenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/nachrichten/${id}`;
     #deleteNachrichtenURL = (id) => `${this.#LernGruppenToolServerBaseURL}/nachrichten/${id}`;
@@ -271,7 +270,7 @@ export default class LernGruppenToolAPI {
     getProfile() {
     return this.#fetchAdvanced(this.#getProfileURL()).then((responseJSON) => {
       // We always get an array of ProfilNBO.fromJSON, but only need one object
-      let responseProfileNBO = ProfileNBO.fromJSON(responseJSON)[0];
+      let responseProfileNBO = ProfilNBO.fromJSON(responseJSON)[0];
        //console.info(responseProfileNBO);
       return new Promise(function (resolve) {
         resolve(responseProfileNBO);
@@ -322,10 +321,10 @@ export default class LernGruppenToolAPI {
         })
       })
     }
-
-    //Profil nach Lerntyp auslesen
-    getProfileByLerntypen(lerntypen_Id) {
-    return this.#fetchAdvanced(this.#getProfileByLerntypenURL(lerntypen_Id)).then((responseJSON) => {
+/** 
+   //Profil nach Lerntyp auslesen
+    getProfilByLerntyp(lerntypen_Id) {
+      return this.#fetchAdvanced(this.#getProfilByLerntypURL(lerntypen_Id)).then((responseJSON) => {
       // We always get an array of LerntypBO.fromJSON, but only need one object
       let responseLerntypBO = LerntypBO.fromJSON(responseJSON)[0];
        //console.info(responseLerntyBO);
@@ -334,10 +333,10 @@ export default class LernGruppenToolAPI {
       })
     })
   }
-
+*/
     //Profil nach Lernvorlieben auslesen
-    getProfileByLernvorlieben(lernvorlieben_Id) {
-    return this.#fetchAdvanced(this.#getProfileByLernvorliebenURL(lernvorlieben_Id)).then((responseJSON) => {
+    getProfilByLernvorlieben(lernvorlieben_Id) {
+      return this.#fetchAdvanced(this.#getProfileByLernvorliebenURL(lernvorlieben_Id)).then((responseJSON) => {
       // We always get an array of LernvorliebenBO.fromJSON, but only need one object
       let responseLernvorliebenBO = LernvorliebenBO.fromJSON(responseJSON)[0];
        //console.info(responseLernvorliebenBO);
@@ -366,7 +365,7 @@ export default class LernGruppenToolAPI {
   }
     //Profil nach Studenten auslesen
   getProfileByStudentenId(studenten_Id) {
-    return this.#fetchAdvanced(this.#getProfileByStudentenURL(studenten_Id)).then((responseJSON) => {
+    return this.#fetchAdvanced(this.#getProfileByStudentenIdURL(studenten_Id)).then((responseJSON) => {
       // We always get an array of ProfilNBO.fromJSON, but only need one object
       let responseProfilNBO = ProfilNBO.fromJSON(responseJSON)[0];
        //console.info(responseProfilNBO);
@@ -463,14 +462,14 @@ getGruppenByLernvorlieben(lernvorlieben_Id) {
     })
   }
     //Gruppen hinzufügen
-    addGruppen(gruppeNBO) {
+    addGruppen(GruppeNBO) {
     return this.#fetchAdvanced(this.#addGruppenURL(), {
       method: 'POST',
       headers: {
         'Accept': 'application/json, text/plain',
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(gruppenNBO)
+      body: JSON.stringify(GruppeNBO)
     }).then((responseJSON) => {
       // We always get an array of GruppenNBO.fromJSON, but only need one object
       let responseGruppeNBO = GruppeNBO.fromJSON(responseJSON)[0];
@@ -504,7 +503,7 @@ getGruppenByLernvorlieben(lernvorlieben_Id) {
       method: 'DELETE'
     }).then((responseJSON) => {
       // We always get an array of GruppenNBO.fromJSON
-      let responseGruppeNBO = GruppeBO.fromJSON(responseJSON)[0];
+      let responseGruppeNBO = GruppeNBO.fromJSON(responseJSON)[0];
       // console.info(gruppeNBO);
       return new Promise(function (resolve) {
         resolve(responseGruppeNBO);
@@ -673,8 +672,8 @@ getGruppenByLernvorlieben(lernvorlieben_Id) {
     })
   }
     //Nachricht auslesen nach Profil
-  getNachrichtenByProfile(profile_id) {
-    return this.#fetchAdvanced(this.#getNachrichtenByProfileURL(profile_Id)).then((responseJSON) => {
+  getNachrichtenByProfile(profil_Id) {
+    return this.#fetchAdvanced(this.#getNachrichtenByProfileURL(profil_Id)).then((responseJSON) => {
       // We always get an array of NachrichtBO.fromJSON, but only need one object
       let responseNachrichtBO = NachrichtBO.fromJSON(responseJSON)[0];
        //console.info(responseNachrichtBO);
@@ -684,8 +683,8 @@ getGruppenByLernvorlieben(lernvorlieben_Id) {
     })
   }
     //Nachrichten auslesen nach Inhalt
-    getNachrichtenByInhalt(inhalt_Id) {
-    return this.#fetchAdvanced(this.#getNachrichtenByInhaltURL(inhalt_Id)).then((responseJSON) => {
+    getNachrichtenByInhalt(inhalt) {
+      return this.#fetchAdvanced(this.#getNachrichtenByInhaltURL(inhalt)).then((responseJSON) => {
       // We always get an array of NachrichtBO.fromJSON, but only need one object
       let responseNachrichtBO = NachrichtBO.fromJSON(responseJSON)[0];
        //console.info(responseNachrichtBO);

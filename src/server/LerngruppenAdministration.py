@@ -125,10 +125,10 @@ class LerngruppenAdministration(object):
         with ProfilMapper() as mapper:
             return mapper.find_by_lernvorlieben(lernvorlieben)
 
-    def get_profil_by_lerntyp(self,lerntyp):
+    def get_profil_by_lerntyp_Id(self,lerntyp_id):
         """ Profile nach dem Lerntyp ausgeben"""
         with ProfilMapper() as mapper:
-            return mapper.find_by_lerntyp(lerntyp)
+            return mapper.find_by_lerntyp_Id(lerntyp_id)
 
     def update_profil(self, id):
         with ProfilMapper() as mapper:
