@@ -169,7 +169,7 @@ class StudentMapper(Mapper):
         command = "INSERT INTO studenten (id, name, email, google_user_id) VALUES (%s,%s,%s,%s)"
         data = (student.get_id(), student.get_name(), student.get_email(), student.get_google_user_id())
         cursor.execute(command, data)
-
+        print("User anlegen" & student.get_email())
         self._cnx.commit()
         cursor.close()
 
@@ -183,7 +183,7 @@ class StudentMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE studenten " + "SET name=%s, email=%s WHERE google_user_id=%s"
+        command = "UPDATE studenten SET name=%s, email=%s WHERE google_user_id=%s"
         data = (student.get_name(), student.get_email(), student.get_google_user_id())
 
         cursor.execute(command, data)
