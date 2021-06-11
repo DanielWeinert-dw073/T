@@ -21,7 +21,15 @@ from .db.EmpfehlungMapper import EmpfehlungMapper
 from .db.LerntypMapper import LerntypMapper
 from .db.LernvorliebenMapper import LernvorliebenMapper
 
+
+def get_student_by_google_user_id(google_user_id):
+    """Einen Studenten anhand seiner Google User Id auslesen"""
+    with StudentMapper() as mapper:
+        return mapper.find_by_google_user_id(google_user_id)
+
+
 class LerngruppenAdministration(object):
+
     """ Diese Klasse ist für die Verbindung der API via Flask (siehe main.py) 
     mit der DB-Anbindung (Mapper-Klassen) zuständig."""
 
@@ -43,11 +51,6 @@ class LerngruppenAdministration(object):
 
         with StudentMapper() as mapper:
             return mapper.insert(user)
-
-    def get_student_by_google_user_id(self, google_user_id):
-        """Einen Studenten anhand seiner Google User Id auslesen"""
-        with StudentMapper() as mapper:
-            return mapper.find_by_google_user_id(google_user_id)
 
     def get_alle_studenten(self):
         """Alle Studenten auslesen"""
