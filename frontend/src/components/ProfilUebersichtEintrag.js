@@ -38,7 +38,7 @@ const StyledTableCell = withStyles((theme) => ({
     },
   }))(TableRow);
   
-class ProfilÜbersichtEintrag extends React.Component {
+class ProfilUebersichtEintrag extends React.Component {
     constructor(props) {
         super(props);
 
@@ -204,11 +204,11 @@ const styles = theme => ({
     });
 
 /** PropTypes */
-ProfilÜbersichtEintrag.propTypes = {
+ProfilUebersichtEintrag.propTypes = {
     /** @ignore */
     classes: PropTypes.object.isRequired,
     profil: PropTypes.object.isRequired,
     show: PropTypes.bool.isRequired
   }
   
-export default withStyles(styles)(ProfilÜbersichtEintrag);
+export default withStyles(styles)(ProfilUebersichtEintrag);

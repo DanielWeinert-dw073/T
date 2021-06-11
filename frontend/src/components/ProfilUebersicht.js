@@ -11,7 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ProfilÜbersichtEintrag from './ProfilÜbersichtEintrag'
+import ProfilUebersichtEintrag from './ProfilUebersichtEintrag'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import LernGruppenToolAPI from '../api/LernGruppenToolAPI';
@@ -45,7 +45,7 @@ const StyledTableRow = withStyles((theme) => ({
   }))(TableRow);
 
 
-class ProfilÜbersicht extends React.Component {
+class ProfilUebersicht extends React.Component {
     constructor(props) {
         super(props);
       
@@ -53,15 +53,15 @@ class ProfilÜbersicht extends React.Component {
 
         this.state = {
 
-            faecher :null,
-            alter : null,
-            studiengang : null,
+            faecher: null,
+            alter: null,
+            studiengang: null,
             wohnort: null,
             semester: null,
             vorwissen: null,
             lernvorlieben: null,
-            about_me:null,
-            sprachen:null,
+            about_me: null,
+            sprachen: null,
             error: null,
             loadingInProgress: false,
         };
@@ -134,7 +134,7 @@ class ProfilÜbersicht extends React.Component {
                                 <>
                                 {
                                     profil.map(profil =>
-                                        <ProfilÜbersichtEintrag key={profil.getId()} profil = {profil}
+                                        <ProfilUebersichtEintrag key={profil.getId()} profil = {profil}
                                         getProfil = {this.getProfil}
                                         show={this.props.show} 
                                     />)
@@ -186,7 +186,7 @@ const styles = theme => ({
     });
 
 /** PropTypes */
-ProfilÜbersicht.propTypes = {
+ProfilUebersicht.propTypes = {
     /** @ignore */
     classes: PropTypes.object.isRequired,
     /** @ignore */
@@ -195,4 +195,4 @@ ProfilÜbersicht.propTypes = {
 }
 
 
-export default withRouter(withStyles(styles)(ProfilÜbersicht));
+export default withRouter(withStyles(styles)(ProfilUebersicht));
