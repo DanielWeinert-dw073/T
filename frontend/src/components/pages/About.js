@@ -27,7 +27,7 @@ function About() {
                 Link zum Repository <Link href ="https://github.com/SchenkTom/SW-Team19">Team 19</Link>
                 </Typography>
             <Typography variant='body2'>
-                © Hochschule der Medien 2020, all rights reserved.
+                © Hochschule der Medien 2021, all rights reserved.
             </Typography>
         </div>
       </Paper>

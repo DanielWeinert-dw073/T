@@ -2,6 +2,7 @@ import NamedBusinessObject from "./NamedBusinessObject";
 
 export default class StudentNBO extends NamedBusinessObject {
     constructor(anemail, agoogle_user_id) {
+        super();
         this.email = anemail;
         this.google_user_id = agoogle_user_id;
     }
@@ -35,7 +36,7 @@ export default class StudentNBO extends NamedBusinessObject {
      */
 
     setgoogle_user_id(agoogle_user_id) {
-        this.google_user_id =agoogle_user_id
+        this.google_user_id = agoogle_user_id
     }
 
     /**

@@ -4,15 +4,16 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@material-ui/core';
 import firebase from 'firebase/app'; //Firebase module
 import 'firebase/auth'; //Firebase module
+import firebaseConfig from './firebaseconfig'
 import Header from './components/layout/Header';
 import LernGruppenToolAPI from './api/LernGruppenToolAPI';
-import TeilnahmeBO from './api/TeilnahmeBO'; 
-import ProfilÜbersicht from './components/ProfilÜbersicht';
-//import ProfilÜbersichtEintrag from './components/ProfilÜbersichtEintrag';
+import GruppenListe from './components/GruppenListe';
+import ProfilUebersicht from './components/ProfilUebersicht';
+//import ProfilUebersichtEintrag from './components/ProfilÜbersichtEintrag';
 import SignIn from './components/pages/SignIn';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import LoadingProgress from './components/dialogs/LoadingProgress';
-import firebaseConfig from './firebaseconfig'
+
 import About from './components/pages/About';
 
 /** 
@@ -62,8 +63,8 @@ class App extends React.Component {
                     currentUser: user,
                     authError: null,
                     authLoading: false
-                })}).then(() => {
-                this.getUserByGoogleId()
+                })
+             
             }).catch(e => {
                 this.setState({
                     authError: e,
@@ -86,23 +87,24 @@ class App extends React.Component {
         this.setState({
             authLoading: true
         });
-        const provider = new firebase.auth.GithubAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        //provider.addScope("email")
         firebase.auth().signInWithRedirect(provider);
     }
 
     getUserByGoogleId = () => {
        
 
-            LernGruppenToolAPI.getAPI().getStudentByGoogleUserId(this.state.currentStudent.uid) //.acurrentUser.agoogle_user_id
+            LernGruppenToolAPI.getAPI().get_student_by_google_user_id(this.state.currentUser.uid) //.acurrentUser.agoogle_user_id
                 .then(studentNBO =>
                     this.setState({
-                        currentStudent: studentNBO,
+                        currentUser: studentNBO,
                         error: null,
                         loadingInProgress: false,
                     })
                     ).catch(e =>
                         this.setState({
-                            currentStudent: null,
+                            currentUser: null,
                             error: e,
                             loadingInProgress:false,
                         }));
@@ -146,23 +148,27 @@ class App extends React.Component {
     }
 
     render() {
-        const { currentUser, appError, authLoading, authError, currentStudent, currentProfil} = this.state;
+        const { currentUser, appError, authLoading, authError, currentProfil} = this.state;
 
         return (
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router basename = {process.env.PUBLIC_URL}>
                     <Container maxWidth="md">
-                        <Header user={currentUser} currentStudent = {currentStudent}/>
+                        <Header user={currentUser}/>
                 
 
                         {
                             //user signed in? 
-                            currentUser && (currentStudent) ?
+                            currentUser ?
                                 <>
                                     <Redirect from="/" to="profil"/>
                                     <Route exact path="/profil" >
-                                        <ProfilÜbersicht />
+                                        <ProfilUebersicht />
+                                    </Route>
+                                    <Route path="/gruppen">
+                                        <GruppenListe />
+
                                     </Route>
 
                                     <Route path="/about" component = {About}/>
@@ -174,7 +180,7 @@ class App extends React.Component {
                                 
                                 //if not signed in show sign in page
                                 <>
-                                    <Redirect to="SignIn"/>
+                                    
                                     <SignIn onSignIn={this.handleSignIn}/>
                                 </>
                             

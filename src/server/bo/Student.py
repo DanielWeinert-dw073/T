@@ -36,7 +36,7 @@ class Student(NamedBusinessObject):
 
     def __str__(self):
         """ Umwandlung der Attributwerte eines Objekts in einen String"""
-        return "Student: {}, {}, {}, {}, {}".format(self.get_id(),self._name,self._email,self._google_user_id)
+        return "Student: {}, {}, {}, {}".format(self.get_id(),self._name,self._email,self._google_user_id)
 
     @staticmethod
     def from_dict(dictionary=dict()):

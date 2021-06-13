@@ -30,7 +30,7 @@ class TeilnahmeMapper(Mapper):
         for (id, teilnehmer, gruppen_id, konversations_id, nachricht_id) in tuples:
             teilnahme = Teilnahme()
             teilnahme.set_id(id)
-            teilnahme.set_teilnehmer_id(teilnehmer_id)
+            teilnahme.set_teilnehmer(teilnehmer)
             teilnahme.set_gruppen_id(gruppen_id)
             teilnahme.set_konversations_id(konversations_id)
             teilnahme.set_nachricht_id(nachricht_id)
@@ -99,6 +99,23 @@ class TeilnahmeMapper(Mapper):
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
 			keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
             result = None
+
+        self._cnx.commit()
+        cursor.close()
+        return result
+    
+    def find_group(self,id): 
+        """ Finde alle Teilnahmen von einer Gruppen ID"""
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT group_id FROM teilnahmen WHERE id={}".format(id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (group) in tuples:
+            teilnahme = Teilnahme()
+            teilnahme.set_le()
+            result.append(teilnahme)
 
         self._cnx.commit()
         cursor.close()

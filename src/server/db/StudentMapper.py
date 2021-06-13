@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
@@ -168,7 +169,7 @@ class StudentMapper(Mapper):
         command = "INSERT INTO studenten (id, name, email, google_user_id) VALUES (%s,%s,%s,%s)"
         data = (student.get_id(), student.get_name(), student.get_email(), student.get_google_user_id())
         cursor.execute(command, data)
-
+        print("User anlegen" & student.get_email())
         self._cnx.commit()
         cursor.close()
 
@@ -182,7 +183,7 @@ class StudentMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE studenten " + "SET name=%s, email=%s WHERE google_user_id=%s"
+        command = "UPDATE studenten SET name=%s, email=%s WHERE google_user_id=%s"
         data = (student.get_name(), student.get_email(), student.get_google_user_id())
 
         cursor.execute(command, data)
@@ -191,6 +192,22 @@ class StudentMapper(Mapper):
         cursor.close()
 
     def update_by_id(self, student):
+        """Überschreiben / Aktualisieren eines student-Objekts in der DB
+
+        :param student -> student-Objekt
+        :return aktualisiertes student-Objekt
+        """
+        cursor = self._cnx.cursor()
+
+        command = "UPDATE studenten " + "SET name=%s, email=%s,  WHERE id=%s"
+        data = (student.get_name(), student.get_email(), student.get_id())
+
+        cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+
+    def update_by_user_id(self, student):
         """Überschreiben / Aktualisieren eines student-Objekts in der DB
 
         :param student -> student-Objekt

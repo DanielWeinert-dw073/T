@@ -27,7 +27,7 @@ from server.bo.Lerntyp import Lerntyp
 
 
 # SercurityDecorator
-"""from SecurityDecorator import secured"""
+from SecurityDecorator import secured
 
 
 """Flask wird hiermit instanziiert"""
@@ -104,9 +104,9 @@ konversation = api.inherit("Konversation", bo, {
 })
 
 suggestion_algorithmus = api.inherit("SuggestionAlgorithmus", bo, {
-    "lerntyp_Id" :fields.Integer(attribute="_lerntyp_Id", description="LerntypId"),
-    "lernvorlieben_Id" : fields.Integer(attribute="_lernvorlieben_Id", description="Lernvorlieben_Id"),
-    "profil_Id" : fields.Integer(attribute="_profil_Id", description= "Profil_Id"),
+    "lerntyp_id": fields.Integer(attribute="_lerntyp_id", description="LerntypId"),
+    "lernvorlieben_id": fields.Integer(attribute="_lernvorlieben_id", description="Lernvorlieben_Id"),
+    "profil_id": fields.Integer(attribute="_profil_id", description="Profil_Id"),
     "gruppen_id": fields.Integer(attribute="_gruppen_id", description="Gruppen Id ")
 })
 
@@ -116,19 +116,42 @@ suggestion_algorithmus = api.inherit("SuggestionAlgorithmus", bo, {
 @LernGruppenToolApp.response(500, 'Falls es zu einem Serverseitigen Fehler kommt.')
 @LernGruppenToolApp.param("name", 'Dies ist der name des Studenten')
 class StudentListOperations(Resource):
-    @LernGruppenToolApp.marshal_with(student)
+    @LernGruppenToolApp.marshal_list_with(student)
 
-    #@secured
-    def get (self):
+    @secured
+    def get(self):
         """Auslesen aller Studenten"""
 
         adm = LerngruppenAdministration()
         studenten = adm.get_alle_studenten()
         return studenten
 
-    #@secured
-    def delete (self):
+    @secured
+    def put(self):
+
+        student_Id = request.args.get("userId")
+        name = request.args.get("name")
+        email = request.args.get("email")
+        adm = LerngruppenAdministration()
+        student.set_name(name)
+        student.set_email(email)
+        adm.update_student_by_id(student_Id)
+
+    @secured
+    def delete(self):
         """Löschen eines Studenten"""
+        adm = LerngruppenAdministration()
+        adm.delete_student(id)
+
+    @secured
+    def update(self):
+        """Update eines Studenten"""
+
+        adm = LerngruppenAdministration()
+        studenten = adm.get_student_by_id(id)
+
+        adm.update(studenten)
+
 
 
 
@@ -138,8 +161,8 @@ class StudentListOperations(Resource):
 class StudentByNameOperations(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    #@secured
-    def get (self, name):
+    @secured
+    def get(self, name):
         """Auslesen eines bestimmten Studenten Objekt. Nachrichten
 
         Das auszulesene Objekt wird über den Namen bestimmt."""
@@ -154,14 +177,14 @@ class StudentByNameOperations(Resource):
 class StudentByGoogle_User_Id(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    #@secured
+    @secured
     def get (self, google_user_id):
         """Auslesen eines bestimmten Studenten Objekts.
 
         Das auszulesene Objekt wird über die GoogleUserId bestimmt."""
 
         adm = LerngruppenAdministration()
-        stud = adm.get_student_by_google_user_id(google_user_id)
+        stud = get_student_by_google_user_id(google_user_id)
         return stud
 
 @LernGruppenToolApp.route("/studenten-by-id/<int:id>")
@@ -170,7 +193,7 @@ class StudentByGoogle_User_Id(Resource):
 class StudentById(Resource):
     @LernGruppenToolApp.marshal_list_with(student)
 
-    #@secured
+    @secured
     def get (self, id):
         """Auslesen eines bestimmten Studenten Objekts.
 
@@ -185,16 +208,18 @@ class StudentById(Resource):
 @LernGruppenToolApp.route("/nachrichten")
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class NachrichtListOperation(Resource):
+    @LernGruppenToolApp.marshal_list_with(nachricht)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Nachrichten Objekte"""
 
+        
         adm = LerngruppenAdministration()
         nachricht = adm.get_all_nachricht()
         return nachricht
 
-    # @secured
+    @secured
     def put(self):
         """Update der Nachricht"""
 
@@ -203,13 +228,39 @@ class NachrichtListOperation(Resource):
 
         adm.update(nachricht)
 
+    @LernGruppenToolApp.marshal_list_with(nachricht, code= 200)
+    @LernGruppenToolApp.expect(nachricht)
+    @secured
+    def post(self):
+        """ Anlegen einer neuen Nachricht"""
+
+        profil_Id = request.args.get("profil_Id")
+        gruppen_id = request.args.get("gruppen_id")
+        
+        adm = LerngruppenAdministration()
+        adm.create_nachricht(profil_Id, gruppen_id)
+        nachricht = Nachricht.from_dict(api.playload)
+
+
+        if nachricht is not None:
+        
+            n = adm.create_nachricht(nachricht)
+            return n, 200
+        else: 
+            return '',500
+
+    def delete(self):
+            """ Löschen einer Nachricht"""
+            adm = LerngruppenAdministration()
+            adm.delete_nachricht()
+
 
 @LernGruppenToolApp.route("/nachricht/<int:id>")
 @LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
 @LernGruppenToolApp.param("id")
 class NachrichtById(Resource):
     @LernGruppenToolApp.marshal_list_with(nachricht)
-    # @secured
+    @secured
     def get(self, id):
         """Auslesen eines bestimmten Nachricht Objekts.
 
@@ -226,7 +277,7 @@ class NachrichtById(Resource):
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class ProfilListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(profil)
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Profile"""
 
@@ -234,9 +285,9 @@ class ProfilListOperation(Resource):
         profile = adm.get_all_profils()
         return profile
 
-    # @secured
+    @secured
 
-    def put(self):
+    def put(self, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen):
         """ Update des Profils"""
 
         id = request.args.get("id")
@@ -245,19 +296,41 @@ class ProfilListOperation(Resource):
         profil = adm.get_profil_by_id(id)
         profil.set_faecher(faecher)
         profil.set_alter(alter)
+        profil.set_wohnort(wohnort)
         profil.set_about_me(about_me)
         profil.set_vorwissen(vorwissen)
         profil.set_lerntyp(lerntyp)
         profil.set_lernvorlieben(lernvorlieben)
         profil.set_semester(semester)
         profil.set_studiengang(studiengang)
-        adm.update_student(student)
+        profil.set_sprachen(sprachen)
+        adm.update_profil()
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen eines Profils"""
         adm = LerngruppenAdministration()
         adm.delete_profil(id)
+
+    @LernGruppenToolApp.marshal_list_with(profil, code = 200)
+    @LernGruppenToolApp.expect(profil)
+
+    @secured
+    def post(self):
+        """ Anlegen eines Profils"""
+
+        adm = LerngruppenAdministration()
+        profil = Profil.from_dict(api.payload)
+        adm.create_profil()
+
+        if profil is not None:
+            result = adm.create_profil(profil.set_name(),profil.set_alter(),
+                                 profil.set_studiengang(),profil.set_wohnort(),profil.set_semester(),profil.set_about_me(),
+                                 profil.set_vorwissen(),profil.set_lernvorlieben(),profil.set_sprachen())
+            return result, 200
+        else:
+            return '', 500
+
 
 # Teilnahme Methoden
 
@@ -265,15 +338,15 @@ class ProfilListOperation(Resource):
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class TeilnahmeListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(teilnahme)
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Teilnahmen"""
 
         adm=LerngruppenAdministration()
-        teilnahmen = adm.get_all_teilnahmen()
+        teilnahmen = adm.get_alle_teilnahmen()
         return teilnahmen
 
-    # @secured
+    @secured
     def put(self):
             """Update der Teilnahmen"""
 
@@ -282,11 +355,17 @@ class TeilnahmeListOperation(Resource):
 
             adm.update(teilnahme)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Teilnahme"""
         adm = LerngruppenAdministration()
         adm.delete_teilnahme(id)
+
+    @secured
+    def post(self):
+        """ Anlegen einer Teilnahme"""
+        adm = LerngruppenAdministration()
+        adm.post_teilnahme()
 
 # Empfehlungs Methoden
 
@@ -295,7 +374,7 @@ class TeilnahmeListOperation(Resource):
 class EmpfehlungListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(empfehlung)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Empfehlungen"""
 
@@ -303,20 +382,26 @@ class EmpfehlungListOperation(Resource):
         empfehlungen = adm.get_all_empfehlungen()
         return empfehlungen
 
-    # @secured
+    @secured
     def put(self):
-        """Update der Teilnahmen"""
+        """Update der Empfehlung"""
 
         adm = LerngruppenAdministration()
         empfehlungen = adm.get_empfehlung_by_id(id)
         adm.update(teilnahme)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Empfehlung"""
 
         adm = LerngruppenAdministration()
         adm.delete_empfehlung(id)
+
+    @secured
+    def post(self):
+        """Anlegen einer Empfehlung"""
+        adm= LerngruppenAdministration()
+        adm.post_empfehlung()
 
 # Lerntyp Methoden
 
@@ -325,7 +410,7 @@ class EmpfehlungListOperation(Resource):
 class EmpfehlungListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(lerntyp)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Lerntypen"""
 
@@ -333,7 +418,7 @@ class EmpfehlungListOperation(Resource):
         lerntypen = adm.get_all_lerntypen()
         return lerntypen
 
-    # @secured
+    @secured
     def put(self):
         """Update der Lerntypen"""
 
@@ -341,12 +426,18 @@ class EmpfehlungListOperation(Resource):
         lerntypen = adm.get_lerntyp_by_id(id)
         adm.update(lerntypen)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen eines Lerntypen"""
 
         adm = LerngruppenAdministration()
         adm.delete_lerntyp(id)
+
+    @secured
+    def post(self):
+        """Anlegen eines Lerntypen"""
+        adm = LerngruppenAdministration()
+        adm.post_lerntyp()
 
 # Lernvorlieben Methoden
 
@@ -355,7 +446,7 @@ class EmpfehlungListOperation(Resource):
 class EmpfehlungListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(lernvorlieben)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Lernvorlieben"""
 
@@ -363,7 +454,7 @@ class EmpfehlungListOperation(Resource):
         lernvorlieben = adm.get_all_lernvorlieben()
         return lernvorlieben
 
-    # @secured
+    @secured
     def put(self):
         """Update der Lernvorlieben"""
 
@@ -371,19 +462,25 @@ class EmpfehlungListOperation(Resource):
         lernvorlieben = adm.get_lernvorliebe_by_id(id)
         adm.update(lernvorlieben)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Lernvorliebe"""
 
         adm = LerngruppenAdministration()
         adm.delete_lernvorlieben(id)
 
+    @secured
+    def post(self):
+        """Anlegen einer Lernvorliebe"""
+        adm = LerngruppenAdministration()
+        adm.post_lernvorlieben()
+
 @LernGruppenToolApp.route("/konversationen")
 @LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class KonversationListOperation(Resource):
     @LernGruppenToolApp.marshal_list_with(konversation)
 
-    # @secured
+    @secured
     def get(self):
         """Auslesen aller Konversationen"""
 
@@ -391,7 +488,7 @@ class KonversationListOperation(Resource):
         konversationen = adm.get_all_konversationen()
         return konversationen
 
-    # @secured
+    @secured
     def put(self):
         """Update der Konversationen"""
 
@@ -399,12 +496,18 @@ class KonversationListOperation(Resource):
         konversationen = adm.get_konversation_by_id(id)
         adm.update(konversationen)
 
-    # @secured
+    @secured
     def delete(self, id):
         """ Löschen einer Konversation"""
 
         adm = LerngruppenAdministration()
         adm.delete_konversation(id)
+
+    @secured
+    def post(self):
+        """Anlegen einer Konversation"""
+        adm= LerngruppenAdministration()
+        adm.post_konversation()
 
 
 if __name__ == '__main__':

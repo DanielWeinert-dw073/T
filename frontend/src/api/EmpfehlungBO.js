@@ -2,7 +2,7 @@ import BusinessObject from "./BusinessObject";
 
 export default class EmpfehlungBO extends BusinessObject {
 
-    constructor(aempfehlung,aempfehlungListe,aempfehlungGruppe,aempfehlungProfil){
+    constructor(aempfehlung, aempfehlungListe, aempfehlungGruppe, aempfehlungProfil){
         super();
         this.empfehlung = aempfehlung;
         this.empfehlungListe = aempfehlungListe;

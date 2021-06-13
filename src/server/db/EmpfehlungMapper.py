@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
+
 from server.db.Mapper import Mapper
 from server.bo.Empfehlung import Empfehlung
 
