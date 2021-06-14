@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from server.bo.BusinessObject import BusinessObject
+
 class Lernvorlieben(BusinessObject):
     """Realisierung der Lernvorlieben einer Gruppe oder einer Einzelperson im System"""
 
@@ -8,7 +9,7 @@ class Lernvorlieben(BusinessObject):
         super().__init__()
         self._frequenz = None
         self._internet_verbindung = None
-        self._pole_der_persönlichkeit = None
+        self._pole_der_persoenlichkeit = None
 
     def get_frequenz(self):
         """Auslesen der Fequenz"""
@@ -18,13 +19,13 @@ class Lernvorlieben(BusinessObject):
         """Setzrn der Fequenz"""
         self._frequenz = value
 
-    def get_pole_der_persönlichkeit(self):
+    def get_pole_der_persoenlichkeit(self):
         """Auslesen der PoleDerPersönlichkeit"""
-        return self._pole_der_persönlichkeit
+        return self._pole_der_persoenlichkeit
 
-    def set_pole_der_persönlichkeit(self,value):
+    def set_pole_der_persoenlichkeit(self,value):
         """Setzen der Pole PoleDerPersönlichkeit"""
-        self._pole_der_persönlichkeit,value
+        self._pole_der_persoenlichkeit = value
 
     def get_internet_verbindung(self):
         """Auslesen der set_internet_verbindung"""
@@ -37,10 +38,10 @@ class Lernvorlieben(BusinessObject):
     def __str__(self):
         """textuelle Replikation des BOs"""
         return "Lernvorliebe: {}, {}, {}, {}, {}".format(self.get_id(),
-                                                    self.get_erstellungszeitpunkt(),
+
                                                     self._frequenz,
                                                     self._internet_verbindung,
-                                                    self._pole_der_persönlichkeit)
+                                                    self._pole_der_persoenlichkeit)
 
 
     @staticmethod
@@ -50,6 +51,6 @@ class Lernvorlieben(BusinessObject):
         obj.set_id(dictionary["id"])
         obj.set_frequenz(dictionary["frequenz"])
         obj.set_internet_verbindung(dictionary["InternetVerbindung"])
-        obj.set_pole_der_persönlichkeit(dictionary["PoleDerPersönlichkeit"])
-        obj.set_erstellungszeitpunkt(dictionary["Erstellungszeitpunkt"])
+        obj.set_pole_der_persoenlichkeit(dictionary["PoleDerPersönlichkeit"])
+
         return obj
