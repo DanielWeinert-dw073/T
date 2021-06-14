@@ -34,7 +34,7 @@ def secured(function):
                     email = claims.get("email")
                     name = claims.get("name")
 
-                    student = get_student_by_google_user_id(google_user_id)
+                    student = adm.get_student_by_google_user_id(google_user_id)
                     if student is not None:
  
                         student.set_name(name)
