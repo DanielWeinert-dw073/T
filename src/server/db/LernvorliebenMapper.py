@@ -4,6 +4,7 @@
 from server.db.Mapper import Mapper
 from server.bo.Lernvorlieben import Lernvorlieben
 
+
 class LernvorliebenMapper(Mapper):
     """Mapper-Klasse, die lernvorlieben Objekte auf der relationealen Datenbank abbildet.
     Die Klasse ermöglicht die Umwandlung von Objekten in Datenbankstrukturen und umgekehrt
@@ -21,25 +22,25 @@ class LernvorliebenMapper(Mapper):
 
         cursor = self._cnx.cursor()
 
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben"
+        command = "SELECT * FROM lernvorlieben"
 
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, frequenz, internet_verbindung, pole_der_persönlichkeit) in tuples:
-            lernvorlieben = Lernvorlieben()
-            lernvorlieben.set_id(id)
-            lernvorlieben.set_frequenz(frequenz)
-            lernvorlieben.set_internet_verbindung(internet_verbindung)
-            lernvorlieben.set_pole_der_persönlichkeit(pole_der_persönlichkeit)
-            result.append(lernvorlieben)
+        for (id, frequenz, internet_verbindung, pole_der_persoenlichkeit) in tuples:
+            lernvorliebe = Lernvorlieben()
+            lernvorliebe.set_id(id)
+            lernvorliebe.set_frequenz(frequenz)
+            lernvorliebe.set_internet_verbindung(internet_verbindung)
+            lernvorliebe.set_pole_der_persönlichkeit(pole_der_persoenlichkeit)
+            result.append(lernvorliebe)
 
         self._cnx.commit()
         cursor.close()
 
         return result
 
-    def find_by_frequenz(self,frequenz):
+    def find_by_frequenz(self, frequenz):
         """Suchen eines lernvorlieben aus der Datenbank nach dem angegebenen Namen
             :param lernvorlieben_frequenz -> lernvorlieben-Objekt
             return lernvorlieben Objekt, welcher mit dem Namen übereinstimmt
@@ -47,21 +48,22 @@ class LernvorliebenMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE frequenz='{}'".format(frequenz)
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persoenlichkeit FROM lernvorlieben WHERE frequenz='{}'".format(
+            frequenz)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-                (id, frequenz, internet_verbindung, pole_der_persönlichkeit) = tuples[0]
-                lernvorlieben = Lernvorlieben()
-                lernvorlieben.set_id(id)
-                lernvorlieben.set_frequenz(frequenz)
-                lernvorlieben.set_internet_verbindung(internet_verbindung)
-                lernvorlieben.set_pole_der_persönlichkeit(pole_der_persönlichkeit)
-                result = lernvorlieben
+            (id, frequenz, internet_verbindung, pole_der_persoenlichkeit) = tuples[0]
+            lernvorliebe = Lernvorlieben()
+            lernvorliebe.set_id(id)
+            lernvorliebe.set_frequenz(frequenz)
+            lernvorliebe.set_internet_verbindung(internet_verbindung)
+            lernvorliebe.set_pole_der_persoenlichkeit(pole_der_persoenlichkeit)
+            result = lernvorliebe
 
         except IndexError:
-                """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
+            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
 			    keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
         result = None
 
@@ -78,17 +80,18 @@ class LernvorliebenMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE id='{}'".format(id)
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE id='{}'".format(
+            id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, frequenz, internet_verbindung, pole_der_persönlichkeit) = tuples[0]
+            (id, frequenz, internet_verbindung, pole_der_persoenlichkeit) = tuples[0]
             lernvorlieben = Lernvorlieben()
             lernvorlieben.set_id(id)
             lernvorlieben.set_frequenz(frequenz)
             lernvorlieben.set_internet_verbindung(internet_verbindung)
-            lernvorlieben.set_pole_der_persönlichkeit(pole_der_persönlichkeit)
+            lernvorlieben.set_pole_der_persoenlichkeit(pole_der_persoenlichkeit)
             result = lernvorlieben
 
         except IndexError:
@@ -100,7 +103,7 @@ class LernvorliebenMapper(Mapper):
         cursor.close()
         return result
 
-    def find_by_pole_der_persönlichkeit(self, pole_der_persönlichkeit):
+    def find_by_pole_der_persoenlichkeit(self, pole_der_persoenlichkeit):
         """Suchen einer lernvorlieben nach der übergebener pole_der_persönlichkeit . 
 
         :param pole_der_persönlichkeit  einer lernvorlieben aus der Datenbank
@@ -110,18 +113,18 @@ class LernvorliebenMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE pole_der_persönlichkeit='{}'".format(
-                pole_der_persönlichkeit)
+        command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben " \
+                  "WHERE pole_der_persönlichkeit='{}'".format(pole_der_persoenlichkeit)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, frequenz, internet_verbindung, pole_der_persönlichkeit) = tuples[0]
+            (id, frequenz, internet_verbindung, pole_der_persoenlichkeit) = tuples[0]
             lernvorlieben = Lernvorlieben()
             lernvorlieben.set_id(id)
             lernvorlieben.set_frequenz(frequenz)
             lernvorlieben.set_internet_verbindung(internet_verbindung)
-            lernvorlieben.set_pole_der_persönlichkeit(pole_der_persönlichkeit)
+            lernvorlieben.set_pole_der_persoenlichkeit(pole_der_persoenlichkeit)
             result = lernvorlieben
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -140,7 +143,7 @@ class LernvorliebenMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, frequenz, internet_verbindung, pole_der_persönlichkeit FROM lernvorlieben WHERE internet_verbindung='{}'".format(
-                internet_verbindung)
+            internet_verbindung)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -181,7 +184,8 @@ class LernvorliebenMapper(Mapper):
                 lernvorlieben.set_id(1)
 
         command = "INSERT INTO lernvorlieben (id, frequenz, internet_verbindung, pole_der_persönlichkeit) VALUES (%s,%s,%s,%s)"
-        data = (lernvorlieben.get_id(), lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_pole_der_persönlichkeit())
+        data = (lernvorlieben.get_id(), lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(),
+                lernvorlieben.get_pole_der_persönlichkeit())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -198,7 +202,8 @@ class LernvorliebenMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE lernvorlieben " + "SET frequenz=%s, internet_verbindung=%s WHERE pole_der_persönlichkeit=%s"
-        data = (lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(), lernvorlieben.get_pole_der_persönlichkeit())
+        data = (lernvorlieben.get_frequenz(), lernvorlieben.get_internet_verbindung(),
+                lernvorlieben.get_pole_der_persönlichkeit())
 
         cursor.execute(command, data)
 
@@ -233,7 +238,6 @@ class LernvorliebenMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
 
 
 '''Tester'''
