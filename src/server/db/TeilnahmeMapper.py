@@ -22,18 +22,16 @@ class TeilnahmeMapper(Mapper):
 
         cursor = self._cnx.cursor()
 
-        command = "SELECT id, teilnehmer, gruppen_id, konversations_id, nachricht_id FROM teilnahmen"
+        command = "SELECT id, gruppe_id, profil_id FROM teilnahmen"
 
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, teilnehmer, gruppen_id, konversations_id, nachricht_id) in tuples:
+        for (id, gruppe_id, profil_id) in tuples:
             teilnahme = Teilnahme()
             teilnahme.set_id(id)
-            teilnahme.set_teilnehmer(teilnehmer)
-            teilnahme.set_gruppen_id(gruppen_id)
-            teilnahme.set_konversations_id(konversations_id)
-            teilnahme.set_nachricht_id(nachricht_id)
+            teilnahme.set_gruppe_id(gruppe_id)
+            teilnahme.set_profil_id(profil_id)
             result.append(teilnahme)
 
         self._cnx.commit()
@@ -41,7 +39,7 @@ class TeilnahmeMapper(Mapper):
 
         return result
 
-    def find_by_teilnehmer(self, teilnahme):
+    def find_by_teilnahmen(self, teilnahme):
         """Suchen einer Teilnahme aus der Datenbank nach dem angegebenem Teilnehmer
             :param teilnahme_teilnehmer -> teilnahme-Objekt
             return Teilnahme Objekt, welches mit der Teilnahme übereinstimmt
@@ -54,13 +52,11 @@ class TeilnahmeMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-                (id, gruppen_id, konversations_id, nachricht_id, teilnehmer_id) = tuples[0]
+                (id, gruppe_id, profil_id,) = tuples[0]
                 teilnahme = Teilnahme()
                 Teilnahme.set_id(id)
-                teilnahme.set_gruppen_id(gruppen_id)
-                teilnahme.set_konversations_id(konversations_id)
-                teilnahme.set_nachricht_id(nachricht_id)
-                teilnahme.set_teilnehmer_id(teilnehmer_id)
+                teilnahme.set_gruppe_id(gruppe_id)
+                teilnahme.set_profil_id(profil_id)
                 result = teilnahme
 
         except IndexError:
@@ -81,18 +77,16 @@ class TeilnahmeMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, gruppen_id, konversations_id, nachricht_id, teilnehmer_id FROM teilnahmen WHERE id='{}'".format(id)
+        command = "SELECT id, gruppe_id, profil_id, FROM teilnahmen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, gruppen_id, konversations_id, nachricht_id, teilnehmer_id) = tuples[0]
+            (id, gruppe_id, profil_id,) = tuples[0]
             teilnahme = Teilnahme()
             teilnahme.set_id(id)
-            teilnahme.set_teilnehmer_id(teilnehmer_id)
-            teilnahme.set_gruppen_id(gruppen_id)
-            teilnahme.set_konversations_id(konversations_id)
-            teilnahme.set_nachricht_id(nachricht_id)
+            teilnahme.set_gruppe_id(gruppe_id)
+            teilnahme.set_profil_id(profil_id)
             result = teilnahme
 
         except IndexError:
@@ -143,8 +137,8 @@ class TeilnahmeMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 teilnahme.set_id(1)
 
-        command = "INSERT INTO teilnahmen (id, gruppen_id, konversations_id, nachricht_id, teilnehmer_id) VALUES (%s,%s,%s,%s,%s)"
-        data = (teilnahme.get_id(),teilnahme.get_gruppen_id(), teilnahme.get_konversations_id(),teilnahme.get_nachricht_id(), teilnahme.get_teilnehmer_id())
+        command = "INSERT INTO teilnahmen (id, gruppe_id, profil_id, teilnahme_id) VALUES (%s,%s,%s,%s)"
+        data = (teilnahme.get_id(),teilnahme.get_gruppe_id(),teilnahme.get_profil_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -161,7 +155,7 @@ class TeilnahmeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE teilnahmen " + "SET teilnahme=%s,  WHERE teilnahme=%s"
-        data = (teilnahme.get_id(),teilnahme.get_gruppen_id(), teilnahme.get_konversations_id(),teilnahme.get_nachricht_id(), teilnahme.get_teilnehmer_id())
+        data = (teilnahme.get_id(),teilnahme.get_gruppe_id(), teilnahme.get_profil_id())
 
         cursor.execute(command, data)
 
@@ -177,7 +171,7 @@ class TeilnahmeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE teilnahmen " + "SET teilnahme=%s, WHERE id=%s"
-        data = (teilnahme.get_id(),teilnahme.get_gruppen_id(), teilnahme.get_konversations_id(),teilnahme.get_nachricht_id(), teilnahme.get_teilnehmer_id())
+        data = (teilnahme.get_id(),teilnahme.get_gruppe_id(),teilnahme.get_profil_id())
 
         cursor.execute(command, data)
 

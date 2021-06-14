@@ -162,11 +162,11 @@ class App extends React.Component {
                             //user signed in? 
                             currentUser ?
                                 <>
-                                    <Redirect from="/" to="profil"/>
-                                    <Route exact path="/profil" >
+                                    <Redirect from='/' to='profil'/>
+                                    <Route path='/profil' >
                                         <ProfilUebersicht />
                                     </Route>
-                                    <Route path="/gruppen">
+                                    <Route path='/gruppen'>
                                         <GruppenListe />
 
                                     </Route>
