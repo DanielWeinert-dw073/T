@@ -20,7 +20,7 @@ export default class LernGruppenToolAPI {
     static #api = null;
 
     //Lokales Python backend
-    #LernGruppenToolServerBaseURL = "/LernGruppenToolApp";
+    #LernGruppenToolServerBaseURL = "/lerngruppentoolapp";
 
     //Lokales Python backend
     //#LerngruppenToolBaseURL = "https://lerngruppenapp.oa.r.appspot.com/LernGruppenToolApp";

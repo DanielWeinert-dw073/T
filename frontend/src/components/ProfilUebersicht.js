@@ -67,8 +67,8 @@ class ProfilUebersicht extends React.Component {
         };
     }
 
-    getProfileByStudentId = () => {
-        LernGruppenToolAPI.getAPI().getProfileByStudentId(this.props.currentProfil.id)
+    getAllProfils = () => {
+        LernGruppenToolAPI.getAPI().getProfils(this.props.currentProfil.uid)
         .then(profilNBOs =>
             this.setState({
                 profile: profilNBOs,
@@ -78,27 +78,25 @@ class ProfilUebersicht extends React.Component {
                 this.setState({
                     profile: [],
                     error: e,
-                    loadingInProgress: false,
+                    loadingProgress: false,
                 }));
         this.setState({
             error: null,
-            loadingInProgress: true,
+            loadingProgress: true,
             loadingProfileError: null
         });
     }
 
     componentDidMount() {
-        this.getProfil();
-        this.setState({
-            currentStudentName: this.props.currentStudent.getname(),
-            currentStudentId: this.props.currentStudent.getId(),
-        })
-    }
+        this.getAllProfils()
+        
+        }
+    
 
     render() {
 
         const { classes} = this.props;
-        const {profil, currentStudentId, currentStudentName, error, loadingInProgress} = this.state;
+        const {profil, currentStudentId, currentStudentName, error, loadingProgress} = this.state;
 
         return(
             <div className={classes.root}>
@@ -146,7 +144,7 @@ class ProfilUebersicht extends React.Component {
                         </TableBody>
 
                     </Table>
-                    <LoadingProgress show = {loadingInProgress} />
+                    <LoadingProgress show = {loadingProgress} />
                     <ContextErrorMessage error={error} contextErrorMsg = {"Dein Profil konnte nicht geladen werden"} onReload = {this.getProfile} />
                 </TableContainer>
                 <Button variant = "contained" color = 'primary' size = "medium" className={classes.Button}>

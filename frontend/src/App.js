@@ -162,8 +162,8 @@ class App extends React.Component {
                             //user signed in? 
                             currentUser ?
                                 <>
-                                    <Redirect from='/' to='profil'/>
-                                    <Route path='/profil' >
+                                    <Redirect from='/' to='profile'/>
+                                    <Route path='/profile' >
                                         <ProfilUebersicht />
                                     </Route>
                                     <Route path='/gruppen'>
@@ -180,7 +180,7 @@ class App extends React.Component {
                                 
                                 //if not signed in show sign in page
                                 <>
-                                    
+                                    <Redirect from='/' to='SignIn' />
                                     <SignIn onSignIn={this.handleSignIn}/>
                                 </>
                             

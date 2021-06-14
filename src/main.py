@@ -33,12 +33,12 @@ from SecurityDecorator import secured
 """Flask wird hiermit instanziiert"""
 app = Flask(__name__)
 
-CORS(app, support_credentials=True, resources=r"/LernGruppenToolApp/*")
+CORS(app, support_credentials=True, resources={r"/lerngruppentoolapp/*":{"origins": "*"}} )
 
 api = Api(app, version="1.0", title="LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
 
 """Namespaces"""
-LernGruppenToolApp = api.namespace("LernGruppenToolApp", description="Funktionen der LerngruppenTool App")
+toolapp = api.namespace("lerngruppentoolapp", description="Funktionen der LerngruppenTool App")
 
 """Hier wird festgelegt, wie die BusinessObjects beim Marshelling definiert werden sollen"""
 bo = api.model("BusinessObject", {
@@ -112,11 +112,11 @@ suggestion_algorithmus = api.inherit("SuggestionAlgorithmus", bo, {
 
 #Student Methoden
 
-@LernGruppenToolApp.route("/studenten")
-@LernGruppenToolApp.response(500, 'Falls es zu einem Serverseitigen Fehler kommt.')
-@LernGruppenToolApp.param("name", 'Dies ist der name des Studenten')
+@toolapp.route("/studenten")
+@toolapp.response(500, 'Falls es zu einem Serverseitigen Fehler kommt.')
+@toolapp.param("name", 'Dies ist der name des Studenten')
 class StudentListOperations(Resource):
-    @LernGruppenToolApp.marshal_list_with(student)
+    @toolapp.marshal_list_with(student)
 
     @secured
     def get(self):
@@ -155,11 +155,11 @@ class StudentListOperations(Resource):
 
 
 
-@LernGruppenToolApp.route("/studenten-by-name/<string:name>")
-@LernGruppenToolApp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@LernGruppenToolApp.param("name", "Der Name des Studenten")
+@toolapp.route("/studenten-by-name/<string:name>")
+@toolapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@toolapp.param("name", "Der Name des Studenten")
 class StudentByNameOperations(Resource):
-    @LernGruppenToolApp.marshal_list_with(student)
+    @toolapp.marshal_list_with(student)
 
     @secured
     def get(self, name):
@@ -171,11 +171,11 @@ class StudentByNameOperations(Resource):
         stud = adm.get_student_by_name(name)
         return stud
 
-@LernGruppenToolApp.route("/studenten-by-google-user-id/<string:google_user_id>")
-@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
-@LernGruppenToolApp.param("google_user_id", "GoogleUserId des Studenten")
+@toolapp.route("/studenten-by-google-user-id/<string:google_user_id>")
+@toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
+@toolapp.param("google_user_id", "GoogleUserId des Studenten")
 class StudentByGoogle_User_Id(Resource):
-    @LernGruppenToolApp.marshal_list_with(student)
+    @toolapp.marshal_list_with(student)
 
     @secured
     def get (self, google_user_id):
@@ -184,14 +184,14 @@ class StudentByGoogle_User_Id(Resource):
         Das auszulesene Objekt wird über die GoogleUserId bestimmt."""
 
         adm = LerngruppenAdministration()
-        stud = get_student_by_google_user_id(google_user_id)
+        stud = adm.get_student_by_google_user_id(google_user_id)
         return stud
 
-@LernGruppenToolApp.route("/studenten-by-id/<int:id>")
-@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt.")
-@LernGruppenToolApp.param("id", "Id eines Studenten")
-class StudentById(Resource):
-    @LernGruppenToolApp.marshal_list_with(student)
+@toolapp.route("/studenten/<int:id>")
+@toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt.")
+@toolapp.param("id", "Id eines Studenten")
+class StudentOperations(Resource):
+    @toolapp.marshal_with(student)
 
     @secured
     def get (self, id):
@@ -205,10 +205,10 @@ class StudentById(Resource):
 
 
 # Nachrichten Methoden
-@LernGruppenToolApp.route("/nachrichten")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/nachrichten")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class NachrichtListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(nachricht)
+    @toolapp.marshal_list_with(nachricht)
 
     @secured
     def get(self):
@@ -220,7 +220,7 @@ class NachrichtListOperation(Resource):
         return nachricht
 
     @secured
-    def put(self):
+    def put(self, id):
         """Update der Nachricht"""
 
         adm = LerngruppenAdministration()
@@ -228,8 +228,8 @@ class NachrichtListOperation(Resource):
 
         adm.update(nachricht)
 
-    @LernGruppenToolApp.marshal_list_with(nachricht, code= 200)
-    @LernGruppenToolApp.expect(nachricht)
+    @toolapp.marshal_list_with(nachricht, code= 200)
+    @toolapp.expect(nachricht)
     @secured
     def post(self):
         """ Anlegen einer neuen Nachricht"""
@@ -249,17 +249,19 @@ class NachrichtListOperation(Resource):
         else: 
             return '',500
 
-    def delete(self):
+    def delete(self, id):
             """ Löschen einer Nachricht"""
             adm = LerngruppenAdministration()
-            adm.delete_nachricht()
+            nach = adm.get_nachricht_by_id(id)
+            adm.delete_nachricht(nach)
+            return "", 200
 
 
-@LernGruppenToolApp.route("/nachricht/<int:id>")
-@LernGruppenToolApp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
-@LernGruppenToolApp.param("id")
+@toolapp.route("/nachricht/<int:id>")
+@toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
+@toolapp.param("id")
 class NachrichtById(Resource):
-    @LernGruppenToolApp.marshal_list_with(nachricht)
+    @toolapp.marshal_list_with(nachricht)
     @secured
     def get(self, id):
         """Auslesen eines bestimmten Nachricht Objekts.
@@ -273,10 +275,10 @@ class NachrichtById(Resource):
 
 # Profil Methoden
 
-@LernGruppenToolApp.route("/profile")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/profile")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class ProfilListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(profil)
+    @toolapp.marshal_list_with(profil)
     @secured
     def get(self):
         """Auslesen aller Profile"""
@@ -312,8 +314,8 @@ class ProfilListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.delete_profil(id)
 
-    @LernGruppenToolApp.marshal_list_with(profil, code = 200)
-    @LernGruppenToolApp.expect(profil)
+    @toolapp.marshal_list_with(profil, code = 200)
+    @toolapp.expect(profil)
 
     @secured
     def post(self):
@@ -334,10 +336,10 @@ class ProfilListOperation(Resource):
 
 # Teilnahme Methoden
 
-@LernGruppenToolApp.route("/teilnahmen")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/teilnahmen")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class TeilnahmeListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(teilnahme)
+    @toolapp.marshal_list_with(teilnahme)
     @secured
     def get(self):
         """Auslesen aller Teilnahmen"""
@@ -369,10 +371,10 @@ class TeilnahmeListOperation(Resource):
 
 # Empfehlungs Methoden
 
-@LernGruppenToolApp.route("/empfehlungen")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/empfehlungen")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class EmpfehlungListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(empfehlung)
+    @toolapp.marshal_list_with(empfehlung)
 
     @secured
     def get(self):
@@ -405,10 +407,10 @@ class EmpfehlungListOperation(Resource):
 
 # Lerntyp Methoden
 
-@LernGruppenToolApp.route("/lerntypen")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/lerntypen")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class EmpfehlungListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(lerntyp)
+    @toolapp.marshal_list_with(lerntyp)
 
     @secured
     def get(self):
@@ -441,10 +443,10 @@ class EmpfehlungListOperation(Resource):
 
 # Lernvorlieben Methoden
 
-@LernGruppenToolApp.route("/lernvorlieben")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/lernvorlieben")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class EmpfehlungListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(lernvorlieben)
+    @toolapp.marshal_list_with(lernvorlieben)
 
     @secured
     def get(self):
@@ -475,10 +477,10 @@ class EmpfehlungListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.post_lernvorlieben()
 
-@LernGruppenToolApp.route("/konversationen")
-@LernGruppenToolApp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.route("/konversationen")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class KonversationListOperation(Resource):
-    @LernGruppenToolApp.marshal_list_with(konversation)
+    @toolapp.marshal_list_with(konversation)
 
     @secured
     def get(self):
