@@ -22,16 +22,16 @@ class GruppeMapper(Mapper):
 
         cursor = self._cnx.cursor()
 
-        command = "SELECT id, gruppe FROM gruppen"
+        command = "SELECT id, name FROM gruppen"
 
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, gruppe, anzahlTeilnehmer, teilnehmerListe, max_teilnehmer) in tuples:
+        for (id, name, teilnehmerzahl, teilnehmerListe, max_teilnehmer) in tuples:
             gruppe = Gruppe()
             gruppe.set_id(id)
-            gruppe.set_gruppe(gruppe)
-            gruppe.set_anzahlTeilnehmer(anzahlTeilnehmer)
+            gruppe.set_name(name)
+            gruppe.set_teilnehmerzahl(teilnehmerzahl)
             gruppe.set_teilnehmerListe(teilnehmerListe)
             gruppe.set_max_teilnehmer(max_teilnehmer)
             result.append(gruppe)
@@ -54,11 +54,11 @@ class GruppeMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-                (id, gruppe, anzahlTeilnehmer, teilnehmerListe, max_teilnehmer) = tuples[0]
+                (id, name, Teilnehmerzahl, teilnehmerListe, max_teilnehmer) = tuples[0]
                 gruppe = Gruppe()
                 gruppe.set_id(id)
-                gruppe.set_gruppe(gruppe)
-                gruppe.set_anzahlTeilnehmer(anzahlTeilnehmer)
+                gruppe.set_name(name)
+                gruppe.set_teilnehmerzahl(teilnehmerzahl)
                 gruppe.set_teilnehmerListe(teilnehmerListe)
                 gruppe.set_max_teilnehmer(max_teilnehmer)
                 result = gruppe
@@ -81,16 +81,16 @@ class GruppeMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, gruppe FROM gruppen WHERE id='{}'".format(id)
+        command = "SELECT id, name FROM gruppen WHERE id='{}'".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id,gruppe, anzahlTeilnehmer, teilnehmerListe, max_teilnehmer) = tuples[0]
+            (id,name, teilnehmerzahl, teilnehmerListe, max_teilnehmer) = tuples[0]
             gruppe = Gruppen()
             gruppe.set_id(id)
-            gruppe.set_gruppe(gruppe)
-            gruppe.set_anzahlTeilnehmer(anzahlTeilnehmer)
+            gruppe.set_name(name)
+            gruppe.set_teilnehmerzahl(teilnehmerzahl)
             gruppe.set_teilnehmerListe(teilnehmerListe)
             gruppe.set_max_teilnehmer(max_teilnehmer)
             result = gruppe
@@ -126,8 +126,8 @@ class GruppeMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 gruppe.set_id(1)
 
-        command = "INSERT INTO gruppen (id, gruppe, anzahlTeilnehmer, teilnehmerListe, max_teilnehmer) VALUES (%s,%s,%s,%s,%s)"
-        data = (gruppe.get_id(), gruppe.get_gruppe(), gruppe.get_anzahlTeilnehmer(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
+        command = "INSERT INTO gruppen (id, name, teilnehmerzahl, teilnehmerListe, max_teilnehmer) VALUES (%s,%s,%s,%s,%s)"
+        data = (gruppe.get_id(), gruppe.get_name(), gruppe.get_teilnehmerzahl(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -144,7 +144,7 @@ class GruppeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE gruppen " + "SET gruppe=%s,  WHERE gruppe=%s"
-        data = (gruppe.get_id(), gruppe.get_gruppe(), gruppe.get_anzahlTeilnehmer(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
+        data = (gruppe.get_id(), gruppe.get_name(), gruppe.get_teilnehmerzahl(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
 
         cursor.execute(command, data)
 
@@ -160,7 +160,7 @@ class GruppeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE gruppen " + "SET gruppe=%s, WHERE id=%s"
-        data = (gruppe.get_id(), gruppe.get_gruppe(), gruppe.get_anzahlTeilnehmer(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
+        data = (gruppe.get_id(), gruppe.get_name(), gruppe.get_teilnehmerzahl(), gruppe.get_teilnehmerListe(), gruppe.get_max_teilnehmer())
 
         cursor.execute(command, data)
 
