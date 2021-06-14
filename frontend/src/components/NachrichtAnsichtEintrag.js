@@ -1,7 +1,8 @@
 import React from 'react';
 import { withStyles, Typography, Grid } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import NachrichtSendenEmpfangenDialog from "NachrichtSendenEmpfangenDialog";
+import NachrichtSendenEmpfangenDialog from "./dialogs/NachrichtSendenEmpfangenDialog";
+import NachrichtLoeschenDialog from "./dialogs/NachrichtLoeschenDialog";
 
 
 class NachrichtAnsichtEintrag extends React.Component {
@@ -61,14 +62,14 @@ class NachrichtAnsichtEintrag extends React.Component {
 
                         </Typography>
                         <Typography>
-                            Inhalt: { NachrichtenBOs.getInhalt()} Inhalt des Empfängers
+                            Inhalt: { NachrichtBOs.getInhalt()} Inhalt des Empfängers
                         </Typography>
 
 
                     </Grid>
                     <Grid>
                         <React.Fragment>
-                            <NachrichtLöschenDialog
+                            <NachrichtLoeschenDialog
                             show = {showDialog}
                             close = {this.closeDialog}
                             nachricht= {NachrichtBOs} 

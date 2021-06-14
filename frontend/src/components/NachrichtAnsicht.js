@@ -3,11 +3,13 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { withRouter } from 'react-router-dom';
 import LoadingProgress from './dialogs/LoadingProgress';
 import { withStyles, Paper, Button, Typography, Grid, TextField, InputAdornment, IconButton } from '@material-ui/core';
+import { AccessAlarm, ThreeDRotation, HighlightOff } from '@material-ui/icons';
 import NachrichtAnsichtEintrag from './NachrichtAnsichtEintrag';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import Theme from './Theme';
+import Theme from './../Theme';
 import LernGruppenToolAPI from '../api/LernGruppenToolAPI';
 import PropTypes from 'prop-types';
+
 
 class NachrichtAnsicht extends React.Component {
 
@@ -24,7 +26,7 @@ class NachrichtAnsicht extends React.Component {
     }
 
     getAlleNachrichten = () => {
-        LernGruppenToolAPI.getAPI().getAlleChats().then(nachrichtBOs => {
+        LernGruppenToolAPI.getAPI().getAlleNachrichten().then(nachrichtBOs => {
             this.setState({
                 nachrichten: nachrichtBOs,
                 filteredNachricht : [...nachrichtBOs],
@@ -34,8 +36,8 @@ class NachrichtAnsicht extends React.Component {
         }
         ).catch((e) =>
             this.setState({
-                nachrichten: NachrichtenBOs,
-                filteredNachricht: [...NachrichtenBOs],
+                nachrichten: [],
+                filteredNachricht: [],
                 loadingProgress: false,
                 error: e,
             })
@@ -47,11 +49,11 @@ class NachrichtAnsicht extends React.Component {
     };
 
     componentDidMount() {
-        this.getAlleNachrichten();
+        //this.getAlleNachrichten();
     }
 
 
-    filterNachrichten = event => {
+    /**filterNachrichten = event => {
         const searchterm = event.target.value.toLowerCase();
         this.setState({
             filteredNachrichten: this.state.nachrichten.filter(nachricht => {
@@ -69,10 +71,11 @@ class NachrichtAnsicht extends React.Component {
             nachrichtFilter: "",
         })
     }
+*/
 
         render() {
             const { classes} = this.props;
-            const { error, LoadingProgress, nachrichten, nachrichtFilter, filteredNachrichten, filterNachrichten} = this.state;
+            const { error, LoadingProgress, nachricht, nachrichtFilter, filteredNachricht, filterNachricht} = this.state;
             return (
                 <div className={classes.root}>
                 <Paper style={{paddingTop: 15, paddingLeft: 15, paddingRight: 15, paddingBottom: 15, marginTop: 15}} elevation={0}>
@@ -89,18 +92,18 @@ class NachrichtAnsicht extends React.Component {
                         <TextField
                             autoFocus type = "text"
                             value = {nachrichtFilter}
-                            onChange={this.filterNachrichten}
+                            onChange={this.filterNachricht}
                             InputProps = {{
-                                endAdornment: 
+                                endAdornment:
                                     <InputAdornment position="end">
-                                        <IconButton onClick={this.clearNachrichtenFilter}>
-                                            <HiglightOffIcon/>
+                                        <IconButton onClick={this.clearNachrichtFilter}>
+                                            <HighlightOffIcon />
 
                                         </IconButton>
 
                                     </InputAdornment>
                             }}
-                        
+
                         />
                     </Grid>
                     <Grid style = {{width: '100%', paddingBottom: 10, paddingLeft: 10, marginTop: 10}}>
@@ -108,10 +111,10 @@ class NachrichtAnsicht extends React.Component {
                             Hier kannst du deine Nachrichten anschauen:
                         </Typography>
                         {
-                            nachrichten.length > 0 ? 
-                            filteredNachrichten.map(nachricht => 
+                            nachricht.length > 0 ?
+                            filteredNachricht.map(nachricht =>
                                 <NachrichtAnsichtEintrag key={nachricht.getId()} nachricht= {nachricht} />)
-                                : 
+                                :
                                 null
                         }
                     </Grid>

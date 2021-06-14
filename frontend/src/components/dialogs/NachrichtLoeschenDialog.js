@@ -8,7 +8,7 @@ class NachrichtLoeschenDialog extends React.Component {
         this.state = {
             deletingInProgress: false,
             deletingError: null,
-            NachrichtenBOs: props.nachricht
+            NachrichtBOs: props.nachricht
 
         };
     }
@@ -24,17 +24,17 @@ class NachrichtLoeschenDialog extends React.Component {
 
     render() {
         const { classes, show} = this.props;
-        const {deletingError, NachrichtenBOs} = this.state;
+        const { NachrichtBOs, deletingError } = this.state;
         return (
             <Dialog open={show} onClose = {this.handleClose}>
                 <DialogTitle id= "alert-dialog-title">
                     Bestätigungsmeldung
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContenttext id="alert-dialog-description">
+                    <DialogContentText id="alert-dialog-description">
                         Sind Sie sicher, dass sie die Nachricht "{NachrichtBOs.getId()}",
                         "{NachrichtBOs.getInhalt()}" wirklich löschen möchten?
-                    </DialogContenttext>
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.deleteAlert} color ='primary'>

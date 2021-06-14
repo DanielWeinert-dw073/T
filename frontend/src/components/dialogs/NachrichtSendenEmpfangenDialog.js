@@ -4,6 +4,8 @@ import Dialog from '@material-ui/core/Dialog';
 import {default as DialogContent, default as DialogContentText} from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 
 class NachrichtSendenEmpfangenDialog extends React.Component {
     constructor(props) {
@@ -19,10 +21,10 @@ class NachrichtSendenEmpfangenDialog extends React.Component {
     }
 
     render() {
-        const {} = this.props;
+        const {show} = this.props;
         return(
-            <Dialog open={} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Möchtest du eine Nachricht schreben oder empfangen?</DialogTitle>
+            <Dialog open={show} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Möchtest du eine Nachricht schreiben oder empfangen?</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                 Nachricht:
