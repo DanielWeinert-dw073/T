@@ -88,7 +88,7 @@ class ProfilUebersicht extends React.Component {
     }
 
     componentDidMount() {
-        this.getAllProfils()
+        //this.getAllProfils()
         
         }
     
