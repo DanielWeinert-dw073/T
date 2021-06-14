@@ -11,10 +11,12 @@ import GruppenListe from './components/GruppenListe';
 import ProfilUebersicht from './components/ProfilUebersicht';
 //import ProfilUebersichtEintrag from './components/ProfilÜbersichtEintrag';
 import SignIn from './components/pages/SignIn';
+import NachrichtAnsicht from './components/NachrichtAnsicht';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 
 import About from './components/pages/About';
+
 
 /** 
  * Mainpage der LerngruppenApp. Verifizierung der nutzer über die firebase. Anschließend
@@ -162,7 +164,10 @@ class App extends React.Component {
                             //user signed in? 
                             currentUser ?
                                 <>
-                                    <Redirect from='/' to='profile'/>
+                                    <Redirect from='/' to='nachrichten'/>
+                                    <Route path='/nachrichten' >
+                                        <NachrichtAnsicht />
+                                    </Route>
                                     <Route path='/profile' >
                                         <ProfilUebersicht />
                                     </Route>
