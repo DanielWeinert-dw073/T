@@ -22,10 +22,7 @@ from .db.LerntypMapper import LerntypMapper
 from .db.LernvorliebenMapper import LernvorliebenMapper
 
 
-def get_student_by_google_user_id(google_user_id):
-    """Einen Studenten anhand seiner Google User Id auslesen"""
-    with StudentMapper() as mapper:
-        return mapper.find_by_google_user_id(google_user_id)
+
 
 
 class LerngruppenAdministration(object):
@@ -52,7 +49,7 @@ class LerngruppenAdministration(object):
         with StudentMapper() as mapper:
             return mapper.insert(user)
 
-    def get_alle_studenten(self):
+    def get_all_studenten(self):
         """Alle Studenten auslesen"""
         with StudentMapper() as mapper:
             return mapper.find_all()
@@ -67,10 +64,31 @@ class LerngruppenAdministration(object):
         with StudentMapper() as mapper:
             return mapper.find_by_id(id)
 
-    def save_student(self, student):
+    def update_student(self, student):
         """Einen Studenten speichern"""
         with StudentMapper() as mapper:
             return mapper.update(student)
+
+    def update_student_by_id(self, student):
+        """Einen Studenten nach der Id speichern"""
+        with StudentMapper() as mapper:
+            return mapper.update_by_id(student)
+
+    def update_student_by_google_user_id(self, student):
+        """Einen Studenten nach der Id speichern"""
+        with StudentMapper() as mapper:
+            return mapper.update_by_google_user_id(student)
+
+    def get_student_by_google_user_id(self, google_user_id):
+        """Einen Studenten anhand seiner Google User Id auslesen"""
+        with StudentMapper() as mapper:
+            return mapper.find_by_google_user_id(google_user_id)
+
+    def delete_student(self, student):
+        """Den Studenten löschen"""
+        with StudentMapper() as mapper:
+            mapper.delete(student)
+
 
     """
     Profil Methoden
