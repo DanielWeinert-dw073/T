@@ -9,11 +9,13 @@ import Header from './components/layout/Header';
 import LernGruppenToolAPI from './api/LernGruppenToolAPI';
 import GruppenListe from './components/GruppenListe';
 import ProfilUebersicht from './components/ProfilUebersicht';
-import ProfilUebersichtEintrag from './components/ProfilUebersichtEintrag';
+//import ProfilUebersichtEintrag from './components/ProfilÜbersichtEintrag';
 import SignIn from './components/pages/SignIn';
+import StartSeite from './components/pages/StartSeite';
 import NachrichtAnsicht from './components/NachrichtAnsicht';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import LoadingProgress from './components/dialogs/LoadingProgress';
+
 
 import About from './components/pages/About';
 
@@ -164,21 +166,21 @@ class App extends React.Component {
                             //user signed in? 
                             currentUser ?
                                 <>
-                                    <Redirect from='/' to='profile'/>
-                                    <Route path='/profile' >
-                                        <ProfilUebersicht />
-                                    </Route>
-                                    <Route path='/nachrichten' >
-                                        <NachrichtAnsicht />
-                                    </Route>
-                                    <Route path='/gruppen'>
-                                        <GruppenListe />
+                                    <Redirect from='/' to='startseite'/>
+                                        <Route exact path='/startseite' >
+                                            <StartSeite />
+                                        </Route>
+                                        <Route path='/profile' >
+                                            <ProfilUebersicht />
+                                        </Route>
+                                        <Route path='/gruppen'>
+                                            <GruppenListe />
+                                        </Route>
+                                        <Route path='/nachrichten'>
+                                            <NachrichtAnsicht />
+                                        </Route>
 
-                                    </Route>
-
-
-
-                                    <Route path="/about" component = {About}/>
+                                        <Route path="/about" component = {About}/>
 
                                   
 

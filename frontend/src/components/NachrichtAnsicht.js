@@ -82,12 +82,12 @@ class NachrichtAnsicht extends React.Component {
                
                     <Grid container spacing={1} justify='flex-start' alignItems='center'>
                         <Button style={{width: '100%', paddingBottom: 10, paddingLeft: 10, marginTop: 10}} variant="contained">
-                            Meine Chats
+                            Meine Nachrichten
                         </Button>
                     </Grid>
                     <Grid>
                         <Typography>
-                            Meine Chats durchsuchen
+                            Meine Nachrichten durchsuchen
                         </Typography>
                         <TextField
                             autoFocus type = "text"
