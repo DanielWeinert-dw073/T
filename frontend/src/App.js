@@ -9,7 +9,7 @@ import Header from './components/layout/Header';
 import LernGruppenToolAPI from './api/LernGruppenToolAPI';
 import GruppenListe from './components/GruppenListe';
 import ProfilUebersicht from './components/ProfilUebersicht';
-//import ProfilUebersichtEintrag from './components/ProfilÜbersichtEintrag';
+import ProfilUebersichtEintrag from './components/ProfilUebersichtEintrag';
 import SignIn from './components/pages/SignIn';
 import NachrichtAnsicht from './components/NachrichtAnsicht';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
@@ -164,17 +164,19 @@ class App extends React.Component {
                             //user signed in? 
                             currentUser ?
                                 <>
-                                    <Redirect from='/' to='nachrichten'/>
-                                    <Route path='/nachrichten' >
-                                        <NachrichtAnsicht />
-                                    </Route>
+                                    <Redirect from='/' to='profile'/>
                                     <Route path='/profile' >
                                         <ProfilUebersicht />
+                                    </Route>
+                                    <Route path='/nachrichten' >
+                                        <NachrichtAnsicht />
                                     </Route>
                                     <Route path='/gruppen'>
                                         <GruppenListe />
 
                                     </Route>
+
+
 
                                     <Route path="/about" component = {About}/>
 
