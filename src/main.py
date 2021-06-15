@@ -43,7 +43,7 @@ toolapp = api.namespace("lerngruppentoolapp", description="Funktionen der Lerngr
 """Hier wird festgelegt, wie die BusinessObjects beim Marshelling definiert werden sollen"""
 bo = api.model("BusinessObject", {
     "id": fields.Integer(attribute="_id", description="ID des BOs"),
-    "erstellungszeitpunkt": fields.DateTime(attribute="_erstellungszeitpunk", description="Erstellungszeitpunkt des BOs"),
+    "erstellungszeitpunkt": fields.DateTime(attribute="_erstellungszeitpunkt", description="Erstellungszeitpunkt des BOs"),
 })
 
 nbo = api.model("NamedBusinessObject", {
@@ -62,15 +62,14 @@ profil = api.inherit("Profil", nbo, {
     "sprachen": fields.String(attribute="_sprachen", description="Sprachen des Profils")
 })
 
-nachricht = api.inherit("Nachricht", bo, nbo, {
+nachricht = api.inherit("Nachricht", bo, {
     "inhalt": fields.String(attribute="_inhalt", description="Inhalt der Nachricht")
 })
 
 teilnahme = api.inherit("Teilnahme", bo, {
-    "teilnehmer": fields.String(attribute="_teilnehmer", description="Teilnehmer einer Teilnahme"),
-    "gruppen_id": fields.Integer(attribute="_gruppen_id", description="GruppenId einer Teilnahme"),
-    "konversations_id": fields.Integer(attribute="_konversations_id", description="KonversationsId der Teilnahme"),
-    "nachricht_id": fields.Integer(attribute="_nachricht_id", description="NachrichtId zur Teilnahme")
+    "gruppe_id": fields.Integer(attribute="_gruppe_id", description="GruppenId einer Teilnahme"),
+    "profil_id": fields.Integer(attribute="_profil_id", description="ProfilId der Teilnahme"),
+
 })
 
 student = api.inherit("Student", nbo, {
@@ -123,37 +122,46 @@ class StudentListOperations(Resource):
         """Auslesen aller Studenten"""
 
         adm = LerngruppenAdministration()
-        studenten = adm.get_alle_studenten()
+        studenten = adm.get_all_studenten()
         return studenten
 
+    @toolapp.marshal_with(student)
+    @toolapp.expect(student, validate=True)
     @secured
     def put(self):
 
-        student_Id = request.args.get("userId")
+        student_id = request.args.get("userId")
         name = request.args.get("name")
         email = request.args.get("email")
         adm = LerngruppenAdministration()
         student.set_name(name)
         student.set_email(email)
-        adm.update_student_by_id(student_Id)
+        adm.update_student_by_id(student_id)
 
     @secured
-    def delete(self):
+    def delete(self, id):
         """Löschen eines Studenten"""
         adm = LerngruppenAdministration()
-        adm.delete_student(id)
+        stu = adm.get_student_by_id(id)
+        adm.delete_student(stu)
+        return "", 200
 
+    @toolapp.marshal_list_with(student, code=200)
+    @toolapp.expect(student)
     @secured
-    def update(self):
-        """Update eines Studenten"""
+    def post(self):
+        """ Anlegen eines Studenten"""
 
         adm = LerngruppenAdministration()
-        studenten = adm.get_student_by_id(id)
+        student = Student.from_dict(api.payload)
+        adm.create_student()
 
-        adm.update(studenten)
-
-
-
+        if student is not None:
+            result = adm.create_student(student.set_name(), student.set_email(),
+                                     student.set_google_user_id())
+            return result, 200
+        else:
+            return '', 500
 
 @toolapp.route("/studenten-by-name/<string:name>")
 @toolapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
