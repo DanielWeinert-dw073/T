@@ -39,7 +39,7 @@ def secured(function):
  
                         student.set_name(name)
                         student.set_email(email)
-                        adm.save_student(student)
+                        adm.update_student(student)
                         print("saved student")
                     else:
                         print("create student")

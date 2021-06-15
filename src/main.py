@@ -10,9 +10,9 @@ from flask_cors import CORS
 
 from flask_restx import Api, Resource, fields
 from flask import request
-import json 
+import json
 
-#Zugriff auf die Applikationslogik inkl. BusinessObject-Klassen 
+# Zugriff auf die Applikationslogik inkl. BusinessObject-Klassen
 from server.LerngruppenAdministration import LerngruppenAdministration
 from server.bo.Teilnahme import Teilnahme
 from server.bo.Gruppe import Gruppe
@@ -24,16 +24,13 @@ from server.bo.Nachricht import Nachricht
 from server.bo.Lernvorlieben import Lernvorlieben
 from server.bo.Lerntyp import Lerntyp
 
-
-
 # SercurityDecorator
 from SecurityDecorator import secured
-
 
 """Flask wird hiermit instanziiert"""
 app = Flask(__name__)
 
-CORS(app, support_credentials=True, resources={r"/lerngruppentoolapp/*":{"origins": "*"}} )
+CORS(app, support_credentials=True, resources={r"/lerngruppentoolapp/*": {"origins": "*"}})
 
 api = Api(app, version="1.0", title="LernGruppenTool ", description="Web App zur Lerngruppen Findung der Hochschule")
 
@@ -43,7 +40,8 @@ toolapp = api.namespace("lerngruppentoolapp", description="Funktionen der Lerngr
 """Hier wird festgelegt, wie die BusinessObjects beim Marshelling definiert werden sollen"""
 bo = api.model("BusinessObject", {
     "id": fields.Integer(attribute="_id", description="ID des BOs"),
-    "erstellungszeitpunkt": fields.DateTime(attribute="_erstellungszeitpunkt", description="Erstellungszeitpunkt des BOs"),
+    "erstellungszeitpunkt": fields.DateTime(attribute="_erstellungszeitpunkt",
+                                            description="Erstellungszeitpunkt des BOs"),
 })
 
 nbo = api.model("NamedBusinessObject", {
@@ -80,7 +78,7 @@ student = api.inherit("Student", nbo, {
 empfehlung = api.inherit("Empfehlung", bo, {
     "empfehlung": fields.String(attribute="_empfehlung", description="Empfehlung"),
     "empfehlungsListe": fields.String(attribute="_empfehlungsListe", description="Empfehlungsliste"),
-    "empfehlungGruppe":fields.String(attribute="_empfehlungGruppe", description="Empfehlunggruppe"),
+    "empfehlungGruppe": fields.String(attribute="_empfehlungGruppe", description="Empfehlunggruppe"),
     "empfehlungProfil": fields.String(attribute="_empfehlungProfil", description="EmpfehlungProfil")
 })
 
@@ -90,14 +88,17 @@ lerntyp = api.inherit("Lerntyp", bo, {
 
 lernvorlieben = api.inherit("Lernvorlieben", bo, {
     "frequenz": fields.String(attribute="_frequenz", description="Frequenz des Lernens"),
-    "internet_verbindung": fields.String(attribute="_internet_verbindung", description="InternetVerbindung online/offline"),
-    "pole_der_persönlichkeit": fields.String(attribute="pole_der_persönlichkeit", description="Introvertier/Extrovertiert")
+    "internet_verbindung": fields.String(attribute="_internet_verbindung",
+                                         description="InternetVerbindung online/offline"),
+    "pole_der_persönlichkeit": fields.String(attribute="pole_der_persönlichkeit",
+                                             description="Introvertier/Extrovertiert")
 })
 
 konversation = api.inherit("Konversation", bo, {
     "nachricht_id": fields.Integer(attribute="_nachricht_id", description="NachrichtId in einer Konversation"),
     "teilnehmer": fields.String(attribute="_teilnehmer", description="Teilnehmer an einer Konversation"),
-    "herkunfts_id": fields.Integer(attribute="_herkunfts_id", description="Herkunfts Id einer Nachricht in einer Konversation"),
+    "herkunfts_id": fields.Integer(attribute="_herkunfts_id",
+                                   description="Herkunfts Id einer Nachricht in einer Konversation"),
     "ziel_id": fields.Integer(attribute="_ziel_id", description="Ziel einer Nachricht in Konversation"),
     "inhalt": fields.String(attribute="_inhalt", description="Inhalt in einer Konversation")
 })
@@ -109,14 +110,13 @@ suggestion_algorithmus = api.inherit("SuggestionAlgorithmus", bo, {
     "gruppen_id": fields.Integer(attribute="_gruppen_id", description="Gruppen Id ")
 })
 
-#Student Methoden
+
+# Student Methoden
 
 @toolapp.route("/studenten")
 @toolapp.response(500, 'Falls es zu einem Serverseitigen Fehler kommt.')
-@toolapp.param("name", 'Dies ist der name des Studenten')
 class StudentListOperations(Resource):
     @toolapp.marshal_list_with(student)
-
     @secured
     def get(self):
         """Auslesen aller Studenten"""
@@ -146,7 +146,7 @@ class StudentListOperations(Resource):
         adm.delete_student(stu)
         return "", 200
 
-    @toolapp.marshal_list_with(student, code=200)
+    @toolapp.marshal_with(student, code=200)
     @toolapp.expect(student)
     @secured
     def post(self):
@@ -158,17 +158,17 @@ class StudentListOperations(Resource):
 
         if student is not None:
             result = adm.create_student(student.set_name(), student.set_email(),
-                                     student.set_google_user_id())
+                                        student.set_google_user_id())
             return result, 200
         else:
             return '', 500
 
-@toolapp.route("/studenten-by-name/<string:name>")
+
+@toolapp.route("/studenten/<string:name>")
 @toolapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @toolapp.param("name", "Der Name des Studenten")
 class StudentByNameOperations(Resource):
-    @toolapp.marshal_list_with(student)
-
+    @toolapp.marshal_with(student)
     @secured
     def get(self, name):
         """Auslesen eines bestimmten Studenten Objekt. Nachrichten
@@ -179,14 +179,14 @@ class StudentByNameOperations(Resource):
         stud = adm.get_student_by_name(name)
         return stud
 
-@toolapp.route("/studenten-by-google-user-id/<string:google_user_id>")
+
+@toolapp.route("/studenten/<string:google_user_id>")
 @toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
 @toolapp.param("google_user_id", "GoogleUserId des Studenten")
-class StudentByGoogle_User_Id(Resource):
-    @toolapp.marshal_list_with(student)
-
+class StudentOperations(Resource):
+    @toolapp.marshal_with(student)
     @secured
-    def get (self, google_user_id):
+    def get(self, google_user_id):
         """Auslesen eines bestimmten Studenten Objekts.
 
         Das auszulesene Objekt wird über die GoogleUserId bestimmt."""
@@ -198,11 +198,10 @@ class StudentByGoogle_User_Id(Resource):
 @toolapp.route("/studenten/<int:id>")
 @toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt.")
 @toolapp.param("id", "Id eines Studenten")
-class StudentOperations(Resource):
+class StudentOperatons(Resource):
     @toolapp.marshal_with(student)
-
-    @secured
-    def get (self, id):
+    #@secured
+    def get(self, id):
         """Auslesen eines bestimmten Studenten Objekts.
 
         Das auszulesene Objekt wird über die Id bestimmt"""
@@ -212,65 +211,49 @@ class StudentOperations(Resource):
         return stud
 
 
+@toolapp.route("/studenten/<int:id>")
+@toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt.")
+@toolapp.param("id", "Id eines Studenten")
+
+
 # Nachrichten Methoden
 @toolapp.route("/nachrichten")
 @toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class NachrichtListOperation(Resource):
     @toolapp.marshal_list_with(nachricht)
-
     @secured
     def get(self):
         """Auslesen aller Nachrichten Objekte"""
 
-        
         adm = LerngruppenAdministration()
         nachricht = adm.get_all_nachricht()
         return nachricht
 
+
+@toolapp.route("/nachrichten/<int:id>")
+@toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
+@toolapp.param("id", "Id der Nachricht")
+class NachrichtOperation(Resource):
+
+    @toolapp.marshal_with(nachricht)
+    @toolapp.expect(nachricht, validate=True)
     @secured
     def put(self, id):
         """Update der Nachricht"""
 
         adm = LerngruppenAdministration()
-        nachricht = adm.get_nachricht_by_id(id)
+        n = Nachricht.from_dict(api.payload)
 
-        adm.update(nachricht)
-
-    @toolapp.marshal_list_with(nachricht, code= 200)
-    @toolapp.expect(nachricht)
-    @secured
-    def post(self):
-        """ Anlegen einer neuen Nachricht"""
-
-        profil_Id = request.args.get("profil_Id")
-        gruppen_id = request.args.get("gruppen_id")
-        
-        adm = LerngruppenAdministration()
-        adm.create_nachricht(profil_Id, gruppen_id)
-        nachricht = Nachricht.from_dict(api.playload)
-
-
-        if nachricht is not None:
-        
-            n = adm.create_nachricht(nachricht)
-            return n, 200
-        else: 
-            return '',500
-
-    def delete(self, id):
-            """ Löschen einer Nachricht"""
-            adm = LerngruppenAdministration()
-            nach = adm.get_nachricht_by_id(id)
-            adm.delete_nachricht(nach)
+        if n is not None:
+            n.set_id(id)
+            adm.save_nachricht(n)
             return "", 200
+        else:
 
+            return "", 500
 
-@toolapp.route("/nachricht/<int:id>")
-@toolapp.response(500, "Falls es zu einen serverseitigen Fehler kommt")
-@toolapp.param("id")
-class NachrichtById(Resource):
     @toolapp.marshal_list_with(nachricht)
-    @secured
+    #@secured
     def get(self, id):
         """Auslesen eines bestimmten Nachricht Objekts.
 
@@ -278,7 +261,46 @@ class NachrichtById(Resource):
 
         adm = LerngruppenAdministration()
         nach = adm.get_nachricht_by_id(id)
-        return nach
+
+        if nach is not None:
+
+            return nach
+        else:
+            return "", 500
+
+    @toolapp.marshal_list_with(nachricht, code=200)
+    @toolapp.expect(nachricht)
+    @secured
+    def post(self):
+        """ Anlegen einer neuen Nachricht"""
+
+        profil_id = request.args.get("profil_Id")
+        gruppe_id = request.args.get("gruppe_id")
+
+        adm = LerngruppenAdministration()
+        adm.create_nachricht(profil_id, gruppe_id)
+        nachricht = Nachricht.from_dict(api.playload)
+
+        if nachricht is not None:
+
+            n = adm.create_nachricht(nachricht.get_id(), nachricht.get_inhalt())
+            return n, 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, id):
+        """ Löschen einer Nachricht"""
+        adm = LerngruppenAdministration()
+        nach = adm.get_nachricht_by_id(id)
+
+        if nach is not None:
+
+            adm.delete_nachricht(nach)
+            return "", 200
+        else:
+
+            return "", 500
 
 
 # Profil Methoden
@@ -296,7 +318,6 @@ class ProfilListOperation(Resource):
         return profile
 
     @secured
-
     def put(self, faecher, alter, studiengang, wohnort, semester, vorwissen, lernvorlieben, about_me, sprachen):
         """ Update des Profils"""
 
@@ -322,9 +343,8 @@ class ProfilListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.delete_profil(id)
 
-    @toolapp.marshal_list_with(profil, code = 200)
+    @toolapp.marshal_list_with(profil, code=200)
     @toolapp.expect(profil)
-
     @secured
     def post(self):
         """ Anlegen eines Profils"""
@@ -334,9 +354,10 @@ class ProfilListOperation(Resource):
         adm.create_profil()
 
         if profil is not None:
-            result = adm.create_profil(profil.set_name(),profil.set_alter(),
-                                 profil.set_studiengang(),profil.set_wohnort(),profil.set_semester(),profil.set_about_me(),
-                                 profil.set_vorwissen(),profil.set_lernvorlieben(),profil.set_sprachen())
+            result = adm.create_profil(profil.set_name(), profil.set_alter(),
+                                       profil.set_studiengang(), profil.set_wohnort(), profil.set_semester(),
+                                       profil.set_about_me(),
+                                       profil.set_vorwissen(), profil.set_lernvorlieben(), profil.set_sprachen())
             return result, 200
         else:
             return '', 500
@@ -352,18 +373,18 @@ class TeilnahmeListOperation(Resource):
     def get(self):
         """Auslesen aller Teilnahmen"""
 
-        adm=LerngruppenAdministration()
+        adm = LerngruppenAdministration()
         teilnahmen = adm.get_alle_teilnahmen()
         return teilnahmen
 
     @secured
     def put(self):
-            """Update der Teilnahmen"""
+        """Update der Teilnahmen"""
 
-            adm = LerngruppenAdministration()
-            teilnahme = adm.get_teilnahme_id(id)
+        adm = LerngruppenAdministration()
+        teilnahme = adm.get_teilnahme_id(id)
 
-            adm.update(teilnahme)
+        adm.update(teilnahme)
 
     @secured
     def delete(self, id):
@@ -377,13 +398,13 @@ class TeilnahmeListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.post_teilnahme()
 
+
 # Empfehlungs Methoden
 
 @toolapp.route("/empfehlungen")
 @toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class EmpfehlungListOperation(Resource):
     @toolapp.marshal_list_with(empfehlung)
-
     @secured
     def get(self):
         """Auslesen aller Empfehlungen"""
@@ -410,8 +431,9 @@ class EmpfehlungListOperation(Resource):
     @secured
     def post(self):
         """Anlegen einer Empfehlung"""
-        adm= LerngruppenAdministration()
+        adm = LerngruppenAdministration()
         adm.post_empfehlung()
+
 
 # Lerntyp Methoden
 
@@ -419,7 +441,6 @@ class EmpfehlungListOperation(Resource):
 @toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class EmpfehlungListOperation(Resource):
     @toolapp.marshal_list_with(lerntyp)
-
     @secured
     def get(self):
         """Auslesen aller Lerntypen"""
@@ -449,13 +470,13 @@ class EmpfehlungListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.post_lerntyp()
 
+
 # Lernvorlieben Methoden
 
 @toolapp.route("/lernvorlieben")
 @toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class EmpfehlungListOperation(Resource):
     @toolapp.marshal_list_with(lernvorlieben)
-
     @secured
     def get(self):
         """Auslesen aller Lernvorlieben"""
@@ -485,11 +506,11 @@ class EmpfehlungListOperation(Resource):
         adm = LerngruppenAdministration()
         adm.post_lernvorlieben()
 
+
 @toolapp.route("/konversationen")
 @toolapp.response(500, "Falls es zu einem serverseitigen Fehler kommt")
 class KonversationListOperation(Resource):
     @toolapp.marshal_list_with(konversation)
-
     @secured
     def get(self):
         """Auslesen aller Konversationen"""
@@ -516,13 +537,9 @@ class KonversationListOperation(Resource):
     @secured
     def post(self):
         """Anlegen einer Konversation"""
-        adm= LerngruppenAdministration()
+        adm = LerngruppenAdministration()
         adm.post_konversation()
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-

@@ -90,6 +90,8 @@ class LerngruppenAdministration(object):
             mapper.delete(student)
 
 
+
+
     """
     Profil Methoden
     """
@@ -264,7 +266,7 @@ class LerngruppenAdministration(object):
         with NachrichtMapper() as mapper:
             return mapper.update(nachricht)
 
-    def delete(self, nachricht):
+    def delete_nachricht(self, nachricht):
         """Nachricht löschen"""
         with NachrichtMapper() as mapper:
             return mapper.delete(nachricht)
