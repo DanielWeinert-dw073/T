@@ -102,19 +102,6 @@ class StudentMapper(Mapper):
         cursor.close()
         return result
 
-    def find_by_key(self, key):
-        """Löschen der Daten eines Studenten aus der Datenbank
-
-        :param student -> student-Objekt
-        """
-        cursor = self._cnx.cursor()
-
-        command = "DELETE FROM studenten WHERE id={}".format(key)
-        cursor.execute(command)
-
-        self._cnx.commit()
-        cursor.close()
-
     def find_by_google_user_id(self, google_user_id):
         """Suchen einer student nach der übergebenen Google User ID. 
 
@@ -207,7 +194,7 @@ class StudentMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-    def update_by_user_id(self, student):
+    def update_by_google_user_id(self, student):
         """Überschreiben / Aktualisieren eines student-Objekts in der DB
 
         :param student -> student-Objekt
